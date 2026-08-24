@@ -79,9 +79,19 @@
   .note{ margin:5mm 15mm 0; border:1px dashed var(--line); background:var(--mint2); border-radius:8px;
          padding:8px 11px; color:var(--muted); font-size:9px; }
   .note b{ color:var(--ink); }
+
+  input.f{ border:none; border-bottom:1.4px solid var(--line); background:transparent; font:inherit;
+           color:var(--ink); font-weight:700; padding:1px 5px 2px; outline:none; }
+  input.f:focus{ border-bottom-color:var(--teal); }
+  input.nome{ min-width:210px; } input.cf{ min-width:190px; } input.pd{ min-width:230px; }
+  .banner{ background:var(--teal); color:#fff; text-align:center; padding:9px 14px; font-size:11px;
+           font-family:"Helvetica Neue",Arial,sans-serif; }
+  .banner b{ font-weight:800; }
+  @media print{ .banner{ display:none !important; } input.f{ border-bottom:1.4px solid var(--ink); } }
 </style>
 </head>
 <body>
+<div class="banner"><b>Compila i campi</b> qui sotto, poi usa <b>Stampa</b> o <b>Salva come PDF</b> per esportare il contratto pronto.</div>
 <div class="page">
 
   <div class="band">
@@ -111,8 +121,8 @@
       </div>
       <div class="party">
         <div class="role">Il Partner</div>
-        <div class="val fld">Nome: ______________________</div>
-        <div class="val fld">C.F. / P.IVA: ______________</div>
+        <div class="val fld">Nome: <input class="f nome" type="text"></div>
+        <div class="val fld">C.F. / P.IVA: <input class="f cf" type="text"></div>
       </div>
     </div>
 
@@ -164,7 +174,7 @@
       <p>Le parti trattano i dati nel rispetto del GDPR. Il codice e il link restano di proprieta di Rivolio e vengono disattivati in caso di recesso.</p>
     </section>
 
-    <div class="place">Luogo e data ___________________________</div>
+    <div class="place">Luogo e data <input class="f pd" type="text"></div>
 
     <div class="signs">
       <div class="sign"><div class="line"></div><div class="lab">Rivolio</div></div>
