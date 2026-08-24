@@ -4,6 +4,11 @@ Ogni decisione importante va aggiunta qui, con data e motivazione. Dal più rece
 
 ---
 
+### 24 Ago 2026 (notte) — Contratto PDF brandizzato + bonus family
+- Contratto rifatto in PDF brandizzato Rivolio (colori teal-green dal logo, 1 pagina). Rimossi i .md contratto. Versione compilabile a schermo + link web (artifact).
+- Bonus differenziati: SINGOLE €20@10 + €50/25 (invariati). FAMILY €50 ogni 10 (scala unica). Verificato: family tieni ~€9,70/pratica, dopo bonus ~€4,70/pratica. Mai sommare due scale family (es. +€175/25 andava in negativo a 25).
+- Corretto un errore di percezione di Valerio: su 10 family "€299" non sono tutti suoi, IVA+Stripe si prendono ~€65, netto reale ~€47 dopo bonus.
+
 ### 24 Ago 2026 (notte) — Primi 2 no + rotta confermata + contratto
 - Michela (email): lavora solo a fee fissa, no al performance. Inviata chiusura gentile (schedulata 8:00). Prevista dalla ricerca.
 - Flaminia (DM): "non sono interessata", no educato senza motivo. Segnata Scartato.

@@ -1,8 +1,6 @@
-<!doctype html>
-<html lang="it">
-<head>
-<meta charset="utf-8">
+<title>Contratto Partner Rivolio</title>
 <style>
+
   @page { size: A4; margin: 0; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   :root{
@@ -88,10 +86,19 @@
            font-family:"Helvetica Neue",Arial,sans-serif; }
   .banner b{ font-weight:800; }
   @media print{ .banner{ display:none !important; } input.f{ border-bottom:1.4px solid var(--ink); } }
+
+  :root{ --ground:#E9F1ED; }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --ground:#0d1714; } }
+  :root[data-theme="dark"]{ --ground:#0d1714; }
+  html,body{ background:var(--ground); }
+  body{ display:flex; flex-direction:column; align-items:center; padding:14px 10px 34px; min-height:100vh; }
+  .banner{ width:210mm; max-width:100%; border-radius:9px; box-sizing:border-box; }
+  .sheetwrap{ overflow-x:auto; max-width:100%; width:100%; display:flex; justify-content:center; margin-top:13px; padding-bottom:4px; }
+  .page{ background:#fff; box-shadow:0 10px 38px rgba(3,56,48,.18); flex:0 0 auto; border-radius:2px; }
 </style>
-</head>
-<body>
+
 <div class="banner"><b>Compila i campi</b> qui sotto, poi usa <b>Stampa</b> o <b>Salva come PDF</b> per esportare il contratto pronto.</div>
+<div class="sheetwrap">
 <div class="page">
 
   <div class="band">
@@ -190,5 +197,4 @@
   </div>
 
 </div>
-</body>
-</html>
+</div>

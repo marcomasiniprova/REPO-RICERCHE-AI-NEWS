@@ -9,7 +9,8 @@ Quello che riceve il creator:
 - 🎁 **Account Rivolio gratis** con check e pratiche **illimitate** (costa ~zero, percepito come premio)
 - 🏷️ **Codice sconto 10%** per i suoi follower + **link personale** tracciato
 - 💰 **40% su ogni pratica**, calcolato sul **LORDO** che paga il cliente
-- 🏆 **Bonus pratiche:** €20 a quota 10 pratiche, poi **€50 ogni 25** (25, 50, 75…)
+- 🏆 **Bonus pratiche SINGOLE (€16,90):** €20 a quota 10, poi **€50 ogni 25** (25, 50, 75…)
+- 🏆 **Bonus pratiche FAMILY (€29,90):** **€50 ogni 10** (scala unica, il piano da spingere). Family = ~€9,70 netti a pratica, dopo bonus ~€4,70. Mai sommare una seconda scala family o si va in negativo.
 - 🎯 **Bonus check:** **€50 ogni 100 check** portati (niente % sul singolo check)
 - 👨‍👩‍👧 **Family spinto:** rende ~2× → si evidenzia al creator ("conviene anche a te")
 
