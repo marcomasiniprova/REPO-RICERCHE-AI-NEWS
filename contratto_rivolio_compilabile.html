@@ -6,95 +6,90 @@
   @page { size: A4; margin: 0; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   :root{
-    --ink:#053830; --teal:#0B7858; --teal2:#0E8F6A; --mint:#E7F3EE;
-    --mint2:#F4FAF7; --line:#CFE2DA; --text:#1B322B; --muted:#5C6F68; --white:#fff;
+    --ink:#14140F; --teal:#0B5C4A; --teald:#083A30; --muted:#6C6C64;
+    --line:#D9D9D2; --soft:#F2F6F4; --paper:#FFFFFF;
   }
   html,body{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
   body{
-    font-family:"Helvetica Neue", Arial, "Segoe UI", sans-serif;
-    color:var(--text); font-size:10px; line-height:1.42; background:#fff;
+    font-family:"Liberation Serif","Times New Roman",Georgia,serif;
+    color:var(--ink); font-size:11.3px; line-height:1.68; background:var(--paper);
   }
-  .page{ width:210mm; min-height:297mm; position:relative; padding:0 0 13mm; }
+  .sans{ font-family:"Liberation Sans","Helvetica Neue",Arial,sans-serif; }
+  .page{ width:210mm; min-height:297mm; position:relative; padding:19mm 23mm 24mm; }
 
-  /* Header band */
-  .band{
-    background:linear-gradient(125deg, var(--teal) 0%, var(--ink) 100%);
-    color:#fff; padding:7mm 15mm 5mm; display:flex; align-items:center; justify-content:space-between;
-  }
-  .brand{ display:flex; align-items:center; gap:11px; }
-  .brand .logo{
-    width:46px; height:46px; border-radius:11px; background:#fff;
-    display:flex; align-items:center; justify-content:center; padding:6px;
-    box-shadow:0 4px 14px rgba(0,0,0,.18);
-  }
-  .brand .logo img{ width:100%; height:100%; object-fit:contain; }
-  .brand .name{ font-size:22px; font-weight:800; letter-spacing:.5px; }
-  .brand .tag{ font-size:9.5px; opacity:.85; margin-top:2px; font-weight:500; letter-spacing:.3px; }
-  .band .doclabel{ text-align:right; font-size:9px; text-transform:uppercase; letter-spacing:2px; opacity:.85; }
+  /* Letterhead */
+  .lh{ display:flex; align-items:flex-end; justify-content:space-between;
+       padding-bottom:8px; border-bottom:2.4px solid var(--teal); }
+  .lh .brand{ display:flex; align-items:center; gap:12px; }
+  .lh .logo{ width:40px; height:40px; border:1px solid var(--line); border-radius:9px; background:#fff;
+             display:flex; align-items:center; justify-content:center; padding:5px; }
+  .lh .logo img{ width:100%; height:100%; object-fit:contain; }
+  .lh .name{ font-family:"Liberation Sans",Arial,sans-serif; font-size:21px; font-weight:700;
+             letter-spacing:3px; color:var(--teald); line-height:1; }
+  .lh .tag{ font-family:"Liberation Sans",Arial,sans-serif; font-size:8px; letter-spacing:1.4px;
+            text-transform:uppercase; color:var(--muted); margin-top:4px; }
+  .lh .meta{ font-family:"Liberation Sans",Arial,sans-serif; font-size:7.6px; letter-spacing:1.8px;
+             text-transform:uppercase; color:var(--muted); text-align:right; line-height:1.7; }
 
   /* Title */
-  .titlewrap{ padding:4mm 15mm 1mm; }
-  .kicker{ color:var(--teal); font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:2.5px; }
-  h1{ font-size:20px; color:var(--ink); font-weight:800; margin-top:4px; line-height:1.15; }
-  .sub{ color:var(--muted); font-size:10.5px; margin-top:3px; }
+  .titleblock{ text-align:center; margin:13mm 0 0; }
+  .titleblock .eyebrow{ font-family:"Liberation Sans",Arial,sans-serif; font-size:8.5px; letter-spacing:4px;
+                        text-transform:uppercase; color:var(--teal); }
+  .titleblock h1{ font-size:23px; font-weight:700; margin-top:6px; letter-spacing:.2px; }
+  .titleblock .rule{ width:52px; height:2px; background:var(--teal); margin:9px auto 0; }
 
-  .body{ padding:2mm 15mm 0; }
+  .preamble{ margin:9mm 0 0; text-align:justify; }
 
-  /* Parti box */
-  .parti{ display:flex; gap:10px; margin:2.3mm 0 1.8mm; }
-  .party{ flex:1; border:1px solid var(--line); border-radius:10px; padding:9px 12px; background:var(--mint2); }
-  .party .role{ font-size:8px; text-transform:uppercase; letter-spacing:1.5px; color:var(--teal); font-weight:700; }
-  .party .val{ font-size:11px; font-weight:700; color:var(--ink); margin-top:3px; }
-  .party .fld{ color:var(--muted); font-weight:500; }
+  /* Parties */
+  .parties{ display:flex; gap:14px; margin:6mm 0 1mm; }
+  .pcard{ flex:1; border:1px solid var(--line); border-radius:8px; padding:9px 13px; background:var(--soft); }
+  .pcard .lab{ font-family:"Liberation Sans",Arial,sans-serif; font-size:7.5px; letter-spacing:1.8px;
+               text-transform:uppercase; color:var(--teal); font-weight:700; }
+  .pcard .v{ font-size:12px; font-weight:700; margin-top:3px; }
+  .pcard .v.blank{ font-weight:400; color:var(--muted); }
 
-  /* Section */
-  section{ margin:0 0 0.85mm; }
-  .h{ display:flex; align-items:center; gap:8px; margin-bottom:3px; }
-  .num{ width:17px; height:17px; border-radius:5px; background:var(--teal); color:#fff; font-size:9.5px; font-weight:700;
-        display:flex; align-items:center; justify-content:center; flex:0 0 auto; }
-  .h h2{ font-size:11.5px; color:var(--ink); font-weight:700; }
-  section p{ margin-left:25px; }
-  section .li{ margin-left:25px; padding-left:12px; position:relative; margin-top:2px; }
-  .li:before{ content:""; position:absolute; left:0; top:6px; width:5px; height:5px; border-radius:50%; background:var(--teal2); }
-
-  /* Benefit cards */
-  .benefits{ display:grid; grid-template-columns:1fr 1fr; gap:6px; margin:3px 0 1px 25px; }
-  .card{ border:1px solid var(--line); border-left:3px solid var(--teal); border-radius:8px; padding:6px 10px; background:var(--mint); }
-  .card .t{ font-weight:700; color:var(--ink); font-size:10px; }
-  .card .d{ color:var(--muted); font-size:9.3px; margin-top:2px; }
-  .card .big{ color:var(--teal); font-weight:800; }
+  /* Articles */
+  .art{ margin-top:5.4mm; break-inside:avoid; }
+  .parties, .signs, .place{ break-inside:avoid; }
+  .art h2{ font-size:12.2px; font-weight:700; color:var(--teald); margin-bottom:1.4mm;
+           font-family:"Liberation Serif",serif; }
+  .art h2 .n{ color:var(--teal); }
+  .art p{ text-align:justify; }
+  ol.lett{ list-style:none; margin:1mm 0 0; padding:0; }
+  ol.lett{ counter-reset:l; }
+  ol.lett li{ counter-increment:l; text-align:justify; margin:1.2mm 0 0; padding-left:9mm; position:relative; }
+  ol.lett li:before{ content:"(" counter(l,lower-alpha) ")"; position:absolute; left:0; top:0;
+                     color:var(--teal); font-weight:700; }
 
   /* Signatures */
-  .signs{ display:flex; gap:26px; margin:2.5mm 0 0 25px; }
-  .sign{ flex:1; }
-  .sign .line{ border-top:1.4px solid var(--ink); margin-top:16px; }
-  .sign .lab{ font-size:9px; color:var(--muted); margin-top:4px; }
-  .place{ margin:3mm 0 0 25px; color:var(--muted); font-size:9.5px; }
+  .place{ margin-top:9mm; }
+  .signs{ display:flex; gap:34mm; margin-top:12mm; }
+  .sig{ flex:1; }
+  .sig .ln{ border-top:1px solid var(--ink); }
+  .sig .cap{ font-family:"Liberation Sans",Arial,sans-serif; font-size:8.5px; letter-spacing:1px;
+             text-transform:uppercase; color:var(--muted); margin-top:5px; }
 
-  /* Footer */
-  .footer{ position:absolute; bottom:0; left:0; right:0; height:12mm; background:var(--mint);
-           border-top:2px solid var(--teal); display:flex; align-items:center; justify-content:space-between;
-           padding:0 15mm; color:var(--ink); font-size:8.6px; }
-  .footer b{ color:var(--teal); }
-  .note{ margin:5mm 15mm 0; border:1px dashed var(--line); background:var(--mint2); border-radius:8px;
-         padding:8px 11px; color:var(--muted); font-size:9px; }
-  .note b{ color:var(--ink); }
+  /* Doc footer (end of flow) */
+  .docfoot{ margin-top:11mm; padding-top:7px; border-top:1px solid var(--line); text-align:center;
+            font-family:"Liberation Sans",Arial,sans-serif; font-size:8px; letter-spacing:1.5px;
+            text-transform:uppercase; color:var(--muted); }
+  .docfoot b{ color:var(--teal); }
 
-  input.f{ border:none; border-bottom:1.4px solid var(--line); background:transparent; font:inherit;
-           color:var(--ink); font-weight:700; padding:1px 5px 2px; outline:none; }
+  input.f{ border:none; border-bottom:1.2px solid var(--muted); background:transparent; font:inherit;
+           color:var(--ink); font-weight:700; padding:0 5px 1px; outline:none; }
   input.f:focus{ border-bottom-color:var(--teal); }
-  input.nome{ min-width:210px; } input.cf{ min-width:190px; } input.pd{ min-width:230px; }
+  input.nome{ min-width:200px; } input.cf{ min-width:180px; } input.pd{ min-width:260px; } input.foro{ min-width:200px; }
   .banner{ background:var(--teal); color:#fff; text-align:center; padding:9px 14px; font-size:11px;
-           font-family:"Helvetica Neue",Arial,sans-serif; }
+           font-family:"Liberation Sans",Arial,sans-serif; letter-spacing:.3px; }
   .banner b{ font-weight:800; }
-  @media print{ .banner{ display:none !important; } input.f{ border-bottom:1.4px solid var(--ink); } }
+  @media print{ .banner{ display:none !important; } input.f{ border-bottom:1px solid var(--ink); } }
 </style>
 </head>
 <body>
-<div class="banner"><b>Compila i campi</b> qui sotto, poi usa <b>Stampa</b> o <b>Salva come PDF</b> per esportare il contratto pronto.</div>
+<div class="banner"><b>Compila i campi</b>, poi usa <b>Stampa</b> o <b>Salva come PDF</b> per il contratto pronto.</div>
 <div class="page">
 
-  <div class="band">
+  <div class="lh">
     <div class="brand">
       <div class="logo"><img src="data:image/png;base64,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" alt="Rivolio"></div>
       <div>
@@ -102,107 +97,85 @@
         <div class="tag">Lo scanner dei rimborsi</div>
       </div>
     </div>
-    <div class="doclabel">Programma Partner<br>Creator</div>
+    <div class="meta">Accordo di collaborazione<br>Programma Partner Creator</div>
   </div>
 
-  <div class="titlewrap">
-    <div class="kicker">Accordo di collaborazione</div>
-    <h1>Collaborazione a Performance</h1>
-    <div class="sub">Tra Rivolio e il Partner Creator, per la promozione del servizio di rimborso voli ai sensi del Regolamento CE 261/2004.</div>
+  <div class="titleblock">
+    <div class="eyebrow">Contratto</div>
+    <h1>Accordo di Collaborazione a Performance</h1>
+    <div class="rule"></div>
   </div>
 
-  <div class="body">
+  <p class="preamble">Il presente Accordo di collaborazione a performance (di seguito l'&laquo;Accordo&raquo;) e stipulato tra <b>Rivolio</b>, nella persona di Valerio Alieri, con recapito valerio@artecai.it (di seguito &laquo;Rivolio&raquo;), e il soggetto i cui dati sono indicati qui sotto (di seguito il &laquo;Partner&raquo;), per la promozione del servizio Rivolio di assistenza al rimborso per voli in ritardo, cancellati o in overbooking, ai sensi del Regolamento CE 261/2004.</p>
 
-    <div class="parti">
-      <div class="party">
-        <div class="role">Rivolio</div>
-        <div class="val">Valerio Alieri</div>
-        <div class="val fld">valerio@artecai.it</div>
-      </div>
-      <div class="party">
-        <div class="role">Il Partner</div>
-        <div class="val fld">Nome: <input class="f nome" type="text"></div>
-        <div class="val fld">C.F. / P.IVA: <input class="f cf" type="text"></div>
-      </div>
+  <div class="parties">
+    <div class="pcard">
+      <div class="lab">Rivolio</div>
+      <div class="v">Valerio Alieri</div>
+      <div class="v blank">valerio@artecai.it</div>
     </div>
-
-    <section>
-      <div class="h"><div class="num">1</div><h2>Oggetto</h2></div>
-      <p>Il Partner promuove in modo libero e autonomo il servizio Rivolio, che aiuta i passeggeri a ottenere il rimborso per voli in ritardo, cancellati o in overbooking. La promozione avviene tramite un codice sconto e un link personali forniti da Rivolio. Nessun contenuto e obbligatorio: il Partner decide se, come e quando pubblicare.</p>
-    </section>
-
-    <section>
-      <div class="h"><div class="num">2</div><h2>Cosa riceve il Partner</h2></div>
-      <div class="benefits">
-        <div class="card"><div class="t">Account gratuito</div><div class="d">Check e pratiche illimitate per uso personale.</div></div>
-        <div class="card"><div class="t">Codice sconto <span class="big">10%</span> + link</div><div class="d">Per i suoi follower, con link personale tracciato.</div></div>
-        <div class="card"><div class="t">Commissione <span class="big">40%</span></div><div class="d">Sull'importo lordo di ogni pratica completata dal suo codice o link.</div></div>
-        <div class="card"><div class="t">Bonus pratiche singole</div><div class="d"><span class="big">20&euro;</span> a 10 pratiche, poi <span class="big">50&euro;</span> ogni 25.</div></div>
-        <div class="card"><div class="t">Bonus pratiche <span class="big">family</span></div><div class="d"><span class="big">50&euro;</span> ogni 10 pratiche family. Il piano da spingere.</div></div>
-        <div class="card"><div class="t">Bonus check</div><div class="d"><span class="big">50&euro;</span> ogni 100 check completati.</div></div>
-      </div>
-    </section>
-
-    <section>
-      <div class="h"><div class="num">3</div><h2>Tracciamento e attribuzione</h2></div>
-      <p>L'attribuzione avviene tramite il codice sconto personale e il link con cookie di durata 30 giorni. Rivolio fornisce un riepilogo aggiornato di check, pratiche e compensi maturati. Le pratiche del Partner stesso o dei suoi familiari non maturano commissione ne bonus; per l'uso personale resta valido l'account gratuito.</p>
-    </section>
-
-    <section>
-      <div class="h"><div class="num">4</div><h2>Maturazione e pagamento dei compensi</h2></div>
-      <p>I compensi e i bonus maturano quando la relativa pratica o check e effettivamente incassato da Rivolio e si intendono confermati decorsi 14 giorni, a copertura di eventuali storni o rimborsi, che vengono scalati. Il pagamento avviene ogni 15 giorni tramite bonifico, al raggiungimento di una soglia minima di 20 euro; sotto tale soglia l'importo si cumula al periodo successivo. I bonus sono calcolati sul totale storico del Partner.</p>
-    </section>
-
-    <section>
-      <div class="h"><div class="num">5</div><h2>Regime fiscale</h2></div>
-      <p>In assenza di partita IVA, il compenso viene erogato a titolo di prestazione occasionale con ritenuta d'acconto del 20 per cento, e il Partner emette ricevuta. Con partita IVA, il Partner emette regolare fattura.</p>
-    </section>
-
-    <section>
-      <div class="h"><div class="num">6</div><h2>Obblighi del Partner</h2></div>
-      <div class="li">Indicare sempre la natura promozionale dei contenuti (#adv o "in collaborazione con Rivolio"), come da normativa AGCOM.</div>
-      <div class="li">Non fare affermazioni ingannevoli su tempi, esiti o importi dei rimborsi.</div>
-      <div class="li">Non usare spam, pubblicita a pagamento sul marchio Rivolio senza accordo, o pratiche scorrette.</div>
-    </section>
-
-    <section>
-      <div class="h"><div class="num">7</div><h2>Non esclusiva e modifiche</h2></div>
-      <p>La collaborazione non e esclusiva: il Partner resta libero di collaborare anche con altri servizi. Rivolio puo aggiornare commissioni, bonus e condizioni con un preavviso scritto di 30 giorni; le modifiche non riguardano i compensi gia maturati.</p>
-    </section>
-
-    <section>
-      <div class="h"><div class="num">8</div><h2>Uso dei contenuti e del marchio</h2></div>
-      <p>Il Partner autorizza Rivolio a ripubblicare e utilizzare i contenuti realizzati per la collaborazione sui propri canali e nelle proprie campagne. Il Partner puo utilizzare il nome e il logo Rivolio nei soli contenuti relativi alla collaborazione, senza modificarli.</p>
-    </section>
-
-    <section>
-      <div class="h"><div class="num">9</div><h2>Durata e recesso</h2></div>
-      <p>Accordo a tempo indeterminato. Ciascuna parte puo recedere in qualsiasi momento con comunicazione scritta. Restano dovuti i compensi maturati fino alla data del recesso.</p>
-    </section>
-
-    <section>
-      <div class="h"><div class="num">10</div><h2>Riservatezza e dati</h2></div>
-      <p>Le parti trattano i dati nel rispetto del GDPR. Il Partner non gestisce ne accede ai dati dei clienti portati, ma solo ai propri dati aggregati di performance. Il codice e il link restano di proprieta di Rivolio e vengono disattivati in caso di recesso.</p>
-    </section>
-
-    <section>
-      <div class="h"><div class="num">11</div><h2>Legge applicabile e foro</h2></div>
-      <p>Il presente accordo e regolato dalla legge italiana. Per ogni controversia e competente il foro di ____________________.</p>
-    </section>
-
-    <div class="place">Luogo e data <input class="f pd" type="text"></div>
-
-    <div class="signs">
-      <div class="sign"><div class="line"></div><div class="lab">Rivolio</div></div>
-      <div class="sign"><div class="line"></div><div class="lab">Il Partner</div></div>
+    <div class="pcard">
+      <div class="lab">Il Partner</div>
+      <div class="v blank">Nome: <input class="f nome" type="text"></div>
+      <div class="v blank">C.F. / P.IVA: <input class="f cf" type="text"></div>
     </div>
-
   </div>
 
-  <div class="footer">
-    <div><b>RIVOLIO</b> &nbsp; Lo scanner dei rimborsi</div>
-    <div>rivolio.it</div>
+  <div class="art"><h2><span class="n">Art. 1</span> &middot; Oggetto</h2>
+    <p>Il Partner promuove liberamente e in autonomia il servizio Rivolio presso il proprio pubblico, mediante un codice sconto e un link personali forniti da Rivolio. Nessun contenuto e obbligatorio: il Partner decide se, come e quando pubblicare.</p></div>
+
+  <div class="art"><h2><span class="n">Art. 2</span> &middot; Corrispettivi e benefici</h2>
+    <p>A fronte dell'attivita di promozione, al Partner spettano:</p>
+    <ol class="lett">
+      <li>un account Rivolio gratuito, con check e pratiche illimitate per uso personale;</li>
+      <li>un codice sconto del 10% per i propri follower e un link personale tracciato;</li>
+      <li>una commissione del 40% sull'importo lordo di ogni pratica completata tramite il proprio codice o link;</li>
+      <li>un bonus sulle pratiche singole pari a 20 euro al raggiungimento di 10 pratiche e a 50 euro ogni ulteriori 25;</li>
+      <li>un bonus sulle pratiche family pari a 50 euro ogni 10 pratiche family;</li>
+      <li>un bonus di 50 euro ogni 100 check completati.</li>
+    </ol>
+    <p style="margin-top:1.4mm">I bonus sono calcolati sul totale storico del Partner.</p></div>
+
+  <div class="art"><h2><span class="n">Art. 3</span> &middot; Tracciamento e attribuzione</h2>
+    <p>L'attribuzione delle pratiche avviene tramite il codice sconto personale e il link, con cookie di durata pari a 30 giorni. Rivolio mette a disposizione un riepilogo aggiornato di check, pratiche e compensi maturati. Le pratiche effettuate dal Partner stesso o da suoi familiari non maturano commissione ne bonus; per l'uso personale resta valido l'account gratuito.</p></div>
+
+  <div class="art"><h2><span class="n">Art. 4</span> &middot; Maturazione e pagamento dei compensi</h2>
+    <p>I compensi e i bonus maturano al momento dell'effettivo incasso da parte di Rivolio della relativa pratica o check, e si intendono confermati decorsi 14 giorni, a copertura di eventuali storni o rimborsi, che vengono scalati. Il pagamento e effettuato ogni 15 giorni tramite bonifico, al raggiungimento di una soglia minima di 20 euro; sotto tale soglia l'importo si cumula al periodo successivo.</p></div>
+
+  <div class="art"><h2><span class="n">Art. 5</span> &middot; Regime fiscale</h2>
+    <p>In assenza di partita IVA, il compenso e erogato a titolo di prestazione occasionale, con ritenuta d'acconto del 20 per cento, e il Partner emette ricevuta. In presenza di partita IVA, il Partner emette regolare fattura.</p></div>
+
+  <div class="art"><h2><span class="n">Art. 6</span> &middot; Obblighi del Partner</h2>
+    <p>Il Partner si impegna a:</p>
+    <ol class="lett">
+      <li>indicare sempre la natura promozionale dei contenuti, mediante #adv o dicitura equivalente, come richiesto dalla normativa AGCOM;</li>
+      <li>non rendere affermazioni ingannevoli su tempi, esiti o importi dei rimborsi;</li>
+      <li>non porre in essere spam, pubblicita a pagamento sul marchio &laquo;Rivolio&raquo; senza accordo, o altre pratiche scorrette.</li>
+    </ol></div>
+
+  <div class="art"><h2><span class="n">Art. 7</span> &middot; Non esclusiva e modifiche</h2>
+    <p>La collaborazione non e esclusiva: il Partner resta libero di collaborare anche con altri servizi. Rivolio puo aggiornare commissioni, bonus e condizioni con un preavviso scritto di 30 giorni; le modifiche non incidono sui compensi gia maturati.</p></div>
+
+  <div class="art"><h2><span class="n">Art. 8</span> &middot; Uso dei contenuti e del marchio</h2>
+    <p>Il Partner autorizza Rivolio a ripubblicare e utilizzare i contenuti realizzati per la collaborazione sui propri canali e nelle proprie campagne. Il Partner puo utilizzare il nome e il logo &laquo;Rivolio&raquo; nei soli contenuti relativi alla collaborazione, senza modificarli.</p></div>
+
+  <div class="art"><h2><span class="n">Art. 9</span> &middot; Durata e recesso</h2>
+    <p>L'Accordo e a tempo indeterminato. Ciascuna parte puo recedere in qualsiasi momento con comunicazione scritta. Restano dovuti i compensi maturati fino alla data del recesso.</p></div>
+
+  <div class="art"><h2><span class="n">Art. 10</span> &middot; Riservatezza e trattamento dei dati</h2>
+    <p>Le parti trattano i dati nel rispetto del Regolamento UE 2016/679 (GDPR). Il Partner non gestisce ne accede ai dati dei clienti procurati, ma soltanto ai propri dati aggregati di performance. Il codice e il link restano di proprieta di Rivolio e sono disattivati in caso di recesso.</p></div>
+
+  <div class="art"><h2><span class="n">Art. 11</span> &middot; Legge applicabile e foro</h2>
+    <p>Il presente Accordo e regolato dalla legge italiana. Per ogni controversia e competente in via esclusiva il foro di <input class="f foro" type="text">.</p></div>
+
+  <div class="place">Luogo e data <input class="f pd" type="text"></div>
+
+  <div class="signs">
+    <div class="sig"><div class="ln"></div><div class="cap">Rivolio</div></div>
+    <div class="sig"><div class="ln"></div><div class="cap">Il Partner</div></div>
   </div>
+
+  <div class="docfoot"><b>RIVOLIO</b> &nbsp;&middot;&nbsp; Lo scanner dei rimborsi &nbsp;&middot;&nbsp; rivolio.it</div>
 
 </div>
 </body>
