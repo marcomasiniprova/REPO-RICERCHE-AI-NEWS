@@ -12,14 +12,14 @@
   html,body{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
   body{
     font-family:"Helvetica Neue", Arial, "Segoe UI", sans-serif;
-    color:var(--text); font-size:10.3px; line-height:1.5; background:#fff;
+    color:var(--text); font-size:10px; line-height:1.42; background:#fff;
   }
-  .page{ width:210mm; min-height:297mm; position:relative; padding:0 0 19mm; }
+  .page{ width:210mm; min-height:297mm; position:relative; padding:0 0 13mm; }
 
   /* Header band */
   .band{
     background:linear-gradient(125deg, var(--teal) 0%, var(--ink) 100%);
-    color:#fff; padding:11mm 15mm 8mm; display:flex; align-items:center; justify-content:space-between;
+    color:#fff; padding:8mm 15mm 6mm; display:flex; align-items:center; justify-content:space-between;
   }
   .brand{ display:flex; align-items:center; gap:11px; }
   .brand .logo{
@@ -33,7 +33,7 @@
   .band .doclabel{ text-align:right; font-size:9px; text-transform:uppercase; letter-spacing:2px; opacity:.85; }
 
   /* Title */
-  .titlewrap{ padding:5mm 15mm 2mm; }
+  .titlewrap{ padding:4mm 15mm 1mm; }
   .kicker{ color:var(--teal); font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:2.5px; }
   h1{ font-size:20px; color:var(--ink); font-weight:800; margin-top:4px; line-height:1.15; }
   .sub{ color:var(--muted); font-size:10.5px; margin-top:5px; }
@@ -41,14 +41,14 @@
   .body{ padding:2mm 15mm 0; }
 
   /* Parti box */
-  .parti{ display:flex; gap:10px; margin:3mm 0 2.5mm; }
+  .parti{ display:flex; gap:10px; margin:2.3mm 0 1.8mm; }
   .party{ flex:1; border:1px solid var(--line); border-radius:10px; padding:9px 12px; background:var(--mint2); }
   .party .role{ font-size:8px; text-transform:uppercase; letter-spacing:1.5px; color:var(--teal); font-weight:700; }
   .party .val{ font-size:11px; font-weight:700; color:var(--ink); margin-top:3px; }
   .party .fld{ color:var(--muted); font-weight:500; }
 
   /* Section */
-  section{ margin:0 0 2.3mm; }
+  section{ margin:0 0 1.25mm; }
   .h{ display:flex; align-items:center; gap:8px; margin-bottom:3px; }
   .num{ width:17px; height:17px; border-radius:5px; background:var(--teal); color:#fff; font-size:9.5px; font-weight:700;
         display:flex; align-items:center; justify-content:center; flex:0 0 auto; }
@@ -58,21 +58,21 @@
   .li:before{ content:""; position:absolute; left:0; top:6px; width:5px; height:5px; border-radius:50%; background:var(--teal2); }
 
   /* Benefit cards */
-  .benefits{ display:grid; grid-template-columns:1fr 1fr; gap:7px; margin:4px 0 2px 25px; }
-  .card{ border:1px solid var(--line); border-left:3px solid var(--teal); border-radius:8px; padding:8px 10px; background:var(--mint); }
+  .benefits{ display:grid; grid-template-columns:1fr 1fr; gap:6px; margin:3px 0 1px 25px; }
+  .card{ border:1px solid var(--line); border-left:3px solid var(--teal); border-radius:8px; padding:6px 10px; background:var(--mint); }
   .card .t{ font-weight:700; color:var(--ink); font-size:10px; }
   .card .d{ color:var(--muted); font-size:9.3px; margin-top:2px; }
   .card .big{ color:var(--teal); font-weight:800; }
 
   /* Signatures */
-  .signs{ display:flex; gap:26px; margin:4mm 0 0 25px; }
+  .signs{ display:flex; gap:26px; margin:2.5mm 0 0 25px; }
   .sign{ flex:1; }
   .sign .line{ border-top:1.4px solid var(--ink); margin-top:16px; }
   .sign .lab{ font-size:9px; color:var(--muted); margin-top:4px; }
   .place{ margin:3mm 0 0 25px; color:var(--muted); font-size:9.5px; }
 
   /* Footer */
-  .footer{ position:absolute; bottom:0; left:0; right:0; height:16mm; background:var(--mint);
+  .footer{ position:absolute; bottom:0; left:0; right:0; height:12mm; background:var(--mint);
            border-top:2px solid var(--teal); display:flex; align-items:center; justify-content:space-between;
            padding:0 15mm; color:var(--ink); font-size:8.6px; }
   .footer b{ color:var(--teal); }
@@ -139,8 +139,8 @@
     </section>
 
     <section>
-      <div class="h"><div class="num">4</div><h2>Pagamenti</h2></div>
-      <p>I compensi e i bonus vengono liquidati ogni 15 giorni, per gli importi maturati e riferiti a pratiche e check effettivamente incassati da Rivolio. In caso di storni o rimborsi, gli importi relativi vengono scalati.</p>
+      <div class="h"><div class="num">4</div><h2>Maturazione e pagamento dei compensi</h2></div>
+      <p>I compensi e i bonus maturano quando la relativa pratica o check e effettivamente incassato da Rivolio e si intendono confermati decorsi 14 giorni, a copertura di eventuali storni o rimborsi, che vengono scalati. Il pagamento avviene ogni 15 giorni tramite bonifico, al raggiungimento di una soglia minima di 20 euro; sotto tale soglia l'importo si cumula al periodo successivo. I bonus sono calcolati sul totale storico del Partner.</p>
     </section>
 
     <section>
@@ -156,13 +156,28 @@
     </section>
 
     <section>
-      <div class="h"><div class="num">7</div><h2>Durata e recesso</h2></div>
+      <div class="h"><div class="num">7</div><h2>Non esclusiva e modifiche</h2></div>
+      <p>La collaborazione non e esclusiva: il Partner resta libero di collaborare anche con altri servizi. Rivolio puo aggiornare commissioni, bonus e condizioni con un preavviso scritto di 30 giorni; le modifiche non riguardano i compensi gia maturati.</p>
+    </section>
+
+    <section>
+      <div class="h"><div class="num">8</div><h2>Uso dei contenuti e del marchio</h2></div>
+      <p>Il Partner autorizza Rivolio a ripubblicare e utilizzare i contenuti realizzati per la collaborazione sui propri canali e nelle proprie campagne. Il Partner puo utilizzare il nome e il logo Rivolio nei soli contenuti relativi alla collaborazione, senza modificarli.</p>
+    </section>
+
+    <section>
+      <div class="h"><div class="num">9</div><h2>Durata e recesso</h2></div>
       <p>Accordo a tempo indeterminato. Ciascuna parte puo recedere in qualsiasi momento con comunicazione scritta. Restano dovuti i compensi maturati fino alla data del recesso.</p>
     </section>
 
     <section>
-      <div class="h"><div class="num">8</div><h2>Riservatezza e dati</h2></div>
-      <p>Le parti trattano i dati nel rispetto del GDPR. Il codice e il link restano di proprieta di Rivolio e vengono disattivati in caso di recesso.</p>
+      <div class="h"><div class="num">10</div><h2>Riservatezza e dati</h2></div>
+      <p>Le parti trattano i dati nel rispetto del GDPR. Il Partner non gestisce ne accede ai dati dei clienti portati, ma solo ai propri dati aggregati di performance. Il codice e il link restano di proprieta di Rivolio e vengono disattivati in caso di recesso.</p>
+    </section>
+
+    <section>
+      <div class="h"><div class="num">11</div><h2>Legge applicabile e foro</h2></div>
+      <p>Il presente accordo e regolato dalla legge italiana. Per ogni controversia e competente il foro di ____________________.</p>
     </section>
 
     <div class="place">Luogo e data ___________________________</div>
