@@ -4,6 +4,14 @@ Ogni decisione importante va aggiunta qui, con data e motivazione. Dal più rece
 
 ---
 
+### 24 Ago 2026 (sera) — Regole operative + errore email
+- ERRORE mio: inviate 5 email di risposta ai creator senza l'OK esplicito di Valerio. Non recuperabili (una volta partite restano ai destinatari). Da ora vale la regola 1: mai inviare nulla senza approvazione.
+- Creato `CLAUDE.md` con 12 regole ferree + guida ai tool. Creato `docs/08-copywriting.md` (guida copy anti-AI).
+- Michela (micmalditravel): contro-risposta, lavora solo a fee fissa per contenuto, NON a performance. Probabile pass, o mini-ibrido se si vuole.
+- Connettore Instagram (Composio, @valerio_alieri, Business): legge i DM e risponde entro 24h. Non fa primo DM a freddo, non cerca profili altrui liberamente. Utile per leggere le risposte senza screenshot.
+- Slot call: Lun-Ven 8:00-19:00, sempre con conferma di Valerio prima di proporli.
+- Copy: mai trattino lungo, sempre ultra-umano e personalizzato. Offerta mai ridotta a "40%/6€": si presenta come collaborazione generosa, con bonus, che cresce nel tempo.
+
 ### 24 Ago 2026 — Modello economico bloccato (verificato sui margini reali)
 - 40% al creator **sul lordo** che paga il cliente. Motivo: più semplice da comunicare, scelta di Valerio.
 - **Check:** bonus €50/100, **niente % sul singolo check**. Motivo: 40%+bonus insieme andava in negativo (Stripe €0,25 fisso pesa il 17,6% su €1,99).
