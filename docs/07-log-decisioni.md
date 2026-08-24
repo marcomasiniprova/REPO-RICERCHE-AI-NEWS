@@ -4,6 +4,12 @@ Ogni decisione importante va aggiunta qui, con data e motivazione. Dal più rece
 
 ---
 
+### 24 Ago 2026 (notte) — Instagram: capacita reali + macchina monitoraggio DM
+- Verificato il connettore Instagram (Composio, @valerio_alieri, Business). PUO: leggere tutti i DM (sempre), inviare risposte SOLO entro 24h dall'ultimo messaggio della persona, leggere profilo/post/insight. NON PUO: primo DM a freddo, cercare profili altrui, DM di massa.
+- Inviato via connettore il DM riscritto a Flaminia Montani (unica finestra 24h aperta). Le altre finestre erano chiuse (creator scrivevano 2-4 giorni fa), quindi il backlog lo manda Valerio dal telefono.
+- Costruita la "macchina monitoraggio DM" (Opzione A): cron di sessione ogni 3h circa (8:07, 11:07, 14:07, 17:07, 20:07) che mi risveglia, legge i DM nuovi, prepara bozze personalizzate, aggiorna Airtable, e aspetta l'OK di Valerio prima di inviare. Finestra in scadenza: la lascio chiudere e segnalo, mai inviare senza OK.
+- LIMITE: il cron e session-only (muore se la sessione/contenitore va in stand-by, scade a 7 giorni). Da convertire in Routine durevole quando il tool sara raggiungibile.
+
 ### 24 Ago 2026 (sera) — Regole operative + errore email
 - ERRORE mio: inviate 5 email di risposta ai creator senza l'OK esplicito di Valerio. Non recuperabili (una volta partite restano ai destinatari). Da ora vale la regola 1: mai inviare nulla senza approvazione.
 - Creato `CLAUDE.md` con 12 regole ferree + guida ai tool. Creato `docs/08-copywriting.md` (guida copy anti-AI).
