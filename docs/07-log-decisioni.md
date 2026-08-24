@@ -17,6 +17,13 @@ Ogni decisione importante va aggiunta qui, con data e motivazione. Dal più rece
 - RIVO esteso: gestisce anche le call (raccoglie disponibilita, propone slot da confermare). Scope DM + email. Report mattutino in chat.
 - Creata bozza contratto: docs/09-contratto.md.
 
+### 24 Ago 2026 (notte) — RIVO potenziato + contratto legale
+- Contratto rifatto in stile LEGALE: font serif (Liberation Serif / Times), articoli numerati, testo giustificato, 2 pagine ariose. Versione PDF + compilabile + link web (artifact), stesso URL.
+- Tolti dal contratto: il riuso dei contenuti da parte di Rivolio (Art. 8 ora solo "Uso del marchio", i contenuti restano del creator) e la ritenuta d'acconto 20% (Valerio senza P.IVA; Art. 5 ora neutro, adempimenti secondo normativa e posizione del Partner).
+- docs/08 riscritto come PLAYBOOK del DM perfetto: ragiona prima (Passo 0), paragrafi corti con righe vuote, lunghezza giusta, mai muro di testo, mai AI-slop, gestione obiezioni, checklist finale, esempio brutto vs giusto.
+- RIVO aggiornato (trigger): e il CLONE di Valerio, segue il playbook, riconosce le obiezioni, tiene MEMORIA per creator in Airtable (campo Note/Esito), report mattutino RICCO con priorita e finestre 24h in scadenza.
+- 24/7: per ora resta ogni 3h. Il vero 24/7 real-time richiede webhook Meta Instagram -> n8n (n8n gira sempre); Composio nativo non ha trigger "nuovo DM" (solo via terzo "Heyy"). Da valutare piu avanti.
+
 ### 24 Ago 2026 (notte) — Instagram: capacita reali + macchina monitoraggio DM
 - Verificato il connettore Instagram (Composio, @valerio_alieri, Business). PUO: leggere tutti i DM (sempre), inviare risposte SOLO entro 24h dall'ultimo messaggio della persona, leggere profilo/post/insight. NON PUO: primo DM a freddo, cercare profili altrui, DM di massa.
 - Inviato via connettore il DM riscritto a Flaminia Montani (unica finestra 24h aperta). Le altre finestre erano chiuse (creator scrivevano 2-4 giorni fa), quindi il backlog lo manda Valerio dal telefono.
