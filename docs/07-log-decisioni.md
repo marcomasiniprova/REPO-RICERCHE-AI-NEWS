@@ -4,6 +4,14 @@ Ogni decisione importante va aggiunta qui, con data e motivazione. Dal più rece
 
 ---
 
+### 24 Ago 2026 (notte) — Primi 2 no + rotta confermata + contratto
+- Michela (email): lavora solo a fee fissa, no al performance. Inviata chiusura gentile (schedulata 8:00). Prevista dalla ricerca.
+- Flaminia (DM): "non sono interessata", no educato senza motivo. Segnata Scartato.
+- Valerio ha avuto il timore "nessuno accetta il performance". Perspective: 2 no su 18 risposte, ed erano profili da fisso. Gli 8 veri interessati (gpintrip, Stefi, Yass, Simone, Sarah, Sari, viaggio.ideale, Cristian) non hanno ancora sentito il modello. Il vero KPI e la conversione cliente, non il tasso di firma creator.
+- DECISIONE: si tiene il PERFORMANCE PURO, si decide sui dati veri. Gli 8 caldi si muovono domani con calma.
+- RIVO esteso: gestisce anche le call (raccoglie disponibilita, propone slot da confermare). Scope DM + email. Report mattutino in chat.
+- Creata bozza contratto: docs/09-contratto.md.
+
 ### 24 Ago 2026 (notte) — Instagram: capacita reali + macchina monitoraggio DM
 - Verificato il connettore Instagram (Composio, @valerio_alieri, Business). PUO: leggere tutti i DM (sempre), inviare risposte SOLO entro 24h dall'ultimo messaggio della persona, leggere profilo/post/insight. NON PUO: primo DM a freddo, cercare profili altrui, DM di massa.
 - Inviato via connettore il DM riscritto a Flaminia Montani (unica finestra 24h aperta). Le altre finestre erano chiuse (creator scrivevano 2-4 giorni fa), quindi il backlog lo manda Valerio dal telefono.
