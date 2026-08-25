@@ -17,6 +17,13 @@ Ogni decisione importante va aggiunta qui, con data e motivazione. Dal più rece
 - RIVO esteso: gestisce anche le call (raccoglie disponibilita, propone slot da confermare). Scope DM + email. Report mattutino in chat.
 - Creata bozza contratto: docs/09-contratto.md.
 
+### 25 Ago 2026 (notte) — Collaudo dei due RIVO + tuning
+- Verificati live entrambi gli agenti: RIVO - IG DM e RIVO - REDDIT attivi e schedulati, tool testati (IG legge/invia, Gmail, Airtable, Reddit legge).
+- CAMBIO: RIVO - IG DM da ogni 3h a OGNI ORA (8:15-20:15), per rispondere ai caldi dentro la finestra 24h (ricerca: rispondere veloce alza molto la qualifica).
+- Decisioni di tuning: NIENTE follow-up automatico su IG (Valerio: solo reagisce, gli inseguimenti li decide lui). Report SEPARATI per canale (non unico). Voce Reddit: stile naturale che si affina con le correzioni di Valerio (salvate in docs/10).
+- Nota: esiste un terzo trigger vecchio e separato "DAYLY AI NEWS" (news AI, 3:45), non legato a Rivolio. Lasciato dov'e'.
+- Punto fragile noto: i trigger fired si appoggiano ai connettori della sessione; se Composio e' giu' al momento dello scatto, la sessione ricarica i tool e riprova.
+
 ### 25 Ago 2026 (notte) — Stefi molto calda + nasce RIVO - REDDIT
 - STEFI (trolleygirl_): DM letto. Con volare rimborsati NON ha dashboard e lei e' senza P.IVA (bonifici/PayPal). Punti nostri: dashboard in tempo reale + bonifico 15gg senza P.IVA. Risposta approvata, invio agganciato al trigger delle 8:00 del 26/8 (insieme alle 4 email).
 - ROUTINE chiarite: RIVO - IG DM (rinominata) e' fissa e ricorrente; i due trigger di invio (8:00 e 9:30) sono one-shot, si autodisattivano dopo il primo scatto. Stesso meccanismo gia' usato per le 2 email del 25/8 alle 8:00.
