@@ -17,6 +17,13 @@ Ogni decisione importante va aggiunta qui, con data e motivazione. Dal più rece
 - RIVO esteso: gestisce anche le call (raccoglie disponibilita, propone slot da confermare). Scope DM + email. Report mattutino in chat.
 - Creata bozza contratto: docs/09-contratto.md.
 
+### 25 Ago 2026 — Audit completo chat IG + DM che qualificano
+- Fatto audit completo con Composio: 250 conversazioni totali, 36 recenti (>=20/8). Confermato che ci stiamo allargando: 2 risponditori NUOVI il 25/8.
+- NUOVI: @travelin.yellow ("ci daresti qualche info in piu?"), @2romanintrip ("spiegaci meglio di cosa si tratta"). Finestre 24h aperte.
+- @lorenzopabloo (vocale): interessato, ora in viaggio (California, Brasile, Canada), vuole sentirsi il PROSSIMO MESE. Ricontattare a inizio settembre, non spingere ora.
+- @flaminiamontani: NON riaperta. Verificato sul thread reale: l'ultimo messaggio (25/8) sui prezzi era in USCITA dal nostro account, non suo. Lei resta al no del 24/8. Corretto un mio errore di lettura dell'audit (avevo scambiato un messaggio nostro per uno suo).
+- DECISIONE copy: i DM vanno riscritti per QUALIFICARE. Devono dire chiaro che e' una collaborazione a PERFORMANCE (percentuale sui risultati + bonus, generosa, cresce nel tempo), NON un cachet fisso. Cosi chi vuole solo il fisso si filtra da solo. I numeri precisi restano per la call (rule 6). Aggiornato Airtable per i 4 record cambiati.
+
 ### 25 Ago 2026 — Mini-ibrido per i big + risposte in coda
 - 3 creator grossi (Michela, Filippo 171k, Alessia De Fazio) hanno chiesto un fisso oltre al performance. Conferma il pattern della ricerca (mid/big vogliono cachet).
 - DECISIONE: si apre un MINI-IBRIDO. Fisso €80 una tantum, pagato alla pubblicazione del primo contenuto, caso per caso (pensato per i 100k+). + 40% + bonus. Micro/nano restano performance puro.
