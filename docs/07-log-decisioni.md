@@ -17,6 +17,12 @@ Ogni decisione importante va aggiunta qui, con data e motivazione. Dal più rece
 - RIVO esteso: gestisce anche le call (raccoglie disponibilita, propone slot da confermare). Scope DM + email. Report mattutino in chat.
 - Creata bozza contratto: docs/09-contratto.md.
 
+### 25 Ago 2026 — Mini-ibrido per i big + risposte in coda
+- 3 creator grossi (Michela, Filippo 171k, Alessia De Fazio) hanno chiesto un fisso oltre al performance. Conferma il pattern della ricerca (mid/big vogliono cachet).
+- DECISIONE: si apre un MINI-IBRIDO. Fisso €80 una tantum, pagato alla pubblicazione del primo contenuto, caso per caso (pensato per i 100k+). + 40% + bonus. Micro/nano restano performance puro.
+- Le 2 email schedulate sono partite alle 8:00 (Alessia proposta, Michela chiusura). RIVO ha collaudato i giri (8:15 report, poi ogni 3h). Anna gestita da Valerio (rimandato il messaggio iniziale).
+- Risposte a Filippo e Alessia con formula ibrida preparate, in attesa di OK per l'invio.
+
 ### 24 Ago 2026 (notte) — RIVO potenziato + contratto legale
 - Contratto rifatto in stile LEGALE: font serif (Liberation Serif / Times), articoli numerati, testo giustificato, 2 pagine ariose. Versione PDF + compilabile + link web (artifact), stesso URL.
 - Tolti dal contratto: il riuso dei contenuti da parte di Rivolio (Art. 8 ora solo "Uso del marchio", i contenuti restano del creator) e la ritenuta d'acconto 20% (Valerio senza P.IVA; Art. 5 ora neutro, adempimenti secondo normativa e posizione del Partner).
