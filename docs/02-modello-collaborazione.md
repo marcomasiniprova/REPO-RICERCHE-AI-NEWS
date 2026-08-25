@@ -12,6 +12,14 @@ Quello che riceve il creator:
 - 🏆 **Bonus pratiche SINGOLE (€16,90):** €20 a quota 10, poi **€50 ogni 25** (25, 50, 75…)
 - 🏆 **Bonus pratiche FAMILY (€29,90):** **€50 ogni 10** (scala unica, il piano da spingere). Family = ~€9,70 netti a pratica, dopo bonus ~€4,70. Mai sommare una seconda scala family o si va in negativo.
 - 🎯 **Bonus check:** **€50 ogni 100 check** portati (niente % sul singolo check)
+
+### Eccezione: mini-ibrido per i big (deciso 25/8)
+Alcuni creator grossi (Michela, Filippo 171k, Alessia) vogliono anche un fisso, non solo performance. Regola:
+- **Fisso €80 una tantum**, pagato **alla PUBBLICAZIONE del primo contenuto** (mai prima, mai ricorrente).
+- Più il **40% a pratica + i bonus** di sempre.
+- **Caso per caso** (Valerio decide volta per volta), pensato per i **100k+** che possono portare volume.
+- Rischio: gli €80 li recuperi con ~8 pratiche family o ~15 singole. Se il creator sparisce dopo aver pubblicato, li hai persi. Per questo: piccolo, una tantum, solo su chi ha davvero pubblico.
+- Nei messaggi: si accenna a "una parte fissa a copertura della produzione", i numeri esatti si mostrano in call.
 - 👨‍👩‍👧 **Family spinto:** rende ~2× → si evidenzia al creator ("conviene anche a te")
 
 Nessun cachet fisso, nessun anticipo, nessun contenuto obbligatorio, nessuna scadenza rigida.
