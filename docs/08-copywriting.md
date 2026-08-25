@@ -44,6 +44,14 @@ Come un vocale scritto a un conoscente. Naturale, amichevole, diretto, dalla par
 - **"Sei nuovo, non so se converte"** → partiamo, dashboard in tempo reale, zero rischio per lui.
 - **"Le commissioni travel sono basse"** → noi diamo il 40%, il triplo di AirHelp. E il Family raddoppia.
 
+### Riconoscere le AUTOMAZIONI (prima di rispondere, sempre)
+Non tutte le "risposte" sono persone vere. Prima di preparare una bozza, controlla se è un messaggio automatico:
+- **Stesso identico messaggio ripetuto** dopo ogni nostro invio (parola per parola) = risposta automatica di benvenuto IG. Non è la persona.
+- **Arriva pochi secondi/minuti dopo** il nostro messaggio, sempre uguale = instant reply / away message.
+- Testo generico "grazie per il segui, chiedi pure" che non risponde a NIENTE di quello che abbiamo scritto.
+Se è un'automazione: **non rispondere**, segna in Airtable "AUTOMAZIONE, non reale", stato Scartato. Mai trattarla come un lead caldo.
+Caso reale: @annina_travel ha mandato due volte lo stesso messaggio (24/8 e 25/8), ogni volta subito dopo il nostro. Era un bot.
+
 ### Le regole anti-AI (non violarle mai)
 - **Mai il trattino lungo (—).** Prima di consegnare, cerca il carattere — nel testo. Se c'è, riscrivi.
 - Mai "non solo X, ma anche Y".
