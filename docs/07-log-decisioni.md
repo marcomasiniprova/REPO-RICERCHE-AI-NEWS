@@ -17,6 +17,11 @@ Ogni decisione importante va aggiunta qui, con data e motivazione. Dal più rece
 - RIVO esteso: gestisce anche le call (raccoglie disponibilita, propone slot da confermare). Scope DM + email. Report mattutino in chat.
 - Creata bozza contratto: docs/09-contratto.md.
 
+### 25 Ago 2026 (sera) — RIVO chiude sempre con riepilogo verificato
+- Aggiunto punto 8 al trigger di RIVO: ALLA FINE DI OGNI GIRO deve fare a Valerio un riepilogo generale conciso e verissimo, dopo aver VERIFICATO tutto cima a fondo (IG + Gmail + conteggio LIVE Airtable). Mai numeri a memoria, mai inventati (anche un dato in meno = disastro). Se un dato non e' verificato, dirlo.
+- Ibrido: nei messaggi a Filippo e Alessia si spiega che il fisso sara' contenuto (realta' giovane, generosi sulla performance), niente cifre esorbitanti; numeri esatti in call. Ad Alessia (molto gentile) tono piu' caldo + piccolo spoiler VERO (40% quasi il triplo del settore, family raddoppia, bonus a scaglioni).
+- Le 3 email (Filippo ibrido, Alessia ibrido, Julian call mer 26/8 h16:00) da SCHEDULARE domani alle 8:00, solo dopo OK di Valerio sulle bozze.
+
 ### 25 Ago 2026 — Numeri verificati + annina automazione + 2 DM inviati
 - NUMERI VERI (contati live su Airtable, non a memoria): 55 record totali. Canale: 42 DM, 13 Email. Stato: Risposto 19 reali + Contattato 33 + Visualizzato 1 + Scartato 2. La cifra "56/16 interessati" era la snapshot vecchia del README (24/8); "54" era un mio conteggio a memoria sbagliato. Fonte di verità unica per i numeri = conteggio live Airtable.
 - @annina_travel = AUTOMAZIONE, non un lead. Due volte lo stesso identico messaggio di benvenuto, subito dopo i nostri. Segnata Scartato. Aggiunta a docs/08 la regola per riconoscere le automazioni (RIVO deve applicarla).
