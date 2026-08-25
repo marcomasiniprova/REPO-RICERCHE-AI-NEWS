@@ -28,6 +28,7 @@ Documentazione operativa del progetto: reclutare creator travel italiani per una
 | [`docs/07-log-decisioni.md`](docs/07-log-decisioni.md) | Log cronologico di ogni decisione presa, con motivazione |
 | [`docs/08-copywriting.md`](docs/08-copywriting.md) | Come scrivere il copy ogni volta (regole anti-AI, voce Rivolio, framing offerta) |
 | [`docs/09-contratto.md`](docs/09-contratto.md) | Bozza contratto Partner Rivolio (col modello bloccato) |
+| [`docs/10-rivo-reddit.md`](docs/10-rivo-reddit.md) | Playbook RIVO - REDDIT: fasi, regole anti-ban, voce, approvazioni |
 
 > ⚠️ **[`CLAUDE.md`](CLAUDE.md) contiene le 12 regole ferree** da rispettare sempre. Leggerlo a inizio sessione.
 
