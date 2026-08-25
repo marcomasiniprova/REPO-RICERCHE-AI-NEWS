@@ -17,6 +17,15 @@ Ogni decisione importante va aggiunta qui, con data e motivazione. Dal più rece
 - RIVO esteso: gestisce anche le call (raccoglie disponibilita, propone slot da confermare). Scope DM + email. Report mattutino in chat.
 - Creata bozza contratto: docs/09-contratto.md.
 
+### 25 Ago 2026 (sera tardi) — Tutto schedulato + decisioni caldi
+- SCHEDULATO: 4 email (Filippo, Alessia, Julian h16:00, Albi&Fede slot mer26/gio27) domani 26/8 ore 8:00. 8 follow-up (Vincent, Giusi, Leonardo, Nicolo, Aurora, Matteo, Marina, Vanessa) domani ore 9:30. Bozze gia' in Gmail, trigger one-shot che le invia.
+- Cristian: aveva frainteso (pensava di gestire lui le pratiche), Valerio ha chiarito via DM + link sito. In attesa sua risposta.
+- gpintrip: il DM per chiedere la loro email lo manda Valerio domani mattina (RIVO glielo ricorda).
+- DECISIONE Filippo: per lui (171k) si valuta un fisso un filo piu' alto del mini-ibrido standard, caso per caso, alla call. Mai numeri prima della call.
+- DECISIONE Giada & Loris (169k): brief inviato, silenzio. Aspettare 2-3 giorni, nudge il 28/8.
+- Obiettivo settembre confermato: 5-10 creator ATTIVI + funnel provato.
+- Stato verificato live: 55 contatti (42 DM, 13 email), 19 risposte reali. Instagram tutto gestito. Solo bot/no/parcheggiati senza nostra risposta.
+
 ### 25 Ago 2026 (sera) — RIVO chiude sempre con riepilogo verificato
 - Aggiunto punto 8 al trigger di RIVO: ALLA FINE DI OGNI GIRO deve fare a Valerio un riepilogo generale conciso e verissimo, dopo aver VERIFICATO tutto cima a fondo (IG + Gmail + conteggio LIVE Airtable). Mai numeri a memoria, mai inventati (anche un dato in meno = disastro). Se un dato non e' verificato, dirlo.
 - Ibrido: nei messaggi a Filippo e Alessia si spiega che il fisso sara' contenuto (realta' giovane, generosi sulla performance), niente cifre esorbitanti; numeri esatti in call. Ad Alessia (molto gentile) tono piu' caldo + piccolo spoiler VERO (40% quasi il triplo del settore, family raddoppia, bonus a scaglioni).
