@@ -32,6 +32,7 @@ Documentazione operativa del progetto: reclutare creator travel italiani per una
 | [`docs/11-rivo-video.md`](docs/11-rivo-video.md) | Playbook RIVO - VIDEO: avatar Giulia, stack Kie/Higgsfield, pipeline |
 | [`docs/12-brief-dashboard-affiliati.md`](docs/12-brief-dashboard-affiliati.md) | Brief per la sessione dev: dashboard affiliati (admin + creator) |
 | [`docs/13-capo.md`](docs/13-capo.md) | Il Capo: orchestra i 10 ruoli del Growth RIVO Team, report mattina/sera, decide sui dati |
+| [`docs/14-scout.md`](docs/14-scout.md) | RIVO - SCOUT: trova creator nano travel IT (Apify+Exa+Firecrawl+n8n), arricchisce, consegna in pipeline |
 
 > ⚠️ **[`CLAUDE.md`](CLAUDE.md) contiene le 12 regole ferree** da rispettare sempre. Leggerlo a inizio sessione.
 
