@@ -39,14 +39,25 @@ Regola d'oro: ogni motore butta i suoi risultati in un unico imbuto, poi SCOUT *
 - **Regola 1**: SCOUT NON contatta nessuno. Prepara la lista, il primo messaggio lo gestisce RIVO-IG e Email con l'OK di Valerio.
 - Rispetto dei termini delle piattaforme: si raccolgono dati pubblici, niente scraping aggressivo o pratiche che bruciano gli account.
 
+## Cosa esiste GIÀ su n8n (verificato 26/8) — SCOUT non parte da zero
+Sul n8n di Valerio (progetto personale) c'è già una pipeline Rivolio. SCOUT va allineato e collaudato su questa, non ricostruito:
+- **Rivolio 3 - Harvest lead (Byparr)** (id `NPuoG4jzEJddpyyQ`) → ATTIVO, schedulato ogni giorno alle 06:00. Trova creator travel IT da liste pubbliche via Byparr, estrae handle, deduplica contro Airtable, crea i nuovi in stato "Da arricchire". È il cuore della scoperta.
+- **Rivolio 1 - Il Cacciatore (trova)** (id `UhP9u5aDC57mOrh2`) → scoperta da hashtag (ScrapSmith). Ora spento.
+- **Rivolio 2 - Arricchisci & Personalizza** (id `Py4pqJYPO86TJFz9`) → arricchimento + personalizzazione lead, notturno, non invia. Ora spento.
+- (Rivolio 3 - Il Postino `flvFHPpMZGJlaeIo` e Rivolio 4 - L'Orecchio `CfcziRcoPwmncxqu` sono invio/ascolto email: competono a RIVO-IG e Email, non a SCOUT.)
+
+Credenziali già collegate su n8n (verificato): **Apify** (OAuth + "Apify P.P.C" API key), **byparr**, **Airtable** (token + OAuth), **Mistral / DeepSeek / OpenAI / Jina AI** per filtro e lettura pagine. Manca solo **Exa AI** (e Firecrawl, ma Jina lo copre).
+
+ATTENZIONE (scope): sullo stesso n8n ci sono workflow di ALTRI progetti di Valerio (Studio Virtù, SolarBack, ZeroBattute, Agente V2). SCOUT NON li tocca: lavora solo sui workflow "Rivolio ...".
+
 ## Cosa serve per accendere SCOUT (dipendenze da collegare)
 Questo è l'elenco preciso di cosa mettere in env / collegare, così colleghiamo e collaudiamo un motore alla volta:
-1. **Apify** → `APIFY_TOKEN` (o `APIFY_API_KEY`) in env. Scegliere gli actor: uno scraper IG (profili/hashtag) + uno TikTok (es. clockworks TikTok Scraper). Da collaudare per primo: è il motore principale.
-2. **Exa AI** → `EXA_API_KEY` in env. Per la ricerca semantica di creator/liste.
-3. **Firecrawl** → `FIRECRAWL_API_KEY` in env. Per l'estrazione email e la lettura pagine.
-4. **Byparr** → già in uso (password solo in env, regola 8). Verificare che risponda per lo sblocco Cloudflare quando n8n scrappa.
-5. **n8n** → estendere l'harvest esistente a TikTok (workflow dedicato). Le credenziali stanno già in n8n.
-6. **Airtable** → già collegato (base `appJWp6jzGrG7Kfo3`, tabella Creator Pipeline). Verificare che ci siano i campi: Fonte, Piattaforma, Follower, Email, Stato, Nota, TikTok.
+1. **Apify** → GIÀ collegato su n8n (OAuth + "Apify P.P.C"). Da fare: scegliere/agganciare gli actor giusti, uno scraper IG (profili/hashtag) + uno TikTok (es. clockworks TikTok Scraper). Collaudo per primo.
+2. **Byparr** → GIÀ collegato e in uso (Harvest attivo). Verificare che risponda.
+3. **Airtable** → GIÀ collegato (base `appJWp6jzGrG7Kfo3`, tabella Creator Pipeline). Verificare i campi: Fonte, Piattaforma, Follower, Email, Stato, Nota, TikTok.
+4. **Jina AI** → GIÀ collegato: lo usiamo per leggere pagine ed estrarre email (al posto di Firecrawl).
+5. **Exa AI** → DA COLLEGARE: `EXA_API_KEY` in env / credenziale n8n. Unico motore ancora mancante (ricerca semantica di creator/liste).
+6. **TikTok discovery** → DA AGGIUNGERE: un actor Apify TikTok nell'harvest (oggi l'harvest è più IG/liste). Questo è il pezzo nuovo vero da costruire.
 
 ## Collaudo (piano, un motore alla volta)
 Come vuole Valerio, "alla perfezione ruolo per ruolo":
@@ -57,7 +68,8 @@ Come vuole Valerio, "alla perfezione ruolo per ruolo":
 - Ogni step: prima si guarda l'output vero, si corregge, poi si va avanti. Niente routine accesa finché la qualità non regge.
 
 ## Stato
-- 26/8/2026: playbook scritto e approvato come 2° pezzo del Growth RIVO Team (dopo il Capo). Motori decisi: Apify + n8n/Byparr + Exa + Firecrawl. ICP: nano/micro travel IT 1k-50k. Volume: 10-20/giorno. Enrichment email: sì. BLOCCATO in attesa delle API key da mettere in env (Apify, Exa, Firecrawl) per iniziare il collaudo dallo Step 1 (Apify).
+- 26/8/2026: playbook scritto (2° pezzo dopo il Capo). Motori: Apify + n8n/Byparr + Exa + Jina. ICP: nano/micro travel IT 1k-50k. Volume: 10-20/giorno. Enrichment email: sì.
+- 26/8/2026: SCOPERTA — gran parte di SCOUT esiste già su n8n (Harvest Byparr attivo + Cacciatore + Arricchisci). Apify/Byparr/Airtable/Jina già collegati. Manca solo Exa e la discovery TikTok. Quindi il lavoro su SCOUT è: allineare, ripulire e COLLAUDARE la pipeline esistente, poi aggiungere TikTok + Exa. NON ricostruire da zero.
 
 ## Correzioni di Valerio (memoria di addestramento)
 (si riempie con le sue note su ICP, qualità dei creator trovati, motori)
