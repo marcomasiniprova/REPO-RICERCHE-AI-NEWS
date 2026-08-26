@@ -4,6 +4,14 @@ Ogni decisione importante va aggiunta qui, con data e motivazione. Dal più rece
 
 ---
 
+### 26 Ago 2026 — Rename ramo + via al Growth RIVO Team (Capo per primo)
+- Il ramo di lavoro si chiamava `claude/svuotare-repository` (nome auto sbagliato, NON un ordine di svuotare). Verificato con Valerio: non si cancella niente. Creato ramo pulito `claude/rivo-growth-team` (stato identico), il vecchio resta su origin per ora.
+- Strategia canali confermata: **IG recluta, TikTok pubblica forte**. SCOUT cerca su entrambe. Niente primo contatto via TikTok DM (non standard).
+- Roster confermato: **Capo + 10 ruoli** (SCOUT, IG/Email, Reddit, Quora, Gruppi FB, SEO, GEO/AI, Video Giulia, Social Brand, Radar). A regime lavorano tutti ogni giorno, il Capo coordina.
+- Metodo di costruzione (voluto da Valerio): si costruisce un ruolo alla volta, si dice cosa collegare, si collega, si collauda "alla perfezione", poi il ruolo dopo. Ordine: prima il Capo, poi SCOUT, poi gli altri (i ruoli che aspettano tool esterni per ultimi).
+- Report del Capo deciso: **mattina ~9:00 / sera ~18:00** (orari da confermare quando si accende la routine).
+- Costruito docs/13-capo.md (playbook del Capo). Prossimo: docs/14-scout.md.
+
 ### 24 Ago 2026 (notte) — Contratto PDF brandizzato + bonus family
 - Contratto rifatto in PDF brandizzato Rivolio (colori teal-green dal logo, 1 pagina). Rimossi i .md contratto. Versione compilabile a schermo + link web (artifact).
 - Bonus differenziati: SINGOLE €20@10 + €50/25 (invariati). FAMILY €50 ogni 10 (scala unica). Verificato: family tieni ~€9,70/pratica, dopo bonus ~€4,70/pratica. Mai sommare due scale family (es. +€175/25 andava in negativo a 25).
