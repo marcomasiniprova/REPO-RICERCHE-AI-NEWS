@@ -127,6 +127,18 @@ Test riuscito su keyword "viaggi italia" (5 risultati richiesti). Tutti e 3 gli 
 **CORREZIONE DI ROTTA:** la discovery vera va fatta per HASHTAG/VIDEO (chi PUBBLICA contenuti travel), poi si estraggono gli autori e si arricchiscono. I campi necessari (follower per nano-filter, email/bio) ci sono in tutti e 3. 
 Campi per la mappatura (verificati sui dati reali): clockworks → json.authorMeta.{name,fans,signature}; automation-lab → json.{username,followers,signature,videoCount,profileUrl}; IG → json.{username,followersCount,biography,externalUrls,businessCategoryName,private,verified}.
 
+## Verdetto discovery hashtag/video (26/8) — ACTOR SCELTI
+Secondo test in modalità hashtag/video (#viaggiitalia). Risultato netto:
+- **clockworks/tiktok-scraper (hashtags) = VINCITORE per TikTok.** 8 creator VERI con follower+bio+email: es. @lorecostantini_ 9.401 (IT), @voyavels 3.509 (IT), @italia.io.ti.amo 2.174, @missnorasinn 145k, @benedettow 471k, @comerrezarviajar 103k, @dahl_nadine 27k, @ailusochan 2k. Alcuni stranieri (li scarta il Mistral dell'Arricchisci). Campi: json.authorMeta.{name, fans, signature}.
+- **automation-lab/tiktok-search-scraper (searchType video) = ERRORE** (1 item {error}). Bocciato in questa config.
+- **apify/instagram-hashtag-scraper = OK per IG.** 8 account reali che postano (ownerUsername/ownerFullName), es. @blu_viaggi, @vivi_salento_, @cinziamalaguti02. Nessun follower a discovery → il follower/nano-filter lo mette l'Arricchisci.
+
+**DECISIONE ACTOR (26/8):**
+- TikTok discovery → **clockworks/tiktok-scraper in modalità hashtags**.
+- IG discovery → **apify/instagram-hashtag-scraper** (chi posta) + le liste Byparr (Harvest). NIENTE ricerca per nome-utente (trova squatter/agenzie).
+- Enrichment/nano-filter/email/qualità → resta l'Arricchisci (Mistral + profile scrape).
+Prossimo: costruire il workflow unico "Rivolio - SCOUT (IG+TikTok)" con questi actor e mapping, SPENTO, collaudo, poi spegnere Harvest/Cacciatore e accendere sotto il Capo.
+
 ## Stato
 - 26/8/2026: playbook scritto (2° pezzo dopo il Capo). Motori: Apify + n8n/Byparr + Exa + Jina. ICP: nano/micro travel IT 1k-50k. Volume: 10-20/giorno. Enrichment email: sì.
 - 26/8/2026: SCOPERTA — gran parte di SCOUT esiste già su n8n (Harvest Byparr attivo + Cacciatore + Arricchisci). Apify/Byparr/Airtable/Jina già collegati. Manca solo Exa e la discovery TikTok. Quindi il lavoro su SCOUT è: allineare, ripulire e COLLAUDARE la pipeline esistente, poi aggiungere TikTok + Exa. NON ricostruire da zero.
