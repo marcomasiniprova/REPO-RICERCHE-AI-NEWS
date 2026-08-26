@@ -92,6 +92,31 @@ Creato banco di prova temporaneo (workflow `W6JlZReSwlr2yGPr`, "SCOUT - TEST act
 Esito esecuzione live: **tutti e 3 → HTTP 403 `{"error":{"type":"platform-feature-disabled","message":"Monthly usage hard limit exceeded"}}`**. L'auth funziona (non è 401): è il LIMITE DI SPESA MENSILE Apify superato. Nessun actor può girare finché non si sblocca.
 Conseguenze: (1) confronto actor rimandato; (2) la discovery Apify (Cacciatore) è di fatto ferma; gira solo l'Harvest via Byparr. Da fare lato Valerio: alzare il "monthly usage hard limit" / upgrade piano Apify, o aspettare il reset. Poi si rilancia lo stesso test.
 
+## Progetto del SISTEMA UNICO "Rivolio - SCOUT (IG+TikTok)" (a secco, 26/8)
+Deciso con Valerio: UN SOLO workflow di scoperta (non decine sparsi) che sostituisce Harvest + Cacciatore. L'arricchimento resta il workflow "Arricchisci" (il cervello già fatto: profilo, nano-filter, email, Mistral, vision). Così il "sistema" = 1 discovery + 1 enrichment, pulito.
+
+### Struttura del workflow discovery (nodi)
+1. **Schedule 06:00** (Europe/Rome).
+2. **Ramo A - IG liste (Byparr)**: Sorgenti (5 liste travel IT) → Byparr scrape → Estrai handle IG (regex + filtri anti-spazzatura, come l'Harvest attuale). Output: {username, piattaforma:"Instagram", profilo}.
+3. **Ramo B - IG hashtag (Apify)**: Keyword IG → Apify `instagram-search-scraper` (searchType:user) → Estrai. Output uguale al Ramo A.
+4. **Ramo C - TikTok (Apify)**: Keyword TT → Apify actor TikTok VINCENTE (da test) → Estrai. Output: {username, piattaforma:"TikTok", profilo, follower se disponibili}.
+5. **Unifica** (Merge append dei 3 rami) → lista unica di candidati.
+6. **Filtro nano (best-effort in discovery)**: dove il follower è già disponibile (spesso TikTok/IG user-search), scarta fuori fascia. Dove non c'è, passa e il gate nano definitivo resta in "Arricchisci". FASCIA DA CONFERMARE (vedi sotto).
+7. **Esistenti nel DB** (Airtable search Username su Leads `tblNjhgOrmCeFAH3R`).
+8. **Filtra nuovi** (dedup vs esistenti).
+9. **Crea in coda** (Airtable create, Stato "Da arricchire", Piattaforma dal singolo item, Nicchia "Travel", Motivo_AI = fonte).
+
+### Punti di configurazione
+- **Keyword/temi** (Ramo B e C): "viaggi italia, travel italia, itinerari, voli, low cost, diritti dei passeggeri, rimborso volo" + un po' finanza/risparmio (come già imposta il Cacciatore). Tema "Viaggi IT + dintorni" (deciso 26/8).
+- **FASCIA FOLLOWER — DECISIONE APERTA**: l'ICP dichiarato è nano 1k-50k, ma l'Arricchisci reale tiene **5.000-300.000** (e i creator veri in chiusura sono Filippo 171k, Giusi 276k). Proposta di default: tenere **5k-300k** (allineato al comportamento reale) come parametro unico, facile da cambiare. Valerio conferma la fascia.
+- **Actor TikTok**: da scegliere col test dei 3 (clockworks / automation-lab / +1). Provvisorio: clockworks/tiktok-scraper.
+
+### Cosa serve prima di assemblare e accendere
+1. Token Apify valido in "Apify P.P.C" (in corso: Valerio cambia account).
+2. Un giro di test dell'actor TikTok per vedere i nomi VERI dei campi output (follower/bio) e mappare l'Estrai TikTok senza indovinare.
+3. OK di Valerio sulla fascia follower.
+Poi: assemblo il workflow, lo collaudo su dati reali (giro manuale), mostro l'output, e solo con OK spengo Harvest/Cacciatore e accendo il sistema unico sotto il Capo.
+
 ## Stato
 - 26/8/2026: playbook scritto (2° pezzo dopo il Capo). Motori: Apify + n8n/Byparr + Exa + Jina. ICP: nano/micro travel IT 1k-50k. Volume: 10-20/giorno. Enrichment email: sì.
 - 26/8/2026: SCOPERTA — gran parte di SCOUT esiste già su n8n (Harvest Byparr attivo + Cacciatore + Arricchisci). Apify/Byparr/Airtable/Jina già collegati. Manca solo Exa e la discovery TikTok. Quindi il lavoro su SCOUT è: allineare, ripulire e COLLAUDARE la pipeline esistente, poi aggiungere TikTok + Exa. NON ricostruire da zero.
