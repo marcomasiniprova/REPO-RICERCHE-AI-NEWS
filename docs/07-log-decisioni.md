@@ -17,6 +17,12 @@ Ogni decisione importante va aggiunta qui, con data e motivazione. Dal più rece
 - RIVO esteso: gestisce anche le call (raccoglie disponibilita, propone slot da confermare). Scope DM + email. Report mattutino in chat.
 - Creata bozza contratto: docs/09-contratto.md.
 
+### 26 Ago 2026 — Fix RIVO (email lette) + rename + prime call
+- ERRORE mio: RIVO controllava le email con filtro `is:unread`, quindi saltava quelle gia' aperte da Valerio sul telefono. Cosi' ho mancato il NO di Giusi (declina per coerenza: fa contenuti paesaggi/mare, non voli). CORRETTO: d'ora in poi controlla email LETTE + non lette, confrontando con Airtable. Verificato: Giusi era l'unica mancata, tutto il resto gestito.
+- Rinominata routine "RIVO - IG DM" -> "RIVO - IG e Email" (gestisce entrambi).
+- Prime 2 call FISSATE per ven 28/8: Vanessa 9:00 (Meet), Stefi 16:30. Filippo (WhatsApp), Julian (nuovo orario) da fissare.
+- Prezzi creator (ricerca): un reel per 150-280k costa €1.000-3.000 di mercato. Il nostro fisso resta simbolico (€80-150 max): i "fisso o niente" (Filippo, Giusi, Giada, travelin.yellow) probabilmente passano, ok. Focus sui performance-believer.
+
 ### 25 Ago 2026 (notte) — Collaudo dei due RIVO + tuning
 - Verificati live entrambi gli agenti: RIVO - IG DM e RIVO - REDDIT attivi e schedulati, tool testati (IG legge/invia, Gmail, Airtable, Reddit legge).
 - CAMBIO: RIVO - IG DM da ogni 3h a OGNI ORA (8:15-20:15), per rispondere ai caldi dentro la finestra 24h (ricerca: rispondere veloce alza molto la qualifica).
