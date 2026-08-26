@@ -79,6 +79,11 @@ Nessuna modifica fatta: solo lettura.
 Workflow `Rivolio 1 - Il Cacciatore (trova)` (id `UhP9u5aDC57mOrh2`), SPENTO. Catena: Schedule 02:00 → legge hashtag da Airtable `tblT789orESFCMvQo` (Tipo=Hashtag, Stato=Da cercare) → Loop → Apify `instagram-search-scraper` (searchType=user, fino a 200) → Rimuovi duplicati → upsert nei Leads `tblNjhgOrmCeFAH3R` ("Da arricchire") → aggiorna conteggio. Difetti: (1) spento; (2) la ricerca Apify è HARDCODED (lista fissa di keyword), quindi il loop sugli hashtag Airtable gira a vuoto; (3) solo IG; (4) nessun filtro nano (prende ogni taglia).
 Quadro SCOUT completo: Harvest (liste, IG, attivo) + Cacciatore (Apify hashtag, IG, spento). Manca TikTok ovunque e il filtro nano 1k-50k ovunque. Apify usato via httpHeaderAuth ("Apify P.P.C").
 
+## Test actor Apify (26/8) — BLOCCATO da limite Apify
+Creato banco di prova temporaneo (workflow `W6JlZReSwlr2yGPr`, "SCOUT - TEST actor scraper (temp)") con 3 nodi: clockworks/tiktok-scraper, automation-lab/tiktok-search-scraper, apify/instagram-search-scraper, su keyword "viaggi italia", limiti minimi. Credenziale Apify "Apify P.P.C" agganciata.
+Esito esecuzione live: **tutti e 3 → HTTP 403 `{"error":{"type":"platform-feature-disabled","message":"Monthly usage hard limit exceeded"}}`**. L'auth funziona (non è 401): è il LIMITE DI SPESA MENSILE Apify superato. Nessun actor può girare finché non si sblocca.
+Conseguenze: (1) confronto actor rimandato; (2) la discovery Apify (Cacciatore) è di fatto ferma; gira solo l'Harvest via Byparr. Da fare lato Valerio: alzare il "monthly usage hard limit" / upgrade piano Apify, o aspettare il reset. Poi si rilancia lo stesso test.
+
 ## Stato
 - 26/8/2026: playbook scritto (2° pezzo dopo il Capo). Motori: Apify + n8n/Byparr + Exa + Jina. ICP: nano/micro travel IT 1k-50k. Volume: 10-20/giorno. Enrichment email: sì.
 - 26/8/2026: SCOPERTA — gran parte di SCOUT esiste già su n8n (Harvest Byparr attivo + Cacciatore + Arricchisci). Apify/Byparr/Airtable/Jina già collegati. Manca solo Exa e la discovery TikTok. Quindi il lavoro su SCOUT è: allineare, ripulire e COLLAUDARE la pipeline esistente, poi aggiungere TikTok + Exa. NON ricostruire da zero.
