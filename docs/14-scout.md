@@ -117,6 +117,16 @@ Deciso con Valerio: UN SOLO workflow di scoperta (non decine sparsi) che sostitu
 3. OK di Valerio sulla fascia follower.
 Poi: assemblo il workflow, lo collaudo su dati reali (giro manuale), mostro l'output, e solo con OK spengo Harvest/Cacciatore e accendo il sistema unico sotto il Capo.
 
+## Esito test 3 actor (26/8, token nuovo OK) — LEZIONE sul metodo
+Test riuscito su keyword "viaggi italia" (5 risultati richiesti). Tutti e 3 gli actor FUNZIONANO e restituiscono i campi utili:
+- **clockworks/tiktok-scraper** (searchSection "/user"): `authorMeta` con name, fans (follower), signature (bio con email visibile). Ma nota "Profile has no videos": su ricerca /user rende poco, è pensato per hashtag/video. Risultati: @viaggiitalia 106, @italiaviaggi 148, @viaggiinitalia 69.
+- **automation-lab/tiktok-search-scraper** (searchType user): campi PIATTI e puliti (username, nickname, followers, likes, videoCount, signature). Ottimo formato. Ma LENTO (serviti 90s). Risultati: @viaggiitalia 106, @viaggiitalia1 16, @viaggioitalia 2248.
+- **apify/instagram-search-scraper**: il PIÙ RICCO (biography, followersCount, **externalUrls** per email/link, businessCategoryName, postsCount, private, verified, latestPosts). Risultati: @coccotravel_ita 2087 (Agenzia), @izitour_italiano 2393 (Travel Company), @viaggioinitalia2025 89 (eventi).
+
+**LEZIONE CHIAVE:** il problema NON sono gli actor, è il METODO. Cercare per NOME-UTENTE una keyword generica ("viaggi italia") restituisce account che si CHIAMANO così: squatter minuscoli, aggregatori, AGENZIE. NON i creator veri (che non si chiamano "viaggi italia"). Questo stesso difetto è nel Cacciatore attuale (searchType=user) → riempiva la pipeline di spazzatura.
+**CORREZIONE DI ROTTA:** la discovery vera va fatta per HASHTAG/VIDEO (chi PUBBLICA contenuti travel), poi si estraggono gli autori e si arricchiscono. I campi necessari (follower per nano-filter, email/bio) ci sono in tutti e 3. 
+Campi per la mappatura (verificati sui dati reali): clockworks → json.authorMeta.{name,fans,signature}; automation-lab → json.{username,followers,signature,videoCount,profileUrl}; IG → json.{username,followersCount,biography,externalUrls,businessCategoryName,private,verified}.
+
 ## Stato
 - 26/8/2026: playbook scritto (2° pezzo dopo il Capo). Motori: Apify + n8n/Byparr + Exa + Jina. ICP: nano/micro travel IT 1k-50k. Volume: 10-20/giorno. Enrichment email: sì.
 - 26/8/2026: SCOPERTA — gran parte di SCOUT esiste già su n8n (Harvest Byparr attivo + Cacciatore + Arricchisci). Apify/Byparr/Airtable/Jina già collegati. Manca solo Exa e la discovery TikTok. Quindi il lavoro su SCOUT è: allineare, ripulire e COLLAUDARE la pipeline esistente, poi aggiungere TikTok + Exa. NON ricostruire da zero.
