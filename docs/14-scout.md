@@ -145,6 +145,13 @@ Giro manuale di collaudo: SUCCESSO in ~1m45s. **71 nuovi creator creati** in Air
 Note: (1) filtro nano funziona sui TikTok (hanno i follower a discovery); gli IG passano senza follower e vengono filtrati dall'Arricchisci. (2) Ripristinata la blocklist big-stranieri in "Estrai liste" (erano rientrati @bemytravelmuse, @kirstenalana ecc.). (3) 71 in un giro è tanto (target 10-20/gg): normale al primo backfill, poi la dedup abbassa; tunabile con meno hashtag/limiti. (4) Workflow di prova temporaneo archiviato.
 DA FARE (con OK Valerio): (a) aggiornare soglia Arricchisci 5k-300k → 1k-50k; (b) spegnere Harvest+Cacciatore vecchi e ATTIVARE il SCOUT unico (schedule 06:00) sotto il Capo; (c) eventuale tuning volume/hashtag.
 
+## ACCESO (26/8) — SCOUT in produzione
+- SCOUT unico `Rivolio - SCOUT (IG+TikTok)` (id `ESLNWiVxmXb11Xdu`) **ATTIVO**, schedule 06:00 (Rome).
+- Harvest vecchio (`NPuoG4jzEJddpyyQ`) **spento**; Cacciatore (`UhP9u5aDC57mOrh2`) già spento. Il sistema unico li sostituisce.
+- Arricchisci (`Py4pqJYPO86TJFz9`): soglia nano portata da 5k-300k a **1.000-50.000** (Motore decisione). (Nota: resta un warning pre-esistente non mio sul nodo "Cerca lead da arricchire", limit+returnAll; non toccato.)
+- I 71 lead del collaudo: **cancellati** (erano test).
+- Da rivedere insieme dopo il primo giro dell'Arricchisci: volume (target 10-20/gg) e set hashtag.
+
 ## Stato
 - 26/8/2026: playbook scritto (2° pezzo dopo il Capo). Motori: Apify + n8n/Byparr + Exa + Jina. ICP: nano/micro travel IT 1k-50k. Volume: 10-20/giorno. Enrichment email: sì.
 - 26/8/2026: SCOPERTA — gran parte di SCOUT esiste già su n8n (Harvest Byparr attivo + Cacciatore + Arricchisci). Apify/Byparr/Airtable/Jina già collegati. Manca solo Exa e la discovery TikTok. Quindi il lavoro su SCOUT è: allineare, ripulire e COLLAUDARE la pipeline esistente, poi aggiungere TikTok + Exa. NON ricostruire da zero.
