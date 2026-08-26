@@ -76,6 +76,9 @@ Stato: **struttura sana e robusta** (retry, batch, neverError, dedup corretta). 
 3. **Non misura i follower** → il filtro ICP nano 1k-50k non è applicato all'harvest (semmai a valle in "Arricchisci"). Da verificare che il nano-filter esista da qualche parte.
 Nessuna modifica fatta: solo lettura.
 
+Workflow `Rivolio 1 - Il Cacciatore (trova)` (id `UhP9u5aDC57mOrh2`), SPENTO. Catena: Schedule 02:00 → legge hashtag da Airtable `tblT789orESFCMvQo` (Tipo=Hashtag, Stato=Da cercare) → Loop → Apify `instagram-search-scraper` (searchType=user, fino a 200) → Rimuovi duplicati → upsert nei Leads `tblNjhgOrmCeFAH3R` ("Da arricchire") → aggiorna conteggio. Difetti: (1) spento; (2) la ricerca Apify è HARDCODED (lista fissa di keyword), quindi il loop sugli hashtag Airtable gira a vuoto; (3) solo IG; (4) nessun filtro nano (prende ogni taglia).
+Quadro SCOUT completo: Harvest (liste, IG, attivo) + Cacciatore (Apify hashtag, IG, spento). Manca TikTok ovunque e il filtro nano 1k-50k ovunque. Apify usato via httpHeaderAuth ("Apify P.P.C").
+
 ## Stato
 - 26/8/2026: playbook scritto (2° pezzo dopo il Capo). Motori: Apify + n8n/Byparr + Exa + Jina. ICP: nano/micro travel IT 1k-50k. Volume: 10-20/giorno. Enrichment email: sì.
 - 26/8/2026: SCOPERTA — gran parte di SCOUT esiste già su n8n (Harvest Byparr attivo + Cacciatore + Arricchisci). Apify/Byparr/Airtable/Jina già collegati. Manca solo Exa e la discovery TikTok. Quindi il lavoro su SCOUT è: allineare, ripulire e COLLAUDARE la pipeline esistente, poi aggiungere TikTok + Exa. NON ricostruire da zero.
