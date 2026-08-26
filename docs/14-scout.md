@@ -139,6 +139,12 @@ Secondo test in modalità hashtag/video (#viaggiitalia). Risultato netto:
 - Enrichment/nano-filter/email/qualità → resta l'Arricchisci (Mistral + profile scrape).
 Prossimo: costruire il workflow unico "Rivolio - SCOUT (IG+TikTok)" con questi actor e mapping, SPENTO, collaudo, poi spegnere Harvest/Cacciatore e accendere sotto il Capo.
 
+## COLLAUDO sistema unico (26/8) — RIUSCITO
+Creato workflow **`Rivolio - SCOUT (IG+TikTok)`** (id `ESLNWiVxmXb11Xdu`), SPENTO. 13 nodi: 3 rami (TikTok clockworks hashtag / IG hashtag / liste Byparr) → Merge append → Dedup+filtro nano 1k-50k → Esistenti Airtable → Filtra nuovi → Crea "Da arricchire". Credenziali: Apify P.P.C (2 actor), byparr, Airtable token.
+Giro manuale di collaudo: SUCCESSO in ~1m45s. **71 nuovi creator creati** in Airtable Leads: **16 TikTok** (tutti nella fascia nano 1k-50k, follrati: es. @giamba.travel_creator 15,5k, @finestre_sui_borghi 31,9k, @inemiliaromagna 23,7k, @italyyoudontexpect 18,5k, @voyavels 3,5k) + **55 Instagram** (follower vuoti → li riempie/filtra l'Arricchisci).
+Note: (1) filtro nano funziona sui TikTok (hanno i follower a discovery); gli IG passano senza follower e vengono filtrati dall'Arricchisci. (2) Ripristinata la blocklist big-stranieri in "Estrai liste" (erano rientrati @bemytravelmuse, @kirstenalana ecc.). (3) 71 in un giro è tanto (target 10-20/gg): normale al primo backfill, poi la dedup abbassa; tunabile con meno hashtag/limiti. (4) Workflow di prova temporaneo archiviato.
+DA FARE (con OK Valerio): (a) aggiornare soglia Arricchisci 5k-300k → 1k-50k; (b) spegnere Harvest+Cacciatore vecchi e ATTIVARE il SCOUT unico (schedule 06:00) sotto il Capo; (c) eventuale tuning volume/hashtag.
+
 ## Stato
 - 26/8/2026: playbook scritto (2° pezzo dopo il Capo). Motori: Apify + n8n/Byparr + Exa + Jina. ICP: nano/micro travel IT 1k-50k. Volume: 10-20/giorno. Enrichment email: sì.
 - 26/8/2026: SCOPERTA — gran parte di SCOUT esiste già su n8n (Harvest Byparr attivo + Cacciatore + Arricchisci). Apify/Byparr/Airtable/Jina già collegati. Manca solo Exa e la discovery TikTok. Quindi il lavoro su SCOUT è: allineare, ripulire e COLLAUDARE la pipeline esistente, poi aggiungere TikTok + Exa. NON ricostruire da zero.
