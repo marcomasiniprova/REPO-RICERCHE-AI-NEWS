@@ -16,6 +16,7 @@ Deciso 26/8: SCOUT non dipende da un solo strumento, li combina come una batteri
 2. **n8n + scraper esistente + Byparr** → riusa l'harvest già impostato su n8n, esteso a TikTok, con Byparr a sbloccare l'anti-Cloudflare dove serve. Buono per liste ricorrenti e automazioni schedulate.
 3. **Exa AI** → ricerca semantica sul web: "travel blogger italiani nano su Instagram", liste, classifiche, articoli "migliori creator viaggi Italia". Trova creator che gli scraper per hashtag non intercettano (es. citati in blog, non attivi su un hashtag preciso).
 4. **Firecrawl** → crawla e legge le pagine (profili, link in bio, siti personali, listicle di blog) per **estrarre l'email pubblica** e i dati di contatto, e per leggere pagine che gli altri non digeriscono bene.
+5. **Composio (Exa + Firecrawl + Web Search)** → deciso 26/8: Exa e Firecrawl NON servono come chiavi separate in env, sono già disponibili come tool su Composio, insieme a Composio Web Search. SCOUT li richiama da lì per ricerca semantica, lettura pagine ed estrazione email. (Jina resta come alternativa già su n8n.)
 
 Regola d'oro: ogni motore butta i suoi risultati in un unico imbuto, poi SCOUT **deduplica, filtra sull'ICP e arricchisce** prima di consegnare. Meglio 12 creator veri e puliti che 80 grezzi.
 
@@ -66,6 +67,14 @@ Come vuole Valerio, "alla perfezione ruolo per ruolo":
 - **Step 3**: aggiungiamo Exa per allargare la scoperta, poi n8n/Byparr per l'automazione ricorrente.
 - **Step 4**: quando il giro dà 10-20 creator puliti/giorno con buona qualità, si crea la routine SCOUT giornaliera e la si mette sotto il Capo.
 - Ogni step: prima si guarda l'output vero, si corregge, poi si va avanti. Niente routine accesa finché la qualità non regge.
+
+## Diagnosi Harvest (ispezione read-only, 26/8)
+Workflow `Rivolio 3 - Harvest lead (Byparr)` (id `NPuoG4jzEJddpyyQ`), ATTIVO, tabella Airtable `tblNjhgOrmCeFAH3R` (base `appJWp6jzGrG7Kfo3`). Catena: Schedule 06:00 → Sorgenti (5 liste) → Byparr scrape → Estrai handle (regex + filtri anti-spazzatura + dedup) → Esistenti nel DB → Filtra nuovi → Crea in coda ("Da arricchire").
+Stato: **struttura sana e robusta** (retry, batch, neverError, dedup corretta). Tre limiti da colmare per fare davvero SCOUT:
+1. **Solo Instagram** (estrae solo handle IG). Manca la discovery TikTok → da aggiungere.
+2. **Fonti = 5 liste fisse e finite** (blogger famosi, per lo più non-nano). Dopo la dedup il rendimento cala e non garantisce "10-20 nano nuovi/giorno". Serve una fonte VIVA (hashtag/ricerca Apify, o Exa/Web Search via Composio).
+3. **Non misura i follower** → il filtro ICP nano 1k-50k non è applicato all'harvest (semmai a valle in "Arricchisci"). Da verificare che il nano-filter esista da qualche parte.
+Nessuna modifica fatta: solo lettura.
 
 ## Stato
 - 26/8/2026: playbook scritto (2° pezzo dopo il Capo). Motori: Apify + n8n/Byparr + Exa + Jina. ICP: nano/micro travel IT 1k-50k. Volume: 10-20/giorno. Enrichment email: sì.
