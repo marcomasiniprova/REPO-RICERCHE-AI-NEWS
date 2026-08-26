@@ -10,7 +10,8 @@ Ogni decisione importante va aggiunta qui, con data e motivazione. Dal più rece
 - Roster confermato: **Capo + 10 ruoli** (SCOUT, IG/Email, Reddit, Quora, Gruppi FB, SEO, GEO/AI, Video Giulia, Social Brand, Radar). A regime lavorano tutti ogni giorno, il Capo coordina.
 - Metodo di costruzione (voluto da Valerio): si costruisce un ruolo alla volta, si dice cosa collegare, si collega, si collauda "alla perfezione", poi il ruolo dopo. Ordine: prima il Capo, poi SCOUT, poi gli altri (i ruoli che aspettano tool esterni per ultimi).
 - Report del Capo deciso: **mattina ~9:00 / sera ~18:00** (orari da confermare quando si accende la routine).
-- Costruito docs/13-capo.md (playbook del Capo). Prossimo: docs/14-scout.md.
+- Costruito docs/13-capo.md (playbook del Capo).
+- Costruito docs/14-scout.md (RIVO-SCOUT). Deciso: motori TUTTI insieme (Apify + n8n/Byparr + Exa AI + Firecrawl); ICP nano/micro travel IT 1k-50k; volume 10-20/giorno; enrichment email sì. SCOUT trova e arricchisce, NON contatta (lo fa RIVO-IG con OK). BLOCCATO in attesa API key in env (Apify, Exa, Firecrawl) per collaudare dallo Step 1 (Apify). Prossimo ruolo dopo SCOUT collaudato: da decidere con Valerio.
 
 ### 24 Ago 2026 (notte) — Contratto PDF brandizzato + bonus family
 - Contratto rifatto in PDF brandizzato Rivolio (colori teal-green dal logo, 1 pagina). Rimossi i .md contratto. Versione compilabile a schermo + link web (artifact).
