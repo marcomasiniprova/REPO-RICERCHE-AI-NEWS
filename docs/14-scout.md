@@ -79,6 +79,14 @@ Nessuna modifica fatta: solo lettura.
 Workflow `Rivolio 1 - Il Cacciatore (trova)` (id `UhP9u5aDC57mOrh2`), SPENTO. Catena: Schedule 02:00 → legge hashtag da Airtable `tblT789orESFCMvQo` (Tipo=Hashtag, Stato=Da cercare) → Loop → Apify `instagram-search-scraper` (searchType=user, fino a 200) → Rimuovi duplicati → upsert nei Leads `tblNjhgOrmCeFAH3R` ("Da arricchire") → aggiorna conteggio. Difetti: (1) spento; (2) la ricerca Apify è HARDCODED (lista fissa di keyword), quindi il loop sugli hashtag Airtable gira a vuoto; (3) solo IG; (4) nessun filtro nano (prende ogni taglia).
 Quadro SCOUT completo: Harvest (liste, IG, attivo) + Cacciatore (Apify hashtag, IG, spento). Manca TikTok ovunque e il filtro nano 1k-50k ovunque. Apify usato via httpHeaderAuth ("Apify P.P.C").
 
+## Diagnosi Arricchisci (ispezione read-only, 26/8)
+Workflow `Rivolio 2 - Arricchisci & Personalizza` (id `Py4pqJYPO86TJFz9`), SPENTO. Catena notturna: legge lead "Da arricchire" (Follower vuoto) → scrapa profilo IG via Apify `logical_scrapers~instagram-profile-scraper` → classifica con Mistral (nicchia travel/voli/finanza/consumatori, scarta chi non vola/fotografi/agenzie) → analisi visiva Pixtral sulle copertine → "Motore decisione" (engagement, frequenza, score) → aggiorna riga Airtable con Stato Pronto/Scartato.
+Verifiche chiave:
+- **Email enrichment: C'È GIÀ** (`scr.businessEmail || allEmails[0] || lead.Email`).
+- **Filtro follower: C'È ma la fascia è 5.000-300.000** (scarta <5k e >300k), NON 1k-50k. DISCREPANZA con l'ICP nano 1k-50k deciso il 26/8. Da riconciliare con Valerio (la fascia 5k-300k somiglia di più ai creator reali in chiusura: Filippo 171k, Giusi 276k). DECISIONE APERTA.
+- È solo IG (instagram-profile-scraper) e Apify-dipendente (fermo col limite Apify). Manca l'arricchimento TikTok.
+Molto ben fatto: è di fatto il "cervello" che filtra taglia + trova email + valuta qualità. SCOUT ci si appoggia.
+
 ## Test actor Apify (26/8) — BLOCCATO da limite Apify
 Creato banco di prova temporaneo (workflow `W6JlZReSwlr2yGPr`, "SCOUT - TEST actor scraper (temp)") con 3 nodi: clockworks/tiktok-scraper, automation-lab/tiktok-search-scraper, apify/instagram-search-scraper, su keyword "viaggi italia", limiti minimi. Credenziale Apify "Apify P.P.C" agganciata.
 Esito esecuzione live: **tutti e 3 → HTTP 403 `{"error":{"type":"platform-feature-disabled","message":"Monthly usage hard limit exceeded"}}`**. L'auth funziona (non è 401): è il LIMITE DI SPESA MENSILE Apify superato. Nessun actor può girare finché non si sblocca.
