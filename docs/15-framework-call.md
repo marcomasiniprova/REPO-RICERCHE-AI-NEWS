@@ -56,8 +56,76 @@ Non chiedere "allora ti va di entrare?". Fai il setup dal vivo: "Facciamo così:
 - Regola 9: slot call Lun-Ven 8-19, conferma prima di proporre orari.
 - Regola 4: tono umano, mai trattino lungo.
 
+## Il contorno: come deck, tu e dashboard lavorano insieme
+
+Domanda di Valerio: "con cosa va accompagnata questa presentazione, io che parlo di ogni cosa o uno script slide per slide?". Risposta: **le due cose insieme, ma con ruoli diversi.**
+
+- **Il deck è la rotaia, non il copione.** Serve a te per non perdere il filo e a loro per capire dove stai andando. Non si legge: si guarda. Su ogni slide dici tre o quattro frasi tue, naturali, poi vai avanti. Se una slide non serve con quel creator, la salti.
+- **Parli tu.** La presentazione tiene il ritmo e dà professionalità, ma il valore lo porti tu con le parole e con le domande. Nella prima parte ascolti più che parlare.
+- **La dashboard è l'arma vera.** Il deck prepara il terreno, ma la prova che abbatte la paura del performance è vederla dal vivo. Alla slide 10 esci un attimo dal deck, condividi la dashboard vera (o il mock) e fai il tour di 60 secondi. Poi torni al deck per chiudere.
+- **Ordine di forza:** prima le persone (rapport + qualifica), poi il prodotto (Rivolio), poi il guadagno (pacchetto + numeri), poi la prova (dashboard), poi la partenza. Mai partire dai numeri.
+
+## Note di conduzione, slide per slide
+
+Durata target: 15-20 min. Le frasi qui sotto sono una traccia, non da leggere a memoria: falle tue, con le tue parole. Tono adulto e concreto, mai da bambini.
+
+**Slide 1 · Cover (apertura, 30 sec)**
+- Fai: apri con la cover mentre vi salutate, sorridi, niente fretta.
+- Dici: "Intanto grazie del tempo. Ti spiego come funziona: prima mi racconti due cose di te, poi ti faccio vedere cos'è Rivolio e come si guadagna. Se ci incastriamo, ti sistemo tutto oggi stesso. Ci sta?"
+
+**Slide 2 · Come funziona questa call (mappa, 30 sec)**
+- Fai: mostra i quattro passaggi, dai il senso che è breve e senza pressione.
+- Dici: "Sono quindici minuti in quattro passi: ti conosco, ti spiego Rivolio, ti mostro come si guadagna, e se torna a entrambi partiamo. Nessun impegno a stare qui, se non fa per te me lo dici e siamo a posto."
+
+**Slide 3 · Parlami di te (qualifica, 4-5 min) — QUI ASCOLTI**
+- Fai: metti giù la presentazione e fai domande vere. Prendi appunti. Questa è la parte più importante.
+- Chiedi, in ordine: piattaforme (dove è più forte), views medie a post (contano più dei follower), chi è il pubblico, **il pubblico vola?** (voli EU corti, ritardi, cancellazioni: è il qualifier decisivo), affiliazioni già fatte.
+- Rispecchia: "Quindi il tuo pubblico prende un paio di voli corti l'anno. Sono esattamente quelli che restano fregati da un ritardo e non chiedono mai quello che gli spetta." (hai etichettato il dolore coi loro numeri)
+- Se il pubblico non vola: sii onesto, converte poco per Rivolio, meglio dirlo subito.
+
+**Slide 4 · Cos'è Rivolio (2 min)**
+- Fai: passa alla proposta solo dopo aver capito chi hai davanti.
+- Dici: "Rivolio recupera i rimborsi dei voli andati storti. Ritardi e cancellazioni, fino a 600€ a passeggero, è una norma europea. La cosa importante: facciamo tutto noi, il passeggero non muove un dito, e tiene il 100% del rimborso. Paga solo una piccola fee fissa. Non siamo una società di recupero crediti."
+
+**Slide 5 · Il problema (1 min)**
+- Fai: usa la foto del tabellone per far sentire il punto.
+- Dici: "Il problema è che quasi nessuno reclama. Moduli, tempo, burocrazia: la gente lascia perdere e i soldi restano alle compagnie. Qui non stai vendendo niente al tuo pubblico, gli stai dicendo come riprendersi soldi che sono già loro."
+
+**Slide 6 · Perché proprio tu (1 min)**
+- Dici: "E il tuo pubblico vola davvero. Per questo con te ha senso: non è una marchetta a caso, è una cosa utile per chi ti segue. Questo di solito piace anche a loro, non solo a te."
+
+**Slide 7 · Il pacchetto (2 min)**
+- Fai: qui mostri cosa ricevono. Non buttare i numeri di corsa, spiega la forma prima.
+- Dici: "Ora la parte tua. È una collaborazione a performance vera, generosa, che cresce con te. Ti do: un account Rivolio gratis con pratiche illimitate, un codice sconto del 10% da regalare ai tuoi, un link personale tracciato, il 40% su ogni pratica che parte da te, dei bonus a traguardi che si aggiungono, e ti pago ogni 15 giorni. Zero fisso, zero anticipi, zero obblighi."
+- Regola 6: framing serio, mai ridurlo a "40% o 6€". I numeri di dettaglio li mostri nella slide dopo e nella dashboard.
+
+**Slide 8 · Come guadagni (meccanica, 1-2 min)**
+- Fai: chiarisci che si guadagna sulle PRATICHE, non a video e non un fisso. È il punto che confonde di più.
+- Dici: "Come funziona in pratica: pubblichi col tuo link quando vuoi, i tuoi aprono la pratica per il loro rimborso, tu prendi il 40% su ogni pratica andata a buon fine, e ti arriva col bonifico ogni 15 giorni. Non ti pago a video e non c'è un fisso: il link lavora ogni volta che qualcuno lo usa."
+
+**Slide 9 · Un esempio di mese (1-2 min)**
+- Fai: è un esempio per dare la scala, non una promessa. Diglielo chiaro.
+- Dici: "Ti faccio un esempio concreto di un mese, così hai un'idea. Diciamo 10 pratiche famiglia, 10 singole e un centinaio di check portati: sono circa 296€, tra percentuali e bonus. Ma è un esempio: dipende da quanto volume porti, non è un fisso e non c'è un tetto sopra."
+- Non promettere quella cifra. La riga dei numeri quadra: 115 + 61 + 50 + 70 = 296.
+
+**Slide 10 · La dashboard (3 min) — IL PASSO-PROVA**
+- Fai: **esci dal deck e condividi la dashboard vera dal vivo.** Tour di 60 secondi. È l'arma più forte, abbatte la paura n.1 (l'imprevedibilità del performance).
+- Dici: "Questa è la tua dashboard. Entri quando vuoi e vedi in tempo reale quanto hai guadagnato, ogni pratica legata al tuo link, niente da rincorrermi. Massima trasparenza: quello che vedi qui è quello che ti arriva."
+
+**Slide 11 · La tua libertà (1 min)**
+- Dici: "E soprattutto: nessun obbligo. Il formato lo scegli tu, nessuna scadenza, pubblichi come e quando ti viene naturale. L'unica regola è mettere #adv, per correttezza. Story, reel o link in bio: decidi tu."
+
+**Slide 12 · Come si parte (1 min)**
+- Fai: chiusura a bassa frizione. Fai il setup dal vivo, togli ogni passo tra il sì e l'operativo.
+- Dici: "Se ci incastriamo facciamo così: ti attivo l'account adesso, così non compili niente tu, ti do link e codice, e li usi quando è in linea con i tuoi contenuti. Il primo bonifico è a 15 giorni, poi ci allineiamo sui risultati veri."
+
+**Slide 13 · Chiusura (30 sec)**
+- Dici: "Il bello è che è a rischio zero per te: guadagni solo quando il tuo pubblico recupera i suoi rimborsi. Se ti va, il link ce l'hai oggi. Te lo attivo?"
+- Poi silenzio: lascia rispondere. Il prossimo aggancio è il check-in leggero al giorno 14.
+
 ## Stato
 - 27/8: SOP creato dopo ricerca sulle best practice affiliate/creator. Da usare per i 3 meeting del 28/8 (Vanessa 9:00, Trolleygirl 16:30, Julian 17:00), tutti performance puro.
+- 27/8: aggiunte le note di conduzione slide per slide + la spiegazione del "contorno" (deck come rotaia, Valerio parla, dashboard come prova dal vivo alla slide 10). Deck v4 rifatto: flusso chiaro, CTA adulte, pacchetto completo (account gratis incluso), esempio ~296€ inquadrato e con numeri tracciabili (115+61+50+70).
 
 ## Correzioni di Valerio
 (si riempie con le sue note dopo le prime call vere)
