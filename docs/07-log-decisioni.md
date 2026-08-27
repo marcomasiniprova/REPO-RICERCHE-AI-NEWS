@@ -10,6 +10,12 @@ Ogni decisione importante va aggiunta qui, con data e motivazione. Dal più rece
 - BUG IG trovato: lo scraper profilo Apify tornava VUOTO per 7/8 lead -> il GPT (bio vuota) li segnava Scartato, bruciandoli. FIX (deciso "entrambe" con Valerio): scrape maxTries 3 + se vuoto il lead resta "Da arricchire" per il giro dopo (non bruciato). I 7 gia' bruciati restano Scartato (scelta di Valerio). Da fare: valutare un actor IG piu' affidabile.
 - Pipeline dopo il test: 31 Pronto totali.
 
+### 27 Ago 2026 — Pausa routine orarie (troppe interruzioni in sessione)
+- Problema segnalato da Valerio: le routine RIVO-REDDIT e RIVO-IG (orarie, 6-18) firano dentro la STESSA sessione di lavoro e la interrompono di continuo mentre lavoriamo; in piu' l'ambiente si sospende/riprende quando resta inattivo. Sessione caotica.
+- FATTO: messe in PAUSA (enabled=false) RIVO-REDDIT (trig_01AbMFnSeUHPMvEKrj7Jo5PL) e RIVO-IG (trig_01STyv92UL1vQ5gxcvrktcLd). Restano attive solo le notturne: RIVO-SCOUT (04:00) e DAYLY AI NEWS (03:45), che non disturbano di giorno.
+- Da decidere con Valerio come rifarle ripartire in modo pulito (es. farle firare in una sessione separata dedicata, non in quella di lavoro) quando si va in operativo.
+- Reddit: 2 altri commenti valore pubblicati con OK esplicito ("si pubblica"): Malpensa EES (p69fwof) e compagnie telefoniche (p69fyr9). 4/15 oggi.
+
 ### 27 Ago 2026 — RIVO-IG: primo contatto ai Pronto + regola "approvo"
 - Valerio ha chiarito una regola importante: "approvo/bellissimi/mi piace" = OK sullo STILE, NON un ordine di invio. Si manda/pubblica SOLO con un esplicito "manda"/"pubblica ora". Aggiunta a docs/06 e al prompt di RIVO-IG. (Nota: i 2 commenti Reddit erano gia' stati pubblicati su "VAI CON ENTRAMBE"; Valerio ha confermato di lasciarli su.)
 - Fase: oggi si costruisce, domani si lancia. Nessun invio a creator oggi.
