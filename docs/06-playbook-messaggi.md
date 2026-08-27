@@ -29,6 +29,26 @@ Chi risponde interessato → call. Chi sparisce → si è auto-filtrato.
 - *"Le commissioni travel sono basse"* → noi diamo il **40%**, il triplo di AirHelp (15%). E il Family raddoppia.
 - *"Ho paura per i miei follower"* → tengono il 100% e pagano una fee minima: fai un favore, non una vendita.
 
+## 4. Email di PRIMO CONTATTO ai creator Pronto (modello approvato 27/8)
+
+Il primo contatto a freddo si fa SOLO via email (su Instagram il primo DM a freddo non e' permesso). Ogni email e' CUCITA sul singolo creator: si guarda bio, nicchia, taglio, e si aggancia una cosa vera del suo profilo. Mai template riciclato. Mai trattino lungo. Non si sparano i numeri (dettagli in call). Framing: collaborazione a performance seria e generosa, con bonus, che cresce nel tempo, diversa dal solito affiliato (regola 6). Nessuno slot orario proposto senza conferma di Valerio (regola 9).
+
+Struttura del modello (approvato da Valerio 27/8, "bellissimi"):
+1. Saluto personale ("Ciao [nome], piacere, sono Valerio.")
+2. Un aggancio VERO al loro profilo (una frase della bio, il loro taglio) + perche' il loro pubblico "che vola" e' in target.
+3. Cos'e' Rivolio in una riga (rimborsi voli in ritardo/cancellati, fino a 600 euro, il cliente tiene il 100%).
+4. La collaborazione: a performance, seria e generosa, con bonus, che cresce nel tempo, non il solito affiliato a percentuale. Numeri veri in call.
+5. Soft ask per una call di 10 minuti, senza fretta. Firma: Valerio · Rivolio.
+
+Esempio (Martina, "pianifico fino all'ultimo"):
+> Ciao Martina, piacere, sono Valerio.
+> ti scrivo perche' il tuo taglio "itinerari veri, pianificati fino all'ultimo" mi ha colpito: e' proprio il tipo di pubblico che quando prende un aereo poi ci tiene ai dettagli.
+> lavoro con Rivolio (rivolio.it), un servizio che aiuta chi ha avuto un volo cancellato o in ritardo a ottenere il rimborso che gli spetta, fino a 600 euro, e che resta tutto al passeggero.
+> sto costruendo una collaborazione a performance seria con pochi creator scelti: non il solito link affiliato a percentuale, ma qualcosa di piu' generoso, con bonus, che cresce nel tempo. i numeri veri te li mostro volentieri in una call di 10 minuti.
+> se ti va, dimmi quando hai un momento. a presto, Valerio · Rivolio
+
+REGOLA "APPROVO" (chiarita da Valerio 27/8): quando Valerio dice "approvo / bellissimi / mi piace" intende OK sullo STILE, NON un ordine di invio. Si manda/pubblica SOLO quando dice esplicitamente "manda"/"invia"/"pubblica ora". Vale per email, DM e commenti.
+
 ## Note fisse
 
 - **#adv obbligatorio** in ogni contenuto (AGCOM).
