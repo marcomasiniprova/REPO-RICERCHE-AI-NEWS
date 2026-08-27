@@ -145,6 +145,14 @@ Giro manuale di collaudo: SUCCESSO in ~1m45s. **71 nuovi creator creati** in Air
 Note: (1) filtro nano funziona sui TikTok (hanno i follower a discovery); gli IG passano senza follower e vengono filtrati dall'Arricchisci. (2) Ripristinata la blocklist big-stranieri in "Estrai liste" (erano rientrati @bemytravelmuse, @kirstenalana ecc.). (3) 71 in un giro è tanto (target 10-20/gg): normale al primo backfill, poi la dedup abbassa; tunabile con meno hashtag/limiti. (4) Workflow di prova temporaneo archiviato.
 DA FARE (con OK Valerio): (a) aggiornare soglia Arricchisci 5k-300k → 1k-50k; (b) spegnere Harvest+Cacciatore vecchi e ATTIVARE il SCOUT unico (schedule 06:00) sotto il Capo; (c) eventuale tuning volume/hashtag.
 
+## Impostazioni definitive (27/8, decise con Valerio)
+- **Fascia**: nano 1k-50k (confermata).
+- **Volume**: 10-20 nuovi/giorno di qualita' (2-3 hashtag, ttLimit 5, igLimit 5).
+- **Orario**: 06:00.
+- **Liste Byparr**: SPENTE. Si lavora SOLO per hashtag (le liste portavano big/stranieri). Nel motore il ramo "Sorgenti liste" e' disabilitato.
+- **Hashtag**: soprattutto viaggi IT (viaggiitalia, borghitalia, weekendfuoriporta, itinerari, mareitalia, montagnaitalia, dolomiti, italiadascoprire, borghiitaliani, viaggiare) + OGNI TANTO angoli voli/soldi (voli, aeroporto, rimborsovolo, vololowcost, finanzaviaggi, risparmioviaggi). Il ruolo li ruota.
+- **Report**: RIVO-SCOUT NON scrive a Valerio ogni giorno; i numeri entrano nel REPORT DEL CAPO. Scrive solo per problemi veri (Apify al limite, run fallita, pipeline ferma).
+
 ## ARCHITETTURA FINALE (27/8) — motore n8n + ruolo manager
 Deciso con Valerio: SCOUT = un **motore n8n a WEBHOOK** + un **ruolo agente "manager"** che ogni mattina lo prepara, lo fa partire e ne controlla l'output. Il ruolo NON rifa' lo scraping (sarebbe lento/caro): il lavoro pesante e' di n8n; il giudizio (keyword, qualita', volume, report, manutenzione) e' dell'agente. Principio per tutto il team: meccanico/volume -> n8n; giudizio/decisioni/report -> ruolo.
 
