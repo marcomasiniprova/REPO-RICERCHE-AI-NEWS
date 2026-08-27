@@ -10,6 +10,13 @@ Ogni decisione importante va aggiunta qui, con data e motivazione. Dal più rece
 - BUG IG trovato: lo scraper profilo Apify tornava VUOTO per 7/8 lead -> il GPT (bio vuota) li segnava Scartato, bruciandoli. FIX (deciso "entrambe" con Valerio): scrape maxTries 3 + se vuoto il lead resta "Da arricchire" per il giro dopo (non bruciato). I 7 gia' bruciati restano Scartato (scelta di Valerio). Da fare: valutare un actor IG piu' affidabile.
 - Pipeline dopo il test: 31 Pronto totali.
 
+### 27 Ago 2026 — Routine spostate in sessione dedicata (fix interruzioni)
+- Deciso con Valerio: le routine operative NON firano piu' nella chat di lavoro. Creata sessione dedicata **"RIVO Operativo"** (session_012cNuxi6s8j91iGYP6HDtsP) dove girano in background.
+- Ricreate le 3 routine legate alla sessione dedicata: RIVO-REDDIT (trig_01C3yaqK89eNdfZuwPv7DCvi), RIVO-IG (trig_014RYEePhSJpAcYcdnSKQkYH), RIVO-SCOUT (trig_01BKtmgDmmzR42FpHhxJxnM5).
+- Le 3 vecchie (bound alla chat di lavoro) sono state MESSE IN PAUSA come rete di sicurezza, NON cancellate: si cancellano dopo aver confermato che la sessione dedicata raggiunge gli strumenti (Composio/n8n).
+- CAVEAT: la creazione via tool da' un warning "no MCP connectors" sulle routine. La sessione dedicata e' nello stesso environment (env_013a...) quindi molto probabilmente ha gli strumenti, ma va CONFERMATO al primo giro reale o aprendo la sessione "RIVO Operativo". Se non li raggiunge, ricreare le routine dalla UI Routines di claude.ai (garantisce i connettori). Fatto un fire-test della Reddit per verifica.
+- Restano notturne e separate: DAYLY AI NEWS (non RIVO).
+
 ### 27 Ago 2026 — Pausa routine orarie (troppe interruzioni in sessione)
 - Problema segnalato da Valerio: le routine RIVO-REDDIT e RIVO-IG (orarie, 6-18) firano dentro la STESSA sessione di lavoro e la interrompono di continuo mentre lavoriamo; in piu' l'ambiente si sospende/riprende quando resta inattivo. Sessione caotica.
 - FATTO: messe in PAUSA (enabled=false) RIVO-REDDIT (trig_01AbMFnSeUHPMvEKrj7Jo5PL) e RIVO-IG (trig_01STyv92UL1vQ5gxcvrktcLd). Restano attive solo le notturne: RIVO-SCOUT (04:00) e DAYLY AI NEWS (03:45), che non disturbano di giorno.
