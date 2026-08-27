@@ -10,6 +10,11 @@ Ogni decisione importante va aggiunta qui, con data e motivazione. Dal più rece
 - BUG IG trovato: lo scraper profilo Apify tornava VUOTO per 7/8 lead -> il GPT (bio vuota) li segnava Scartato, bruciandoli. FIX (deciso "entrambe" con Valerio): scrape maxTries 3 + se vuoto il lead resta "Da arricchire" per il giro dopo (non bruciato). I 7 gia' bruciati restano Scartato (scelta di Valerio). Da fare: valutare un actor IG piu' affidabile.
 - Pipeline dopo il test: 31 Pronto totali.
 
+### 27 Ago 2026 — Switch actor IG (flakiness risolta) + fix Follower null
+- Verificato il fix "non-brucia": reggeva, ma lo scraper `logical_scrapers` restava ballerino (4-7 vuoti su 8). Trovato mio bug: Follower a stringa vuota rompeva il campo numerico Airtable -> sistemato con `null`.
+- Ricerca actor fatta -> switch all'ufficiale **`apify/instagram-profile-scraper`** (proxy RESIDENTIAL), causa-radice della flakiness (login-wall IP datacenter). Aggiunto nodo "Normalizza profilo" per mappare i campi al formato downstream, cosi' il resto del workflow resta intatto.
+- Collaudo: **8/8 profili letti** (prima 1/8), zero vuoti, zero errori. Task "valutare actor IG alternativo" chiuso (switchato). SCOUT ora completo e affidabile.
+
 ### 27 Ago 2026 — SCOUT upgrade: cervello GPT-5.6 Terra + ICP allargato + ruolo "padre"
 - Valerio vuole una macchina "di cui mi fido a occhi chiusi". Tre cambi grossi su SCOUT, tutti fatti e collaudati:
 - **Cervello da Mistral a ChatGPT GPT-5.6 Terra (reasoning alto)**, sia classificazione sia vision, in ENTRAMBI gli enricher. IG (`Py4pqJYPO86TJFz9`): classificatore su lmChatOpenAi `gpt-5.6-terra` + vision OpenAI via HTTP (image_url:{url:dataURI}, json_object, reasoning_effort high). TikTok (`65R7BVwsokVyTk3I`): nodo GPT classify OpenAI `gpt-5.6-terra` reasoning high + regole. La bio viene attenzionata a fondo ogni volta.
