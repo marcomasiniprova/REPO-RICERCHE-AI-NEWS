@@ -4,6 +4,12 @@ Ogni decisione importante va aggiunta qui, con data e motivazione. Dal più rece
 
 ---
 
+### 27 Ago 2026 — Giro di prova SCOUT upgrade + bug IG sistemato
+- Giro completo dal vivo (mix hashtag 50/50 travel + voli/rimborso, deciso da Valerio). Discovery: 29 nuovi in ~76s. Ho pubblicato la versione webhook della discovery e l'enricher TikTok (le modifiche erano in bozza non pubblicata).
+- Enricher TikTok GPT-5.6 Terra: PERFETTO. 6 nuovi Pronto (creator italiani veri: italia.io.ti.amo, focus_21052, italyyoudontexpect, alessandra_worldtrip, jepexperiences, lorecostantini_). Scarti intelligenti: "voyager sans avion" (pubblico che non vola), "I plan trips" (agenzia), pagina territoriale, stranieri.
+- BUG IG trovato: lo scraper profilo Apify tornava VUOTO per 7/8 lead -> il GPT (bio vuota) li segnava Scartato, bruciandoli. FIX (deciso "entrambe" con Valerio): scrape maxTries 3 + se vuoto il lead resta "Da arricchire" per il giro dopo (non bruciato). I 7 gia' bruciati restano Scartato (scelta di Valerio). Da fare: valutare un actor IG piu' affidabile.
+- Pipeline dopo il test: 31 Pronto totali.
+
 ### 27 Ago 2026 — SCOUT upgrade: cervello GPT-5.6 Terra + ICP allargato + ruolo "padre"
 - Valerio vuole una macchina "di cui mi fido a occhi chiusi". Tre cambi grossi su SCOUT, tutti fatti e collaudati:
 - **Cervello da Mistral a ChatGPT GPT-5.6 Terra (reasoning alto)**, sia classificazione sia vision, in ENTRAMBI gli enricher. IG (`Py4pqJYPO86TJFz9`): classificatore su lmChatOpenAi `gpt-5.6-terra` + vision OpenAI via HTTP (image_url:{url:dataURI}, json_object, reasoning_effort high). TikTok (`65R7BVwsokVyTk3I`): nodo GPT classify OpenAI `gpt-5.6-terra` reasoning high + regole. La bio viene attenzionata a fondo ogni volta.
