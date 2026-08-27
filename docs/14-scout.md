@@ -148,8 +148,8 @@ DA FARE (con OK Valerio): (a) aggiornare soglia Arricchisci 5k-300k → 1k-50k; 
 ## Catena completa (27/8) — discovery + qualificazione
 Il ruolo RIVO-SCOUT ogni mattina comanda 3 motori n8n (tutti webhook/fired-by-agent):
 1. **DISCOVERY** `Rivolio - SCOUT (IG+TikTok)` (ESLNWiVxmXb11Xdu): hashtag TikTok+IG -> nano 1k-50k -> "Da arricchire".
-2. **ARRICCHISCI IG** `Rivolio 2` (Py4pqJYPO86TJFz9): scrape profilo IG + Mistral + vision -> Pronto/Scartato. Solo IG (filtro Piattaforma=Instagram aggiunto). Collaudato: 8 IG in 2,5 min, scarti tutti corretti (troppo grandi, treno/autostop, fotografi, inattivi). Classificatore niche SEVERO (voluto da Valerio).
-3. **ARRICCHISCI TIKTOK** `Rivolio - Arricchisci TikTok` (65R7BVwsokVyTk3I): NUOVO, leggero. Scrape profilo TikTok (clockworks) + regole (nano, non-aereo, video, bio travel, esclude enti/tourism board) + email dalla bio -> Pronto/Scartato. Collaudato: 3 TikTok qualificati in ~70s (gogotravelfood score 90, davidemarranon 70 -> Pronto). Separato dall'IG perche' i dati TikTok hanno forma/cardinalita' diversa (1 riga per video vs 1 per profilo).
+2. **ARRICCHISCI IG** `Rivolio 2` (Py4pqJYPO86TJFz9): scrape profilo IG + GPT-5.6 Terra + vision -> Pronto/Scartato. Solo IG (filtro Piattaforma=Instagram aggiunto). Collaudato: 8 IG in 2,5 min, scarti tutti corretti (troppo grandi, treno/autostop, fotografi, inattivi). Classificatore niche SEVERO (voluto da Valerio).
+3. **ARRICCHISCI TIKTOK** `Rivolio - Arricchisci TikTok` (65R7BVwsokVyTk3I): NUOVO, leggero. Scrape profilo TikTok (clockworks) + GPT-5.6 Terra + regole (nano, non-aereo, video, bio travel, esclude enti/tourism board) + email dalla bio -> Pronto/Scartato. Collaudato: 3 TikTok qualificati in ~70s (gogotravelfood score 90, davidemarranon 90 -> Pronto). Separato dall'IG perche' i dati TikTok hanno forma/cardinalita' diversa (1 riga per video vs 1 per profilo).
 Flusso: SCOUT trova -> enricher qualificano -> i "Pronto" sono i creator buoni, pronti per RIVO-IG (che li contatta con OK di Valerio). Il ruolo fira discovery + entrambi gli enricher ogni mattina.
 
 ## Impostazioni definitive (27/8, decise con Valerio)
@@ -184,6 +184,29 @@ Deciso con Valerio: SCOUT = un **motore n8n a WEBHOOK** + un **ruolo agente "man
 - Arricchisci (`Py4pqJYPO86TJFz9`): soglia nano portata da 5k-300k a **1.000-50.000** (Motore decisione). (Nota: resta un warning pre-esistente non mio sul nodo "Cerca lead da arricchire", limit+returnAll; non toccato.)
 - I 71 lead del collaudo: **cancellati** (erano test).
 - Da rivedere insieme dopo il primo giro dell'Arricchisci: volume (target 10-20/gg) e set hashtag.
+
+## UPGRADE (27/8) — cervello GPT-5.6 Terra + ICP allargato + SCOUT "padre"
+Valerio ha chiesto una macchina "di cui mi fido a occhi chiusi". Tre cambi grossi, tutti fatti e collaudati:
+
+**1. Cervello: da Mistral a ChatGPT GPT-5.6 Terra (reasoning alto), sia classificazione sia vision.**
+- Entrambi gli enricher ora usano il modello `gpt-5.6-terra` (credenziale openAiApi "CHATGPT MODEL"), reasoning effort ALTO.
+- IG (`Py4pqJYPO86TJFz9`): il nodo classificatore (langchain chainLlm) monta il language model `GPT-5.6 Terra` (lmChatOpenAi v1.3); la vision passa da Pixtral a OpenAI vision via HTTP (`api.openai.com/v1/chat/completions`, `image_url:{url:dataURI}`, `response_format:{type:'json_object'}`, `reasoning_effort` nel body). La BIO viene attenzionata a fondo ogni volta.
+- TikTok (`65R7BVwsokVyTk3I`): il nodo "GPT classify TikTok" e' un httpRequest OpenAI `gpt-5.6-terra` reasoning_effort high che classifica i profili aggregati per autore, poi "Decidi TikTok" fonde il verdetto GPT con le regole nano/video/email.
+
+**2. ICP allargato + anti-falsi-positivi (piu' intelligenza, meno rigidita' cieca).**
+Il vecchio filtro era rigido e binario. Ora la macchina deve DISTINGUERE:
+- **VERO travel creator** (in target): fa VIDEO, intrattiene, racconta viaggi/voli/mete, fa sponsorizzazioni, pubblico che PRENDE AEREI. -> Pronto.
+- **Fotografo per passione / hobbista**: posta solo foto di paesaggi/borghi, pochi o zero video, non intrattiene, spesso terra-only. -> Scartato (esempio reale catturato dal nuovo IG enricher: un profilo con 3 video e 2246 foto, classificato fotografo -> Scartato).
+- **Terra-only**: gite locali, mai un volo, pubblico che non vola. -> Scartato.
+- **Enti/istituzioni**: tourism board, regione, comune, pro loco, agenzie/tour operator. -> Scartato (regex istituzionale aggiunta dopo il caso @inemiliaromagna, che passava per errore).
+Niche allargate oltre il travel puro (deciso da Valerio): **travel creator + travel tips/hacks + risparmiatori/budget/finanza-viaggi + diritti del consumatore/passeggeri**. Tutte pertinenti a Rivolio (EU261, rimborsi, voli), purche' il pubblico voli.
+Fonte verita' prodotto per l'ICP: rivolio.it (rimborsi voli EU261, prezzo fisso, cliente tiene il 100% del rimborso). Il partner ideale = creator il cui pubblico VIAGGIA IN AEREO.
+
+**3. Volume "scandaglia largo, tieni i perfetti" + SCOUT come "padre" del workflow.**
+- Discovery allargata: default `ttLimit 8`, `igLimit 8`, 3-5 hashtag/giorno (bacino travel IT + tips/hacks + voli/soldi + diritti). Meglio 10-20 PERFETTI che 50 mediocri: si scandaglia largo e si tengono solo i perfetti (il filtro duro e' negli enricher GPT).
+- Il ruolo RIVO-SCOUT ora e' un **padre** che accompagna ogni motore: lo fa partire (`execute_workflow`), RESTA fino alla fine (polling `get_execution` ogni ~40-60s), e se si blocca o va in errore (rate limit Apify, timeout, Cloudflare) lo fa RIPARTIRE (max 2 retry, attesa crescente). Solo dopo aver visto tutto a posto passa oltre. Segnala a Valerio solo problemi VERI o se non arriva ai 10-20 Pronto.
+- Robustezza retry/rate-limit: gli actor Apify (TikTok/IG) e i nodi Airtable hanno gia' `retryOnFail` + `maxTries` + `onError:continueRegularOutput`; il ruolo aggiunge il retry a livello di RUN (rilancia l'intero workflow se la run fallisce/si impianta).
+Il prompt della routine RIVO-SCOUT (trig_01JSkZ3mAiZFvStU9rqUKTTL) e' stato riscritto di conseguenza (ICP allargato, GPT-5.6 Terra, padre-del-workflow, retry, 10-20 perfetti).
 
 ## Stato
 - 26/8/2026: playbook scritto (2° pezzo dopo il Capo). Motori: Apify + n8n/Byparr + Exa + Jina. ICP: nano/micro travel IT 1k-50k. Volume: 10-20/giorno. Enrichment email: sì.
