@@ -4,295 +4,421 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rivolio — Collaborazione Partner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --teal:#0E7C6B;
-    --teal-dark:#0A5B4F;
-    --teal-deep:#083F37;
-    --mint:#3FD9B8;
-    --mint-soft:#E6F7F2;
-    --ink:#12211D;
-    --grey:#5C6B66;
-    --white:#ffffff;
-    --bg:#F4FBF9;
-  }
-  *{margin:0;padding:0;box-sizing:border-box;}
-  html,body{height:100%;}
-  body{
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    background:var(--teal-deep);
-    color:var(--ink);
-    overflow:hidden;
-  }
-  .stage{
-    position:fixed;inset:0;
-    display:flex;align-items:center;justify-content:center;
-    padding:24px;
-  }
-  .slide{
-    display:none;
-    width:min(1040px,94vw);
-    height:min(660px,90vh);
-    background:var(--white);
-    border-radius:24px;
-    box-shadow:0 30px 80px rgba(0,0,0,.35);
-    padding:64px 72px;
-    position:relative;
-    overflow:hidden;
-    flex-direction:column;
-  }
-  .slide.active{display:flex;animation:fade .45s ease;}
-  @keyframes fade{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
-  .kicker{
-    display:inline-flex;align-items:center;gap:8px;
-    color:var(--teal);font-weight:700;letter-spacing:.14em;
-    text-transform:uppercase;font-size:13px;margin-bottom:18px;
-  }
-  .kicker::before{content:"";width:26px;height:3px;background:var(--mint);border-radius:3px;}
-  h1{font-size:52px;line-height:1.05;letter-spacing:-.02em;color:var(--teal-deep);margin-bottom:18px;}
-  h2{font-size:38px;line-height:1.1;letter-spacing:-.02em;color:var(--teal-deep);margin-bottom:22px;}
-  p.lead{font-size:22px;line-height:1.5;color:var(--grey);max-width:44ch;}
-  ul{list-style:none;margin-top:10px;}
-  ul li{
-    font-size:21px;line-height:1.5;color:var(--ink);
-    padding:11px 0 11px 40px;position:relative;
-  }
-  ul li::before{
-    content:"";position:absolute;left:0;top:18px;
-    width:18px;height:18px;border-radius:6px;
-    background:var(--mint-soft);border:2px solid var(--mint);
-  }
-  ul li b{color:var(--teal-dark);}
-  .big-num{font-size:64px;font-weight:800;color:var(--teal);letter-spacing:-.03em;line-height:1;}
-  .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:14px;}
-  .card{
-    background:var(--bg);border:1px solid #DDEEE9;border-radius:16px;padding:22px 24px;
-  }
-  .card h3{font-size:16px;text-transform:uppercase;letter-spacing:.08em;color:var(--teal);margin-bottom:8px;}
-  .card p{font-size:19px;color:var(--ink);line-height:1.4;}
-  .example{
-    margin-top:20px;background:var(--mint-soft);border-radius:18px;padding:26px 30px;
-    border:1px solid #BFEBDF;
-  }
-  .example .row{display:flex;justify-content:space-between;align-items:baseline;padding:7px 0;font-size:19px;}
-  .example .row.total{border-top:2px dashed #8FD9C6;margin-top:8px;padding-top:14px;font-weight:800;color:var(--teal-deep);font-size:22px;}
-  .example .muted{color:var(--grey);}
-  .cover{
-    background:linear-gradient(150deg,var(--teal) 0%,var(--teal-dark) 55%,var(--teal-deep) 100%);
-    color:var(--white);align-items:flex-start;justify-content:center;
-  }
-  .cover h1{color:#fff;font-size:64px;}
-  .cover .kicker{color:var(--mint);}
-  .cover .kicker::before{background:var(--mint);}
-  .cover p.lead{color:rgba(255,255,255,.85);}
-  .logo{
-    display:flex;align-items:center;gap:14px;position:absolute;top:40px;left:72px;
-  }
-  .logo .mark{
-    width:38px;height:38px;border-radius:11px;
-    background:conic-gradient(from 200deg,var(--mint),#7BE8CF,var(--mint));
-    display:flex;align-items:center;justify-content:center;color:var(--teal-deep);font-weight:900;font-size:20px;
-  }
-  .logo .name{font-weight:800;font-size:20px;color:var(--teal-deep);letter-spacing:-.01em;}
-  .cover .logo .name{color:#fff;}
-  .foot{
-    position:absolute;bottom:34px;left:72px;right:72px;
-    display:flex;justify-content:space-between;align-items:center;
-    font-size:14px;color:var(--grey);
-  }
-  .cover .foot{color:rgba(255,255,255,.7);}
-  .pill{display:inline-block;background:var(--teal);color:#fff;font-weight:700;font-size:15px;padding:8px 16px;border-radius:999px;margin-top:6px;}
-  .split{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center;height:100%;}
-  .quote{font-size:26px;line-height:1.4;color:var(--teal-deep);font-weight:600;max-width:40ch;}
-  .dots{
-    position:fixed;bottom:22px;left:50%;transform:translateX(-50%);
-    display:flex;gap:9px;z-index:10;
-  }
-  .dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.35);cursor:pointer;transition:.2s;}
-  .dot.on{background:var(--mint);width:24px;border-radius:6px;}
-  .nav{position:fixed;bottom:18px;z-index:10;background:rgba(255,255,255,.14);border:none;color:#fff;
-    width:44px;height:44px;border-radius:50%;font-size:20px;cursor:pointer;transition:.2s;}
-  .nav:hover{background:rgba(255,255,255,.28);}
-  .nav.prev{left:26px;}.nav.next{right:26px;}
-  .counter{position:fixed;top:22px;right:28px;color:rgba(255,255,255,.6);font-size:14px;font-weight:600;z-index:10;}
-  .hint{position:fixed;bottom:24px;right:28px;color:rgba(255,255,255,.45);font-size:12px;z-index:10;}
-  @media (max-width:640px){
-    .slide{padding:40px 30px;height:88vh;}
-    h1{font-size:40px;}.cover h1{font-size:46px;}h2{font-size:30px;}
-    .split{grid-template-columns:1fr;gap:20px;}
-    .cards{grid-template-columns:1fr;}
-    .logo{left:30px;}.foot{left:30px;right:30px;}
-  }
+:root{
+  --green-deep:#0A3B31;
+  --green-deep2:#072C25;
+  --green:#0E7C6B;
+  --mint:#63E0B6;
+  --mint-2:#8BEBCC;
+  --cream:#F3EEE1;
+  --cream-2:#EBE4D2;
+  --tan:#E3A469;
+  --tan-soft:#F0D4B4;
+  --ink:#0E1F1A;
+  --ink-soft:#3C4E48;
+  --grey:#6C7A74;
+  --white:#fff;
+  --line:#D9D2C1;
+  --shadow:0 30px 70px rgba(6,28,23,.45);
+  --r:26px;
+  --dsp:'Space Grotesk',-apple-system,BlinkMacSystemFont,sans-serif;
+  --body:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{font-family:var(--body);background:#04211B;color:var(--ink);overflow:hidden}
+.stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:26px}
+
+.slide{
+  display:none;position:relative;overflow:hidden;flex-direction:column;
+  width:min(1080px,95vw);height:min(672px,90vh);
+  border-radius:var(--r);box-shadow:var(--shadow);
+  padding:60px 66px;
+}
+.slide.active{display:flex}
+.slide.dark{background:radial-gradient(120% 140% at 85% 10%,#12594A 0%,var(--green-deep) 42%,var(--green-deep2) 100%);color:var(--cream)}
+.slide.light{background:linear-gradient(180deg,#F7F3E9 0%,var(--cream) 100%);color:var(--ink)}
+
+/* reveal animation */
+.slide.active .rv{animation:rise .6s cubic-bezier(.2,.7,.2,1) both}
+.slide.active .rv:nth-child(2){animation-delay:.06s}
+.slide.active .rv:nth-child(3){animation-delay:.12s}
+.slide.active .rv:nth-child(4){animation-delay:.18s}
+@keyframes rise{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+
+/* header bits */
+.badge{display:inline-flex;align-items:center;gap:8px;background:var(--tan);color:#3A2410;
+  font-family:var(--dsp);font-weight:600;font-size:13px;letter-spacing:.02em;padding:7px 15px;border-radius:999px}
+.dark .badge{background:var(--tan);color:#3A2410}
+.brand{position:absolute;top:30px;right:34px;display:flex;align-items:center;gap:9px;z-index:5}
+.brand .logo{font-family:var(--dsp);font-weight:700;font-size:19px;letter-spacing:-.01em}
+.dark .brand .logo{color:var(--cream)} .light .brand .logo{color:var(--green-deep)}
+.brand .glyph{width:26px;height:26px}
+.pageno{position:absolute;top:28px;right:34px;width:34px;height:34px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-family:var(--dsp);font-size:13px;font-weight:600;z-index:5}
+.dark .pageno{background:rgba(255,255,255,.12);color:var(--mint)}
+.light .pageno{background:#fff;color:var(--green);border:1px solid var(--line)}
+
+h1{font-family:var(--dsp);font-weight:700;letter-spacing:-.025em;line-height:1.02}
+h2{font-family:var(--dsp);font-weight:700;letter-spacing:-.02em;line-height:1.06;font-size:40px}
+.light h2{color:var(--green-deep)} .dark h2{color:var(--cream)}
+.sub{font-size:19px;line-height:1.55;max-width:46ch;margin-top:16px}
+.dark .sub{color:#CFE6DE} .light .sub{color:var(--ink-soft)}
+.mint{color:var(--mint)} .light .g{color:var(--green)}
+
+.head{margin-bottom:26px}
+.head .badge{margin-bottom:18px}
+
+/* cards */
+.grid{display:grid;gap:16px}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g2{grid-template-columns:repeat(2,1fr)}
+.card{border-radius:20px;padding:24px 24px}
+.dark .card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09)}
+.light .card{background:#fff;border:1px solid var(--line);box-shadow:0 10px 30px rgba(10,40,33,.05)}
+.card .ic{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.dark .card .ic{background:rgba(99,224,182,.14)} .light .card .ic{background:var(--mint);}
+.card h3{font-family:var(--dsp);font-size:20px;font-weight:600;margin-bottom:7px}
+.light .card h3{color:var(--green-deep)} .dark .card h3{color:var(--mint-2)}
+.card p{font-size:16px;line-height:1.5}
+.dark .card p{color:#C6DDD5} .light .card p{color:var(--ink-soft)}
+
+svg{display:block}
+.ic svg{width:24px;height:24px}
+.dark .ic svg{stroke:var(--mint)} .light .ic svg{stroke:var(--green-deep)}
+
+/* cover */
+.cover{justify-content:center;align-items:flex-start}
+.cover .wm{font-family:var(--dsp);font-weight:700;font-size:104px;letter-spacing:-.04em;line-height:.9;color:var(--cream);position:relative;z-index:3}
+.cover .wm .o{color:var(--mint)}
+.cover .tagline{display:flex;gap:0;align-items:center;background:var(--cream);color:var(--green-deep);
+  border-radius:999px;padding:11px 8px 11px 22px;margin-top:34px;font-family:var(--dsp);font-weight:600;font-size:16px;z-index:3}
+.cover .tagline .dot{width:30px;height:30px;border-radius:50%;background:var(--green);margin:0 16px;display:flex;align-items:center;justify-content:center}
+.cover .tagline .dot svg{width:16px;height:16px;stroke:var(--mint)}
+.cover .kick{font-family:var(--dsp);font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:var(--mint);margin-bottom:22px;z-index:3}
+#globe{position:absolute;right:-60px;top:50%;transform:translateY(-50%);width:520px;height:520px;z-index:1;opacity:.95}
+.glow{position:absolute;right:20px;top:50%;transform:translateY(-50%);width:420px;height:420px;border-radius:50%;
+  background:radial-gradient(circle,rgba(99,224,182,.28) 0%,rgba(99,224,182,0) 68%);z-index:0}
+
+/* stat rings */
+.rings{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:8px}
+.ring{display:flex;flex-direction:column;align-items:center;text-align:center}
+.ring .rc{position:relative;width:150px;height:150px}
+.ring .rc svg{transform:rotate(-90deg)}
+.ring .rc .val{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring .rc .val b{font-family:var(--dsp);font-size:34px;font-weight:700}
+.dark .ring .rc .val b{color:var(--cream)}
+.ring .rc .val span{font-size:12px;color:var(--mint);font-weight:600;margin-top:2px}
+.ring .lab{margin-top:14px;font-size:15px;max-width:20ch}
+.dark .ring .lab{color:#BFD8CF}
+
+/* comparison table */
+.cmp{width:100%;border-collapse:separate;border-spacing:0 0;margin-top:8px}
+.cmp th,.cmp td{padding:15px 14px;text-align:center;font-size:15px}
+.cmp th{font-family:var(--dsp);font-weight:600;font-size:15px;color:var(--grey)}
+.cmp .rowlab{text-align:left;color:var(--ink);font-weight:500;width:38%}
+.cmp .colriv{background:#fff;border-left:1px solid var(--line);border-right:1px solid var(--line)}
+.cmp thead .colriv{background:var(--green-deep);color:#fff;border-radius:16px 16px 0 0;font-family:var(--dsp);font-weight:700;font-size:17px}
+.cmp tbody tr:last-child .colriv{border-radius:0 0 16px 16px;border-bottom:1px solid var(--line)}
+.cmp tbody tr td{border-top:1px solid var(--cream-2)}
+.chk{display:inline-flex;width:26px;height:26px;border-radius:50%;background:var(--green);align-items:center;justify-content:center}
+.chk svg{width:15px;height:15px;stroke:#fff}
+.no{display:inline-flex;width:26px;height:26px;border-radius:50%;background:#E7DFCF;align-items:center;justify-content:center}
+.no svg{width:13px;height:13px;stroke:#9A9482}
+.cmp td.rowlab{color:var(--green-deep)}
+
+/* phone mockup */
+.phone{width:270px;height:540px;border-radius:42px;background:#0A2C24;padding:12px;box-shadow:0 30px 60px rgba(6,28,23,.4);position:relative}
+.phone .scr{width:100%;height:100%;border-radius:32px;background:linear-gradient(180deg,#0E5647,#0A3B31);overflow:hidden;position:relative;padding:22px 18px}
+.phone .notch{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:110px;height:24px;background:#0A2C24;border-radius:0 0 16px 16px;z-index:3}
+.phone .ptop{display:flex;justify-content:space-between;align-items:center;color:var(--cream);font-family:var(--dsp);font-weight:600;font-size:14px;margin-bottom:14px}
+.phone .earn{background:rgba(99,224,182,.12);border:1px solid rgba(99,224,182,.25);border-radius:18px;padding:16px;margin-bottom:14px}
+.phone .earn .lbl{color:var(--mint);font-size:11px;font-weight:600;letter-spacing:.04em}
+.phone .earn .amt{font-family:var(--dsp);font-weight:700;font-size:32px;color:#fff;margin-top:4px}
+.phone .earn .amt small{font-size:15px;color:var(--mint-2);font-weight:600}
+.phone .bar{height:7px;border-radius:6px;background:rgba(255,255,255,.12);margin-top:12px;overflow:hidden}
+.phone .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--mint));border-radius:6px;transition:width 1.1s .3s ease}
+.phone.on .bar i{width:72%}
+.phone .rowp{display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.05);border-radius:13px;padding:11px 13px;margin-bottom:9px}
+.phone .rowp .l{display:flex;align-items:center;gap:10px}
+.phone .rowp .av{width:30px;height:30px;border-radius:9px;background:rgba(99,224,182,.16);display:flex;align-items:center;justify-content:center}
+.phone .rowp .av svg{width:15px;height:15px;stroke:var(--mint)}
+.phone .rowp .t{color:var(--cream);font-size:13px;font-weight:500}
+.phone .rowp .t small{display:block;color:#8FB4A9;font-size:11px}
+.phone .rowp .v{color:var(--mint);font-family:var(--dsp);font-weight:600;font-size:14px}
+
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:10px}
+.step{position:relative}
+.step .num{width:46px;height:46px;border-radius:14px;background:var(--green);color:#fff;font-family:var(--dsp);font-weight:700;font-size:20px;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.light .step .num{background:var(--green-deep)}
+.step h4{font-family:var(--dsp);font-size:17px;font-weight:600;color:var(--green-deep);margin-bottom:6px}
+.step p{font-size:14px;line-height:1.45;color:var(--ink-soft)}
+.step:not(:last-child)::after{content:"";position:absolute;top:23px;left:58px;right:-8px;height:2px;background:repeating-linear-gradient(90deg,var(--tan) 0 6px,transparent 6px 12px)}
+
+/* split with photo */
+.split{display:grid;grid-template-columns:1.02fr .98fr;gap:40px;align-items:center;height:100%}
+.photo{border-radius:22px;overflow:hidden;position:relative;height:100%;min-height:380px;
+  background:linear-gradient(135deg,#0E5647,#0A3B31)}
+.photo img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.photo .cap{position:absolute;left:18px;bottom:18px;right:18px;background:rgba(8,30,25,.72);backdrop-filter:blur(6px);
+  color:#fff;border-radius:16px;padding:14px 16px;font-size:15px;line-height:1.4}
+.photo .cap b{color:var(--mint)}
+.pill-stat{display:inline-flex;align-items:center;gap:10px;background:var(--mint);color:var(--green-deep);
+  font-family:var(--dsp);font-weight:700;border-radius:999px;padding:9px 18px;font-size:15px;margin-top:14px}
+
+.foot{position:absolute;left:66px;right:66px;bottom:30px;display:flex;justify-content:space-between;align-items:center;font-size:13px}
+.dark .foot{color:rgba(233,240,236,.55)} .light .foot{color:var(--grey)}
+
+/* nav */
+.counter{position:fixed;top:24px;right:30px;color:rgba(255,255,255,.55);font-family:var(--dsp);font-size:14px;font-weight:600;z-index:20}
+.nav{position:fixed;bottom:20px;z-index:20;background:rgba(255,255,255,.12);border:none;color:#fff;width:46px;height:46px;border-radius:50%;font-size:22px;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center}
+.nav:hover{background:var(--mint);color:var(--green-deep)}
+.nav.prev{left:28px}.nav.next{right:28px}
+.dots{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);display:flex;gap:9px;z-index:20}
+.dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.3);cursor:pointer;transition:.25s}
+.dot.on{background:var(--mint);width:26px;border-radius:5px}
+.hint{position:fixed;bottom:26px;right:30px;color:rgba(255,255,255,.4);font-size:12px;z-index:20}
+
+@media (max-width:720px){
+  .slide{padding:34px 26px}
+  .cover .wm{font-size:60px}.h2,h2{font-size:28px}
+  .split{grid-template-columns:1fr;gap:18px}.rings,.g3,.steps{grid-template-columns:1fr 1fr}
+  #globe,.glow{display:none}.phone{display:none}
+  .foot{left:26px;right:26px}
+}
 </style>
 </head>
 <body>
 <div class="stage" id="stage">
 
-  <!-- 1 COVER -->
-  <section class="slide cover active">
-    <div class="logo"><div class="mark">R</div><div class="name">Rivolio</div></div>
-    <div class="kicker">Collaborazione Partner</div>
-    <h1>Guadagna aiutando<br>chi vola.</h1>
-    <p class="lead">Una collaborazione a performance, trasparente e senza vincoli. Ti mostro in 15 minuti come funziona.</p>
-    <div class="foot"><span>rivolio.it</span><span>Partner Program</span></div>
-  </section>
+<!-- 1 COVER -->
+<section class="slide dark active" data-bg="cover">
+  <div class="glow"></div>
+  <canvas id="globe"></canvas>
+  <div class="kick rv">Collaborazione Partner · rivolio.it</div>
+  <div class="wm rv">Riv<span class="o">o</span>lio</div>
+  <div class="tagline rv">
+    Guadagni aiutando chi vola
+    <span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12l8-2 5-8 2 1-2 8 6 3-1 2-7-2-3 6-2-1 1-6-6-1z"/></svg></span>
+  </div>
+  <div class="foot"><span>Partner Program 2026</span><span>15 minuti · tutto chiaro</span></div>
+</section>
 
-  <!-- 2 COS'E -->
-  <section class="slide">
-    <div class="logo"><div class="mark">R</div><div class="name">Rivolio</div></div>
-    <div class="kicker">Cos'è Rivolio</div>
-    <h2>Recuperiamo i rimborsi per i voli andati storti.</h2>
-    <ul>
-      <li>Voli in <b>ritardo o cancellati</b>: al passeggero spettano fino a <b>600€</b> (norma EU261).</li>
-      <li>Facciamo <b>tutto noi</b>: pratica, documenti, tutta la trafila. Non siamo recupero crediti.</li>
-      <li>Il cliente <b>tiene il 100%</b> del rimborso. Gli altri servizi trattengono circa il 35%.</li>
-    </ul>
-    <div class="foot"><span>rivolio.it</span><span>Il cliente paga solo una piccola fee</span></div>
-  </section>
+<!-- 2 COSA FACCIAMO -->
+<section class="slide light" data-bg="light">
+  <div class="brand"><span class="logo">Rivolio</span></div>
+  <div class="head rv"><span class="badge">Cosa facciamo</span><h2>Recuperiamo i rimborsi<br>per i voli andati storti.</h2></div>
+  <div class="grid g3 rv">
+    <div class="card">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5a2.1 2.1 0 0 0-3-3L13 8 4.8 6.2a1 1 0 0 0-.9.3l-.9.9 6 3.5-2.5 2.5-2.5-.5-1 1L6 19l2.6 1.7 1-1-.5-2.5 2.5-2.5 3.5 6 .9-.9a1 1 0 0 0 .3-.9z"/></svg></div>
+      <h3>Fino a 600€</h3><p>Per un volo in ritardo o cancellato, al passeggero spetta un rimborso (norma EU261).</p>
+    </div>
+    <div class="card">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></div>
+      <h3>Facciamo tutto noi</h3><p>Pratica, documenti, tutta la trafila. Non siamo una società di recupero crediti.</p>
+    </div>
+    <div class="card">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+      <h3>Il cliente tiene il 100%</h3><p>Del rimborso. Gli altri servizi ne trattengono circa il 35%.</p>
+    </div>
+  </div>
+  <div class="foot"><span>rivolio.it</span><span>Il cliente paga solo una piccola fee</span></div>
+</section>
 
-  <!-- 3 IL PROBLEMA / OPPORTUNITA -->
-  <section class="slide">
-    <div class="logo"><div class="mark">R</div><div class="name">Rivolio</div></div>
-    <div class="split">
-      <div>
-        <div class="kicker">Perché funziona</div>
-        <h2>Quasi nessuno reclama quello che gli spetta.</h2>
-        <p class="lead">Chi vola spesso ha avuto un ritardo o una cancellazione. Ma tra moduli, tempo e burocrazia, la maggior parte lascia perdere e i soldi restano lì.</p>
-      </div>
-      <div>
-        <div class="quote">"Non stai vendendo. Stai dicendo alle persone come riprendersi soldi che sono già loro."</div>
+<!-- 3 IL PROBLEMA (photo) -->
+<section class="slide dark">
+  <div class="pageno">03</div>
+  <div class="split">
+    <div>
+      <div class="head rv"><span class="badge">Perché funziona</span><h2>Quasi nessuno reclama<br>quello che gli spetta.</h2></div>
+      <p class="sub rv">Chi vola spesso ha avuto un ritardo o una cancellazione. Ma tra moduli, tempo e burocrazia, la maggior parte lascia perdere. E i soldi restano lì.</p>
+      <div class="pill-stat rv"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#0A3B31" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h7l-1 8 10-12h-7z"/></svg> Aiuto vero, non una vendita</div>
+    </div>
+    <div class="photo rv">
+      <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1200&q=80" alt="Ala di aereo sopra le nuvole" referrerpolicy="no-referrer">
+      <div class="cap">Il tuo pubblico <b>vola</b>: è esattamente chi può averne bisogno.</div>
+    </div>
+  </div>
+  <div class="foot"><span>rivolio.it</span><span></span></div>
+</section>
+
+<!-- 4 LA COLLABORAZIONE -->
+<section class="slide dark">
+  <div class="pageno">04</div>
+  <div class="head rv"><span class="badge">La collaborazione</span><h2>A performance. <span class="mint">Seria e generosa.</span></h2></div>
+  <div class="grid g2 rv" style="gap:16px">
+    <div class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 5 5 19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg></div><h3>40% su ogni pratica</h3><p>Codice e link tuoi. Guadagni su ogni pratica che arriva da te.</p></div>
+    <div class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 7 17l-4-4"/><path d="M22 10 12.5 19.5"/></svg></div><h3>Nessun vincolo</h3><p>Niente fisso, niente contenuti obbligatori, nessuna scadenza.</p></div>
+    <div class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg></div><h3>Bonus che salgono</h3><p>Oltre al 40%, bonus a traguardi che crescono con te.</p></div>
+    <div class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h3>Zero rischio per te</h3><p>Non anticipi niente. Il rischio è tutto nostro.</p></div>
+  </div>
+  <div class="foot"><span>rivolio.it</span><span>Non il solito affiliato a percentuale</span></div>
+</section>
+
+<!-- 5 TABELLA CONFRONTO -->
+<section class="slide light">
+  <div class="brand"><span class="logo">Rivolio</span></div>
+  <div class="head rv"><span class="badge">Perché siamo diversi</span><h2>Rivolio vs il resto del settore.</h2></div>
+  <table class="cmp rv">
+    <thead><tr><th class="rowlab"></th><th class="colriv">Rivolio</th><th>Servizi classici</th><th>Affiliati soliti</th></tr></thead>
+    <tbody>
+      <tr><td class="rowlab">Il cliente tiene il 100% del rimborso</td><td class="colriv"><span class="chk"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span></td><td><span class="no"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span></td><td><span class="no"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span></td></tr>
+      <tr><td class="rowlab">Commissione al creator</td><td class="colriv"><b style="color:var(--green)">40%</b></td><td>—</td><td>~15%</td></tr>
+      <tr><td class="rowlab">Dashboard guadagni in tempo reale</td><td class="colriv"><span class="chk"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span></td><td><span class="no"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span></td><td><span class="no"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span></td></tr>
+      <tr><td class="rowlab">Pagamento ogni 15 giorni</td><td class="colriv"><span class="chk"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span></td><td><span class="no"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span></td><td>Variabile</td></tr>
+      <tr><td class="rowlab">Nessun vincolo, pubblichi come vuoi</td><td class="colriv"><span class="chk"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span></td><td><span class="no"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span></td><td><span class="chk"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span></td></tr>
+    </tbody>
+  </table>
+  <div class="foot"><span>rivolio.it</span><span>Il triplo della commissione, il doppio della trasparenza</span></div>
+</section>
+
+<!-- 6 QUANTO GUADAGNI (rings) -->
+<section class="slide dark">
+  <div class="pageno">06</div>
+  <div class="head rv"><span class="badge">Quanto puoi guadagnare</span><h2>Senza tetto. <span class="mint">Più porti, più sali.</span></h2></div>
+  <div class="rings rv">
+    <div class="ring"><div class="rc"><svg width="150" height="150" viewBox="0 0 150 150"><circle cx="75" cy="75" r="64" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="12"/><circle class="prog" data-p="40" cx="75" cy="75" r="64" fill="none" stroke="#63E0B6" stroke-width="12" stroke-linecap="round" stroke-dasharray="402" stroke-dashoffset="402"/></svg><div class="val"><b>40%</b><span>a pratica</span></div></div><div class="lab">su ogni pratica che arriva da te</div></div>
+    <div class="ring"><div class="rc"><svg width="150" height="150" viewBox="0 0 150 150"><circle cx="75" cy="75" r="64" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="12"/><circle class="prog" data-p="66" cx="75" cy="75" r="64" fill="none" stroke="#8BEBCC" stroke-width="12" stroke-linecap="round" stroke-dasharray="402" stroke-dashoffset="402"/></svg><div class="val"><b>+120€</b><span>di bonus</span></div></div><div class="lab">bonus a traguardi che si sommano</div></div>
+    <div class="ring"><div class="rc"><svg width="150" height="150" viewBox="0 0 150 150"><circle cx="75" cy="75" r="64" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="12"/><circle class="prog" data-p="88" cx="75" cy="75" r="64" fill="none" stroke="#E3A469" stroke-width="12" stroke-linecap="round" stroke-dasharray="402" stroke-dashoffset="402"/></svg><div class="val"><b>~296€</b><span>esempio/mese</span></div></div><div class="lab">10 famiglia + 10 singole + 100 check</div></div>
+  </div>
+  <div class="foot"><span>rivolio.it</span><span>Esempio illustrativo · pagato ogni 15 giorni · il Family rende il doppio</span></div>
+</section>
+
+<!-- 7 TRASPARENZA + PHONE -->
+<section class="slide light">
+  <div class="brand"><span class="logo">Rivolio</span></div>
+  <div class="split">
+    <div>
+      <div class="head rv"><span class="badge">Trasparenza totale</span><h2>La tua dashboard,<br>in tempo reale.</h2></div>
+      <div class="grid rv" style="gap:12px;margin-top:6px">
+        <div style="display:flex;gap:13px;align-items:flex-start"><span class="chk" style="flex:0 0 26px;margin-top:2px"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke="#fff" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><p style="font-size:17px;color:var(--ink-soft);line-height:1.45">Entri quando vuoi e vedi <b style="color:var(--green-deep)">quanto hai guadagnato</b>, aggiornato in diretta.</p></div>
+        <div style="display:flex;gap:13px;align-items:flex-start"><span class="chk" style="flex:0 0 26px;margin-top:2px"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke="#fff" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><p style="font-size:17px;color:var(--ink-soft);line-height:1.45">Ogni pratica è legata al <b style="color:var(--green-deep)">tuo link</b>. Niente nascosto, niente da rincorrere.</p></div>
+        <div style="display:flex;gap:13px;align-items:flex-start"><span class="chk" style="flex:0 0 26px;margin-top:2px"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke="#fff" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><p style="font-size:17px;color:var(--ink-soft);line-height:1.45">Pagamento <b style="color:var(--green-deep)">ogni 15 giorni</b>, su ciò che è stato davvero incassato.</p></div>
       </div>
     </div>
-    <div class="foot"><span>rivolio.it</span><span>Aiuto vero = converte</span></div>
-  </section>
-
-  <!-- 4 PERCHE TE -->
-  <section class="slide">
-    <div class="logo"><div class="mark">R</div><div class="name">Rivolio</div></div>
-    <div class="kicker">Perché con te</div>
-    <h2>Il tuo pubblico è quello giusto.</h2>
-    <ul>
-      <li>Ti seguono persone che <b>viaggiano e prendono aerei</b>: esattamente chi può averne bisogno.</li>
-      <li>È un contenuto <b>utile</b>, non una marchetta: aiuti davvero i tuoi.</li>
-      <li>Scegliamo <b>pochi creator veri</b>, non numeri a caso. Per questo ci siamo scritti.</li>
-    </ul>
-    <div class="foot"><span>rivolio.it</span><span>Selezione, non spam</span></div>
-  </section>
-
-  <!-- 5 LA COLLABORAZIONE -->
-  <section class="slide">
-    <div class="logo"><div class="mark">R</div><div class="name">Rivolio</div></div>
-    <div class="kicker">La collaborazione</div>
-    <h2>A performance. Seria e generosa.</h2>
-    <div class="cards">
-      <div class="card"><h3>Come guadagni</h3><p><b>Codice e link tuoi.</b> Prendi il <b>40%</b> su ogni pratica che arriva da te.</p></div>
-      <div class="card"><h3>Nessun vincolo</h3><p>Nessun fisso, nessun contenuto obbligatorio, nessuna scadenza.</p></div>
-      <div class="card"><h3>Bonus che salgono</h3><p>Oltre al 40%, bonus a traguardi che crescono con te.</p></div>
-      <div class="card"><h3>Zero rischio per te</h3><p>Non anticipi niente. Il rischio è tutto nostro.</p></div>
-    </div>
-    <div class="foot"><span>rivolio.it</span><span>Non il solito affiliato a percentuale</span></div>
-  </section>
-
-  <!-- 6 QUANTO GUADAGNI (esempio) -->
-  <section class="slide">
-    <div class="logo"><div class="mark">R</div><div class="name">Rivolio</div></div>
-    <div class="kicker">Quanto puoi guadagnare</div>
-    <h2>Senza tetto. Più porti, più sali.</h2>
-    <div class="example">
-      <div class="row"><span>10 pratiche famiglia · 40%</span><span>~115€</span></div>
-      <div class="row"><span>10 pratiche singole · 40%</span><span>~61€</span></div>
-      <div class="row"><span class="muted">+ bonus a traguardi (famiglia, singole, check)</span><span class="muted">+120€</span></div>
-      <div class="row total"><span>Esempio in un mese</span><span>~296€ a te</span></div>
-    </div>
-    <p class="lead" style="margin-top:16px;font-size:18px;">Esempio illustrativo. Il bello è che il Family rende il doppio, e non c'è nessun limite: è legato ai risultati veri.</p>
-    <div class="foot"><span>rivolio.it</span><span>Pagato ogni 15 giorni</span></div>
-  </section>
-
-  <!-- 7 TRASPARENZA / DASHBOARD -->
-  <section class="slide">
-    <div class="logo"><div class="mark">R</div><div class="name">Rivolio</div></div>
-    <div class="split">
-      <div>
-        <div class="kicker">Trasparenza totale</div>
-        <h2>La tua dashboard, in tempo reale.</h2>
-        <ul>
-          <li>Entri quando vuoi e vedi <b>quanto hai guadagnato</b>, aggiornato in diretta.</li>
-          <li>Ogni pratica è legata al <b>tuo link</b>. Niente di nascosto, niente da rincorrere.</li>
-          <li>Pagamento <b>ogni 15 giorni</b>, su quello che è stato davvero incassato.</li>
-        </ul>
-      </div>
-      <div>
-        <div class="pill">Mostro la dashboard qui</div>
-        <p class="lead" style="margin-top:14px;font-size:17px;">(condividi lo schermo e fai un giro veloce della dashboard vera)</p>
+    <div style="display:flex;justify-content:center" class="rv">
+      <div class="phone" id="phone">
+        <div class="notch"></div>
+        <div class="scr">
+          <div class="ptop"><span>Ciao 👋</span><span style="opacity:.6">Rivolio</span></div>
+          <div class="earn"><div class="lbl">GUADAGNO MATURATO</div><div class="amt">296,40 <small>€</small></div><div class="bar"><i></i></div></div>
+          <div class="rowp"><div class="l"><div class="av"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="t">Pratiche famiglia<small>10 chiuse</small></div></div><div class="v">+114€</div></div>
+          <div class="rowp"><div class="l"><div class="av"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h7l-1 8 10-12h-7z"/></svg></div><div class="t">Pratiche singole<small>10 chiuse</small></div></div><div class="v">+61€</div></div>
+          <div class="rowp"><div class="l"><div class="av"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg></div><div class="t">Bonus traguardi<small>3 raggiunti</small></div></div><div class="v">+120€</div></div>
+        </div>
       </div>
     </div>
-    <div class="foot"><span>rivolio.it</span><span>Vedi tutto, sempre</span></div>
-  </section>
+  </div>
+  <div class="foot"><span>rivolio.it</span><span>Vedi tutto, sempre</span></div>
+</section>
 
-  <!-- 8 LIBERTA -->
-  <section class="slide">
-    <div class="logo"><div class="mark">R</div><div class="name">Rivolio</div></div>
-    <div class="kicker">La tua libertà</div>
-    <h2>Pubblichi come e quando vuoi.</h2>
-    <ul>
-      <li>Nessuna quota, nessun calendario, nessuna approvazione preventiva.</li>
-      <li>Story, reel, link in bio: <b>decidi tu</b> il formato e i tempi.</li>
-      <li>Unica cosa: <b>#adv</b> come da normativa. Il resto è tuo.</li>
-    </ul>
-    <div class="foot"><span>rivolio.it</span><span>Il link funziona quando lo usi</span></div>
-  </section>
+<!-- 8 LIBERTA -->
+<section class="slide dark">
+  <div class="pageno">08</div>
+  <div class="head rv"><span class="badge">La tua libertà</span><h2>Pubblichi come e<br>quando <span class="mint">vuoi tu.</span></h2></div>
+  <div class="grid g3 rv">
+    <div class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8a5 5 0 0 1 9 0c0 2-2 3-2 3M9.5 21h.01M3 12a7 7 0 0 1 13.5-2.5"/><path d="M17 14a3 3 0 1 1 0 6h-4"/></svg></div><h3>Nessuna quota</h3><p>Niente calendario, niente approvazioni preventive.</p></div>
+    <div class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="m9 8 6 4-6 4z"/></svg></div><h3>Il formato lo scegli tu</h3><p>Story, reel, link in bio: decidi tu tempi e stile.</p></div>
+    <div class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="9"/></svg></div><h3>Unica regola</h3><p>#adv come da normativa. Il resto è tuo.</p></div>
+  </div>
+  <div class="foot"><span>rivolio.it</span><span>Il link funziona quando lo usi</span></div>
+</section>
 
-  <!-- 9 COME SI PARTE -->
-  <section class="slide">
-    <div class="logo"><div class="mark">R</div><div class="name">Rivolio</div></div>
-    <div class="kicker">Come si parte</div>
-    <h2>In 10 minuti sei operativo.</h2>
-    <ul>
-      <li>Ti creo <b>account e link</b> adesso: tu non compili niente.</li>
-      <li>Hai il tuo <b>codice sconto 10%</b> per i tuoi follower.</li>
-      <li>Parti quando ti va, e tra un paio di settimane ci risentiamo per vedere come sta andando.</li>
-    </ul>
-    <div class="foot"><span>rivolio.it</span><span>Setup fatto insieme, ora</span></div>
-  </section>
+<!-- 9 COME SI PARTE (steps) -->
+<section class="slide light">
+  <div class="brand"><span class="logo">Rivolio</span></div>
+  <div class="head rv"><span class="badge">Come si parte</span><h2>In 10 minuti sei operativo.</h2></div>
+  <div class="steps rv">
+    <div class="step"><div class="num">1</div><h4>Ti creo l'account</h4><p>Lo sistemo io adesso. Tu non compili niente.</p></div>
+    <div class="step"><div class="num">2</div><h4>Hai link e codice</h4><p>Il tuo link tracciato + codice sconto 10% per i tuoi.</p></div>
+    <div class="step"><div class="num">3</div><h4>Pubblichi quando vuoi</h4><p>Come ti viene naturale. Il link fa il resto.</p></div>
+    <div class="step"><div class="num">4</div><h4>Ci risentiamo a 2 settimane</h4><p>Vediamo insieme come sta andando.</p></div>
+  </div>
+  <div class="foot"><span>rivolio.it</span><span>Setup fatto insieme, ora</span></div>
+</section>
 
-  <!-- 10 CHIUSURA -->
-  <section class="slide cover">
-    <div class="logo"><div class="mark">R</div><div class="name">Rivolio</div></div>
-    <div class="kicker">Partiamo</div>
-    <h1>Ti sistemo tutto<br>adesso?</h1>
-    <p class="lead">Zero rischio, massima trasparenza, e guadagni su ogni persona che aiuti. Il resto lo costruiamo insieme.</p>
-    <div class="foot"><span>rivolio.it</span><span>Grazie · Valerio</span></div>
-  </section>
+<!-- 10 CHIUSURA -->
+<section class="slide dark">
+  <div class="glow" style="right:-40px;opacity:.7"></div>
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%;position:relative;z-index:3">
+    <div class="kick rv" style="font-family:var(--dsp);font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:var(--mint);margin-bottom:20px">Partiamo</div>
+    <h1 class="rv" style="font-size:66px;color:var(--cream)">Ti sistemo tutto<br><span class="mint">adesso?</span></h1>
+    <p class="sub rv" style="font-size:21px;max-width:40ch">Zero rischio, massima trasparenza, e guadagni su ogni persona che aiuti. Il resto lo costruiamo insieme.</p>
+  </div>
+  <div class="foot"><span>rivolio.it</span><span>Grazie · Valerio</span></div>
+</section>
 
 </div>
 
-<div class="counter" id="counter">1 / 10</div>
+<div class="counter" id="counter">01 / 10</div>
 <button class="nav prev" id="prev" aria-label="Precedente">‹</button>
 <button class="nav next" id="next" aria-label="Successiva">›</button>
 <div class="dots" id="dots"></div>
 <div class="hint">← → per navigare</div>
 
 <script>
-  const slides=[...document.querySelectorAll('.slide')];
-  const dotsWrap=document.getElementById('dots');
-  const counter=document.getElementById('counter');
-  let i=0;
-  slides.forEach((_,n)=>{const d=document.createElement('div');d.className='dot'+(n===0?' on':'');d.onclick=()=>go(n);dotsWrap.appendChild(d);});
-  const dots=[...document.querySelectorAll('.dot')];
-  function go(n){
-    i=Math.max(0,Math.min(slides.length-1,n));
-    slides.forEach((s,k)=>s.classList.toggle('active',k===i));
-    dots.forEach((d,k)=>d.classList.toggle('on',k===i));
-    counter.textContent=(i+1)+' / '+slides.length;
-  }
-  document.getElementById('next').onclick=()=>go(i+1);
-  document.getElementById('prev').onclick=()=>go(i-1);
-  document.addEventListener('keydown',e=>{
-    if(e.key==='ArrowRight'||e.key===' ')go(i+1);
-    if(e.key==='ArrowLeft')go(i-1);
-    if(e.key==='Home')go(0);
-    if(e.key==='End')go(slides.length-1);
-  });
+const slides=[...document.querySelectorAll('.slide')];
+const dotsWrap=document.getElementById('dots');
+const counter=document.getElementById('counter');
+let i=0;
+slides.forEach((_,n)=>{const d=document.createElement('div');d.className='dot'+(n===0?' on':'');d.onclick=()=>go(n);dotsWrap.appendChild(d)});
+const dots=[...document.querySelectorAll('.dot')];
+const pad=n=>String(n).padStart(2,'0');
+function activate(s){
+  s.querySelectorAll('.prog').forEach(c=>{const p=+c.dataset.p;const len=402;c.style.transition='none';c.style.strokeDashoffset=len;requestAnimationFrame(()=>{c.style.transition='stroke-dashoffset 1.2s cubic-bezier(.3,.7,.2,1) .2s';c.style.strokeDashoffset=len-(len*p/100)})});
+  const ph=s.querySelector('#phone');if(ph){ph.classList.remove('on');requestAnimationFrame(()=>ph.classList.add('on'))}
+}
+function go(n){
+  i=Math.max(0,Math.min(slides.length-1,n));
+  slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+  dots.forEach((d,k)=>d.classList.toggle('on',k===i));
+  counter.textContent=pad(i+1)+' / '+pad(slides.length);
+  activate(slides[i]);
+}
+document.getElementById('next').onclick=()=>go(i+1);
+document.getElementById('prev').onclick=()=>go(i-1);
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(i+1)}
+  if(e.key==='ArrowLeft')go(i-1);
+  if(e.key==='Home')go(0);if(e.key==='End')go(slides.length-1);
+});
+setTimeout(()=>activate(slides[0]),200);
+
+/* 3D globe (three.js, graceful fallback) */
+(function(){
+  const s=document.createElement('script');
+  s.src='https://unpkg.com/three@0.128.0/build/three.min.js';
+  s.onload=initGlobe;
+  s.onerror=()=>{};
+  document.head.appendChild(s);
+})();
+function initGlobe(){
+  const cv=document.getElementById('globe');if(!cv||!window.THREE)return;
+  const w=520,h=520;
+  const rnd=new THREE.WebGLRenderer({canvas:cv,alpha:true,antialias:true});
+  rnd.setSize(w,h);rnd.setPixelRatio(Math.min(devicePixelRatio,2));
+  const sc=new THREE.Scene();
+  const cam=new THREE.PerspectiveCamera(45,1,.1,100);cam.position.z=6.2;
+  const g=new THREE.Group();sc.add(g);
+  // wireframe sphere
+  const wire=new THREE.Mesh(new THREE.SphereGeometry(2.2,26,26),new THREE.MeshBasicMaterial({color:0x2f8f7a,wireframe:true,transparent:true,opacity:.35}));
+  g.add(wire);
+  // point cloud (land-ish dots)
+  const geo=new THREE.BufferGeometry();const N=900;const pos=new Float32Array(N*3);
+  for(let k=0;k<N;k++){const ph=Math.acos(2*Math.random()-1),th=2*Math.PI*Math.random(),r=2.24;
+    pos[k*3]=r*Math.sin(ph)*Math.cos(th);pos[k*3+1]=r*Math.cos(ph);pos[k*3+2]=r*Math.sin(ph)*Math.sin(th);}
+  geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
+  g.add(new THREE.Points(geo,new THREE.PointsMaterial({color:0x63E0B6,size:.045})));
+  // glowing core
+  g.add(new THREE.Mesh(new THREE.SphereGeometry(2.15,32,32),new THREE.MeshBasicMaterial({color:0x0c4a3d,transparent:true,opacity:.55})));
+  g.rotation.z=.35;
+  (function loop(){requestAnimationFrame(loop);g.rotation.y+=.0025;rnd.render(sc,cam)})();
+}
 </script>
 </body>
 </html>
