@@ -179,3 +179,11 @@ Ogni decisione importante va aggiunta qui, con data e motivazione. Dal più rece
 - **Risposte agli interessati:** vanno aggiornate col pacchetto nuovo prima di inviarle.
 - **Tracking Metà B:** in attesa che l'altra sessione confermi `metadata.creator` + fornisca API key Stripe.
 - **Contratto 1 pagina "ufficiale":** da finalizzare dopo il test del funnel.
+
+## 27/8 — Deck partner v4 + note di conduzione call
+- **Deck rifatto (v4, 13 slide)** dopo feedback di Valerio sul flusso confuso e le CTA da bambini. Flusso ora chiaro: come funziona la call, ti conosco (qualifica), cos'è Rivolio, problema, perché tu, pacchetto completo, come guadagni (meccanica), esempio di mese, dashboard, libertà, come si parte, chiusura.
+- **CTA adulte:** tolte "prendi pubblica fai quel che vuoi" e "partiamo iniziamo?"; chiusura ora "Attiviamo il tuo account, adesso".
+- **Pacchetto completo in slide 7:** aggiunti account gratis e codice sconto 10%, prima assenti.
+- **Numero ~296€ inquadrato:** slide 8 chiarisce che si guadagna sulle PRATICHE (non a video, non un fisso); slide 9 è un esempio legato al volume, coi numeri tracciabili riga per riga (115 famiglia + 61 singole + 50 su 100 check + 70 bonus = 296). Verificati sul modello bloccato di docs/02.
+- **Note di conduzione (docs/15):** scritte slide per slide (cosa dici e cosa fai) + spiegato il "contorno": deck come rotaia, Valerio parla, dashboard mostrata dal vivo alla slide 10 come passo-prova.
+- Regola 1 rispettata: niente inviato. Il deck è materiale per le call, non un invio a terzi.
