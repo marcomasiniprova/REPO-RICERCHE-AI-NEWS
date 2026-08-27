@@ -145,6 +145,13 @@ Giro manuale di collaudo: SUCCESSO in ~1m45s. **71 nuovi creator creati** in Air
 Note: (1) filtro nano funziona sui TikTok (hanno i follower a discovery); gli IG passano senza follower e vengono filtrati dall'Arricchisci. (2) Ripristinata la blocklist big-stranieri in "Estrai liste" (erano rientrati @bemytravelmuse, @kirstenalana ecc.). (3) 71 in un giro è tanto (target 10-20/gg): normale al primo backfill, poi la dedup abbassa; tunabile con meno hashtag/limiti. (4) Workflow di prova temporaneo archiviato.
 DA FARE (con OK Valerio): (a) aggiornare soglia Arricchisci 5k-300k → 1k-50k; (b) spegnere Harvest+Cacciatore vecchi e ATTIVARE il SCOUT unico (schedule 06:00) sotto il Capo; (c) eventuale tuning volume/hashtag.
 
+## Catena completa (27/8) — discovery + qualificazione
+Il ruolo RIVO-SCOUT ogni mattina comanda 3 motori n8n (tutti webhook/fired-by-agent):
+1. **DISCOVERY** `Rivolio - SCOUT (IG+TikTok)` (ESLNWiVxmXb11Xdu): hashtag TikTok+IG -> nano 1k-50k -> "Da arricchire".
+2. **ARRICCHISCI IG** `Rivolio 2` (Py4pqJYPO86TJFz9): scrape profilo IG + Mistral + vision -> Pronto/Scartato. Solo IG (filtro Piattaforma=Instagram aggiunto). Collaudato: 8 IG in 2,5 min, scarti tutti corretti (troppo grandi, treno/autostop, fotografi, inattivi). Classificatore niche SEVERO (voluto da Valerio).
+3. **ARRICCHISCI TIKTOK** `Rivolio - Arricchisci TikTok` (65R7BVwsokVyTk3I): NUOVO, leggero. Scrape profilo TikTok (clockworks) + regole (nano, non-aereo, video, bio travel, esclude enti/tourism board) + email dalla bio -> Pronto/Scartato. Collaudato: 3 TikTok qualificati in ~70s (gogotravelfood score 90, davidemarranon 70 -> Pronto). Separato dall'IG perche' i dati TikTok hanno forma/cardinalita' diversa (1 riga per video vs 1 per profilo).
+Flusso: SCOUT trova -> enricher qualificano -> i "Pronto" sono i creator buoni, pronti per RIVO-IG (che li contatta con OK di Valerio). Il ruolo fira discovery + entrambi gli enricher ogni mattina.
+
 ## Impostazioni definitive (27/8, decise con Valerio)
 - **Fascia**: nano 1k-50k (confermata).
 - **Volume**: 10-20 nuovi/giorno di qualita' (2-3 hashtag, ttLimit 5, igLimit 5).
