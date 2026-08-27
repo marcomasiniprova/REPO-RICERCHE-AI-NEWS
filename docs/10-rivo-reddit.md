@@ -80,7 +80,7 @@ NON solo viaggi. RIVO-REDDIT partecipa come italiano normale su temi vari (viagg
   - r/amexItaly "Ritardo volo" -> spiegazione assicurazione carta vs EU261 (comment p5zme3s).
   - r/ViaggiITA "Ho perso la patente in Scozia" -> aiuto pratico noleggio/documenti (comment p5zme3b).
   - 26/8 pomeriggio, altri 2 commenti (raggio allargato, approvati): r/ViaggiITA "Abbigliamento per trekking" (consigli Dolomiti), r/CasualIT "detto piu' insulso" (battuta sulle mezze stagioni, karma). Oggi 4 commenti totali, tetto 12-15.
-- 27/8: karma contato ancora 4. 2 commenti di puro valore approvati e pubblicati (zero Rivolio), entrambi r/ViaggiITA: "Giro del mondo" (consigli budget/anno sabbatico, commento p6886ci), "RECORD GO Rental Car servizio pessimo" (aiuto pratico diritti consumatore: pec, oggetti smarriti aeroporto, contestazione carta, commento p6888m5). 2/15 oggi. Nota: 2 messaggi in inbox da controllare al prossimo giro.
+- 27/8: karma contato ancora 4. 4 commenti di puro valore pubblicati (zero Rivolio, zero link): r/ViaggiITA "Giro del mondo" (p6886ci), r/ViaggiITA "RECORD GO Rental Car" (diritti consumatore, p6888m5), r/ViaggiITA "Malpensa departure EES" (tempi non-Schengen + EES, p69fwof), r/CasualIT "compagnie telefoniche" (diritti consumatore: recesso, Corecom/conciliaweb, p69fyr9). 4/15 oggi. Nota: 2 messaggi in inbox da controllare. La routine RIVO-REDDIT e' stata MESSA IN PAUSA il 27/8 pomeriggio (disturbava la sessione di lavoro); si riaccende quando Valerio vuole ripartire in autonomia.
 
 ## Correzioni di Valerio (memoria di addestramento)
 - 26/8: "quello stile mi piace, bravo, continua cosi'." (commenti naturali e concreti come i primi 2). Allargare i temi oltre i viaggi.
