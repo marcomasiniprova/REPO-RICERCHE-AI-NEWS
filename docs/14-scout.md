@@ -222,6 +222,14 @@ Fatto un giro completo dal vivo con Valerio che guardava. Mix hashtag 50/50 (via
 
 **Pipeline dopo il test**: 31 "Pronto" totali (23 IG dal batch vecchio del 17/8 + 8 TikTok). Nuovi Pronto TikTok da questo test: 6 creator italiani veri.
 
+## SWITCH ACTOR IG (27/8) — flakiness risolta
+Verificato che il fix "non-brucia" reggeva ma lo scraper `logical_scrapers~instagram-profile-scraper` restava ballerino (4-7 profili vuoti su 8). Trovato anche un mio bug: Follower a stringa vuota rompeva il campo numerico Airtable (sistemato: ora `null` su retry).
+Ricerca fatta -> switch all'actor UFFICIALE **`apify/instagram-profile-scraper`** (proxy RESIDENTIAL), che risolve la causa-radice (login-wall su IP datacenter). Costo ~identico (~0,0026$/profilo).
+Modifiche al workflow `Py4pqJYPO86TJFz9`:
+- Nodo "Scrapa profilo (Apify)": url actor ufficiale + body `{usernames:[...], resultsLimit:12, proxyConfiguration:{useApifyProxy:true, apifyProxyGroups:['RESIDENTIAL']}}`.
+- Nuovo nodo **"Normalizza profilo"** (code) tra scrape e classifica: mappa i campi dell'actor ufficiale (biography, followersCount, latestPosts, displayUrl, private...) al formato che il resto del workflow si aspetta (bio, followers, videos, images, name, category, isPrivate...). Cosi' "Prep vision" e "Motore decisione" restano quasi identici (aggiornato solo il riferimento a $('Normalizza profilo')).
+Collaudo (27/8): **8 profili su 8 letti correttamente** (prima 1/8), zero scrape vuoti, zero errori. Tutti e 8 giustamente Scartati (erano spazzatura liste: B&B, autonoleggio, agenzie, flyalert=brand). Flakiness IG risolta.
+
 ## Stato
 - 26/8/2026: playbook scritto (2° pezzo dopo il Capo). Motori: Apify + n8n/Byparr + Exa + Jina. ICP: nano/micro travel IT 1k-50k. Volume: 10-20/giorno. Enrichment email: sì.
 - 26/8/2026: SCOPERTA — gran parte di SCOUT esiste già su n8n (Harvest Byparr attivo + Cacciatore + Arricchisci). Apify/Byparr/Airtable/Jina già collegati. Manca solo Exa e la discovery TikTok. Quindi il lavoro su SCOUT è: allineare, ripulire e COLLAUDARE la pipeline esistente, poi aggiungere TikTok + Exa. NON ricostruire da zero.
