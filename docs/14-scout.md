@@ -145,6 +145,24 @@ Giro manuale di collaudo: SUCCESSO in ~1m45s. **71 nuovi creator creati** in Air
 Note: (1) filtro nano funziona sui TikTok (hanno i follower a discovery); gli IG passano senza follower e vengono filtrati dall'Arricchisci. (2) Ripristinata la blocklist big-stranieri in "Estrai liste" (erano rientrati @bemytravelmuse, @kirstenalana ecc.). (3) 71 in un giro è tanto (target 10-20/gg): normale al primo backfill, poi la dedup abbassa; tunabile con meno hashtag/limiti. (4) Workflow di prova temporaneo archiviato.
 DA FARE (con OK Valerio): (a) aggiornare soglia Arricchisci 5k-300k → 1k-50k; (b) spegnere Harvest+Cacciatore vecchi e ATTIVARE il SCOUT unico (schedule 06:00) sotto il Capo; (c) eventuale tuning volume/hashtag.
 
+## ARCHITETTURA FINALE (27/8) — motore n8n + ruolo manager
+Deciso con Valerio: SCOUT = un **motore n8n a WEBHOOK** + un **ruolo agente "manager"** che ogni mattina lo prepara, lo fa partire e ne controlla l'output. Il ruolo NON rifa' lo scraping (sarebbe lento/caro): il lavoro pesante e' di n8n; il giudizio (keyword, qualita', volume, report, manutenzione) e' dell'agente. Principio per tutto il team: meccanico/volume -> n8n; giudizio/decisioni/report -> ruolo.
+
+**Il motore** — workflow `Rivolio - SCOUT (IG+TikTok)` (id `ESLNWiVxmXb11Xdu`):
+- Trigger **Webhook** (POST, path `rivolio-scout`). Niente piu' schedule: lo attiva il ruolo.
+- Nodo **Config**: legge `body.hashtags` (+ `ttLimit`, `igLimit`) dal payload, o usa default. Costruisce i body dei due actor.
+- 3 rami: TikTok (clockworks hashtag) + IG (instagram-hashtag-scraper) + liste Byparr (ON) -> Merge -> Dedup+filtro nano 1k-50k -> Esistenti Airtable -> Filtra nuovi -> Crea "Da arricchire" (tabella `tblNjhgOrmCeFAH3R`).
+- Collaudato via webhook (27/8): passate hashtags nel body, Config le ha usate, 14 nuovi creati (6 TikTok nano + 8 IG). Funziona.
+
+**Il ruolo RIVO-SCOUT** (routine ~06:00, fira nella sessione persistente):
+1. Guarda quanti "Da arricchire" ci sono gia' in pipeline; se piena, riduce/salta.
+2. Sceglie/ruota gli hashtag del giorno (bacino travel IT), punta a 10-20/giorno di qualita' (2-4 hashtag, limiti bassi).
+3. Fira il motore: n8n `execute_workflow` su `ESLNWiVxmXb11Xdu`, inputs webhook body {hashtags, ttLimit, igLimit}.
+4. Controlla l'output (nodo "Filtra nuovi"): quanti, TikTok/IG, qualita' a campione.
+5. Manutenzione: aggiusta hashtag/blocklist se vede spazzatura; segnala problemi (Apify al limite, run fallita).
+6. Report breve a Valerio, numeri veri contati.
+7. NON contatta nessuno, non invia niente. Solo scoperta.
+
 ## ACCESO (26/8) — SCOUT in produzione
 - SCOUT unico `Rivolio - SCOUT (IG+TikTok)` (id `ESLNWiVxmXb11Xdu`) **ATTIVO**, schedule 06:00 (Rome).
 - Harvest vecchio (`NPuoG4jzEJddpyyQ`) **spento**; Cacciatore (`UhP9u5aDC57mOrh2`) già spento. Il sistema unico li sostituisce.
