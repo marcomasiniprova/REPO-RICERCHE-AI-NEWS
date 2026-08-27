@@ -10,6 +10,13 @@ Ogni decisione importante va aggiunta qui, con data e motivazione. Dal più rece
 - BUG IG trovato: lo scraper profilo Apify tornava VUOTO per 7/8 lead -> il GPT (bio vuota) li segnava Scartato, bruciandoli. FIX (deciso "entrambe" con Valerio): scrape maxTries 3 + se vuoto il lead resta "Da arricchire" per il giro dopo (non bruciato). I 7 gia' bruciati restano Scartato (scelta di Valerio). Da fare: valutare un actor IG piu' affidabile.
 - Pipeline dopo il test: 31 Pronto totali.
 
+### 27 Ago 2026 — RIVO-IG: primo contatto ai Pronto + regola "approvo"
+- Valerio ha chiarito una regola importante: "approvo/bellissimi/mi piace" = OK sullo STILE, NON un ordine di invio. Si manda/pubblica SOLO con un esplicito "manda"/"pubblica ora". Aggiunta a docs/06 e al prompt di RIVO-IG. (Nota: i 2 commenti Reddit erano gia' stati pubblicati su "VAI CON ENTRAMBE"; Valerio ha confermato di lasciarli su.)
+- Fase: oggi si costruisce, domani si lancia. Nessun invio a creator oggi.
+- Rinforzato il ruolo RIVO-IG: oltre a rispondere ai DM/email, ora prepara ogni giorno le BOZZE del PRIMO contatto (solo via EMAIL, il DM IG a freddo non e' permesso) per i creator Pronto dello SCOUT che hanno un'email e non sono gia' in CRM. Solo bozze, mai invio senza OK esplicito.
+- Modello email primo contatto approvato da Valerio ("bellissimi") e salvato in docs/06 sezione 4. 3 bozze di esempio preparate (Martina, The Traveling Brain, Pamela).
+- Dedup fatto: dei Pronto, 5 hanno email e non sono mai stati contattati (laviaggiatricesolitaria, giroilmondoingiro, martinagrimanditravel, the_travelingbrain, travelwithseraluna). aalessiadefazio esclusa (gia' in CRM).
+
 ### 27 Ago 2026 — Switch actor IG (flakiness risolta) + fix Follower null
 - Verificato il fix "non-brucia": reggeva, ma lo scraper `logical_scrapers` restava ballerino (4-7 vuoti su 8). Trovato mio bug: Follower a stringa vuota rompeva il campo numerico Airtable -> sistemato con `null`.
 - Ricerca actor fatta -> switch all'ufficiale **`apify/instagram-profile-scraper`** (proxy RESIDENTIAL), causa-radice della flakiness (login-wall IP datacenter). Aggiunto nodo "Normalizza profilo" per mappare i campi al formato downstream, cosi' il resto del workflow resta intatto.
