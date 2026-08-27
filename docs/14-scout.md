@@ -208,6 +208,20 @@ Fonte verita' prodotto per l'ICP: rivolio.it (rimborsi voli EU261, prezzo fisso,
 - Robustezza retry/rate-limit: gli actor Apify (TikTok/IG) e i nodi Airtable hanno gia' `retryOnFail` + `maxTries` + `onError:continueRegularOutput`; il ruolo aggiunge il retry a livello di RUN (rilancia l'intero workflow se la run fallisce/si impianta).
 Il prompt della routine RIVO-SCOUT (trig_01JSkZ3mAiZFvStU9rqUKTTL) e' stato riscritto di conseguenza (ICP allargato, GPT-5.6 Terra, padre-del-workflow, retry, 10-20 perfetti).
 
+## GIRO DI PROVA UPGRADE (27/8) — esito + bug IG trovato e sistemato
+Fatto un giro completo dal vivo con Valerio che guardava. Mix hashtag 50/50 (viaggiitalia, borghitalia, vololowcost, rimborsovolo).
+- **Discovery**: 29 nuovi in ~76s (9 TikTok con follower+bio, 20 IG). Il 50/50 ha portato profili voli/rimborsi (rimborsamitu, noproblemflights, sosviaggiatore) accanto ai travel creator. NB: ho dovuto PUBBLICARE la versione webhook della discovery (le modifiche erano in bozza non pubblicata). Stessa cosa per l'enricher TikTok.
+- **Enricher TikTok GPT-5.6 Terra**: PERFETTO. In 3 giri ha qualificato tutti i TikTok in coda. Pronto (creator italiani veri): italia.io.ti.amo (90), focus_21052 (80), italyyoudontexpect (80), alessandra_worldtrip (90, tips), jepexperiences (80), lorecostantini_ (90). Scarti intelligenti: "Voyager sans avion" (treno/bici, pubblico che NON vola), "I plan trips" (agenzia), pagina territoriale @ilborgoaricciait, profili stranieri/lifestyle, citazioni a caso. Il GPT distingue davvero il creator vero dal resto.
+- **Enricher IG — BUG TROVATO**: lo scraper profilo Apify (`logical_scrapers~instagram-profile-scraper`) ha restituito dati VUOTI per 7 lead su 8 (nessuna bio, zero follower). Il GPT, con bio vuota, li segnava "Scartato": ma erano scrape falliti, non scarti veri, e il lead veniva bruciato per sempre (Follower=0, Stato=Scartato, mai piu' ripescato). Flakiness/rate-limit dell'actor (nessun errore Apify esplicito).
+
+**FIX IG applicato (deciso con Valerio: "entrambe")**:
+1. Nodo "Scrapa profilo (Apify)": maxTries 3 (retry immediato sugli errori/timeout HTTP).
+2. Nodo "Motore decisione": se lo scrape torna VUOTO (niente username/bio/name, 0 follower, 0 post) -> il lead NON viene bruciato: resta "Da arricchire" (Follower vuoto) e viene ripescato al giro dopo. Aggiunta la variabile `scrapeEmpty` che forza `retry=true`.
+- I 7 lead IG bruciati nel test (noproblemflights, sosviaggiatore, spaziosafari, li_cylentos, kif1a.italia, ticketbacheca, strettoweb) su decisione di Valerio restano Scartato (il prossimo giro discovery ne trova altri).
+- DA FARE (deciso con Valerio): valutare un actor IG profile scraper Apify piu' affidabile e proporlo.
+
+**Pipeline dopo il test**: 31 "Pronto" totali (23 IG dal batch vecchio del 17/8 + 8 TikTok). Nuovi Pronto TikTok da questo test: 6 creator italiani veri.
+
 ## Stato
 - 26/8/2026: playbook scritto (2° pezzo dopo il Capo). Motori: Apify + n8n/Byparr + Exa + Jina. ICP: nano/micro travel IT 1k-50k. Volume: 10-20/giorno. Enrichment email: sì.
 - 26/8/2026: SCOPERTA — gran parte di SCOUT esiste già su n8n (Harvest Byparr attivo + Cacciatore + Arricchisci). Apify/Byparr/Airtable/Jina già collegati. Manca solo Exa e la discovery TikTok. Quindi il lavoro su SCOUT è: allineare, ripulire e COLLAUDARE la pipeline esistente, poi aggiungere TikTok + Exa. NON ricostruire da zero.
