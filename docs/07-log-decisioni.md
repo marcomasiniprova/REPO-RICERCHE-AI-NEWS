@@ -4,6 +4,14 @@ Ogni decisione importante va aggiunta qui, con data e motivazione. Dal più rece
 
 ---
 
+### 27 Ago 2026 — SCOUT upgrade: cervello GPT-5.6 Terra + ICP allargato + ruolo "padre"
+- Valerio vuole una macchina "di cui mi fido a occhi chiusi". Tre cambi grossi su SCOUT, tutti fatti e collaudati:
+- **Cervello da Mistral a ChatGPT GPT-5.6 Terra (reasoning alto)**, sia classificazione sia vision, in ENTRAMBI gli enricher. IG (`Py4pqJYPO86TJFz9`): classificatore su lmChatOpenAi `gpt-5.6-terra` + vision OpenAI via HTTP (image_url:{url:dataURI}, json_object, reasoning_effort high). TikTok (`65R7BVwsokVyTk3I`): nodo GPT classify OpenAI `gpt-5.6-terra` reasoning high + regole. La bio viene attenzionata a fondo ogni volta.
+- **ICP allargato + anti-falsi-positivi**: la macchina distingue il VERO travel creator (video, intrattiene, sponsor, pubblico che VOLA) da fotografo-hobbista, terra-only ed enti/tourism board (tutti Scartati). Niche allargate: travel creator + travel tips/hacks + risparmiatori/budget + diritti del consumatore/passeggeri (non solo travel puro). Test: il nuovo IG enricher ha beccato un finto travel creator (fotografo, 3 video/2246 foto) -> Scartato. TikTok: davidemarranon Pronto 90, gogotravelfood Pronto 80.
+- **Volume "scandaglia largo, tieni i perfetti"**: discovery default ttLimit 8/igLimit 8, 3-5 hashtag/giorno; meglio 10-20 PERFETTI che 50 mediocri.
+- **SCOUT come "padre" del workflow**: il ruolo fa partire ogni motore, RESTA fino alla fine (polling get_execution), e se si blocca/errore lo fa RIPARTIRE (max 2 retry, attesa crescente). Retry/rate-limit gestiti sia a livello nodo (retryOnFail) sia a livello run (rilancio). Riscritto il prompt della routine RIVO-SCOUT (trig_01JSkZ3mAiZFvStU9rqUKTTL) di conseguenza.
+- Aggiornati docs/14-scout.md (sezione UPGRADE) e questo log.
+
 ### 26 Ago 2026 — Rename ramo + via al Growth RIVO Team (Capo per primo)
 - Il ramo di lavoro si chiamava `claude/svuotare-repository` (nome auto sbagliato, NON un ordine di svuotare). Verificato con Valerio: non si cancella niente. Creato ramo pulito `claude/rivo-growth-team` (stato identico), il vecchio resta su origin per ora.
 - Strategia canali confermata: **IG recluta, TikTok pubblica forte**. SCOUT cerca su entrambe. Niente primo contatto via TikTok DM (non standard).
