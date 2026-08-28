@@ -230,3 +230,10 @@ Ogni decisione importante va aggiunta qui, con data e motivazione. Dal più rece
 - **Sezione Call** (`/call`): call in agenda dalla CRM, deck v4 apribile e scaricabile (copiato in `public/deck/`), framework ASK-SHOW-EARN in 6 passi, script slide per slide (13 slide), obiezioni con risposte pronte, checklist pre e post call. Fonte: docs/15.
 - **Sezione Scout** (`/scout`): pipeline Kanban dedicata (Da arricchire / Pronto / Scartato) con numeri veri dallo snapshot Airtable (100 scansionati, 2 pronti, 1 in arricchimento, 97 scartati), flusso in 4 passi, ricerca, link alla scheda tecnica.
 - **Numeri onesti**: i KPI Scout ora usano i totali veri dello snapshot Airtable, non il conteggio parziale delle righe in vista.
+
+## 28/8 sera — Repo riorganizzata: main pulito, via ogni traccia AI-news
+- **Nuovo branch `main`** (ora default): tutta la storia Rivolio (71 commit) ricostruita commit per commit partendo da "struttura pulita progetto": nessuna traccia AI-news nemmeno nella storia. Contenuti identici al branch di lavoro, verificato con diff vuoto.
+- **Eliminati 20 branch spazzatura**: 18x claude/sharp-dijkstra-* (compreso il vecchio default sporco) e claude/svuotare-repository-k0k9w7 (PR #1 chiusa con nota). Root ripulita: contratti spostati in docs/contratto/, via 14 screenshot legacy e logo inutilizzato.
+- **Branch rimasti: `main` (default) + `claude/rivo-growth-team`** (solo perche' Railway ci deploya: il cambio branch del deploy si fa dalla UI Railway, 10 secondi, poi il branch di lavoro si elimina). I due branch sono tenuti allineati fino allo switch.
+- **Routine DAYLY AI NEWS**: individuata (trig_016hM44Te4bYqAmAqJ5udJdg, gira alle 3:45 UTC) ma creata dalla UI di Valerio: gli agenti non possono toccarla. La elimina Valerio dalla lista Routine su claude.ai (un click).
+- Prossimo passo: Valerio rinomina la repo in "Rivolio Growth Agents", elimina la routine AI news, sposta il deploy Railway su main, crea la sessione operativa "RIVO Operativo 2" (ambiente cloud, branch main); poi si ricollegano le 4 routine e si riattiva la squadra.
