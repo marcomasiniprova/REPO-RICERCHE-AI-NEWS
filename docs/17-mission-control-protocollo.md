@@ -28,6 +28,12 @@ Aggiornamenti dati:
 -d '{"op":"reddit_add","date":"YYYY-MM-DD","subreddit":"r/...","title":"...","body_summary":"...","permalink_id":"...","status":"pubblicato"}'
 -d '{"op":"kv_set","key":"reddit_karma","value":<numero verificato>}'
 ```
+Nuove operazioni (v2, 28/8 pomeriggio):
+```
+-d '{"op":"message_add","external_id":"id univoco","creator_name":"Nome CRM","counterpart":"handle o email","channel":"dm|email","direction":"in|out","subject":"o null","body":"testo","ts":"ISO"}'
+```
+**Bozze approvate (propose-then-commit):** Valerio approva dalla dashboard col PIN (il click e' il suo OK esplicito, regola 1). A ogni giro l'agente IG e Email DEVE: leggere le drafts con status `approvata`, INVIARE quelle (email via Gmail, DM via Instagram), marcarle `inviata` con draft_upsert (stesso id), registrare il messaggio con message_add e aggiornare Airtable. Le bozze `scartata` non si inviano mai. Nessun invio per bozze in stato `bozza`.
+
 Slug agenti: `scout`, `ig_email`, `reddit`, `capo`.
 Transizione morbida (decisa 28/8): per qualche giorno le routine aggiornano SIA Airtable SIA la dashboard; quando la dashboard è rodata, Airtable si stacca.
 
@@ -42,4 +48,6 @@ Transizione morbida (decisa 28/8): per qualche giorno le routine aggiornano SIA 
 - Se in futuro serve più protezione: si aggiunge login (Supabase Auth) senza rifare nulla.
 
 ## Stato
-- 28/8: v1 costruita e collaudata visivamente in demo (screenshot approvati in sessione). Push su `claude/rivo-growth-team`. In attesa: accesso Supabase nuovo account + workspace Railway.
+- 28/8 mattina: v1 in demo. 28/8 pomeriggio: v1 IN PRODUZIONE (vedi docs/16).
+- 28/8 pomeriggio, v2: sezione Messaggi (190 messaggi veri sincronizzati: 126 DM + 64 email), bottoni Approva/Scarta con PIN (env APPROVE_PIN su Railway; propose-then-commit: il click marca, l'agente invia al giro dopo), scheda creator completa (conversazione + bozze + link profili), Reddit cliccabile, KPI cliccabili, polling di sicurezza 45s se il realtime cade, op message_add. Karma Reddit verificato 15. CRM allineata alle email vere (Vanessa call saltata, Vincent declinato, Giada&Loris idea+fee ricevuta) su dashboard E Airtable. Collaudo E2E via browser: PIN sbagliato respinto, PIN giusto approva, feed aggiornato live.
+- APERTO: routine in pausa in attesa della sessione UI di Valerio (RIVO Operativo 2) per il fix connettori; al rebind aggiungere ai prompt il dovere "invia le bozze approvate + message_add".

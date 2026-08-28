@@ -215,3 +215,10 @@ Ogni decisione importante va aggiunta qui, con data e motivazione. Dal più rece
 - Onesta' (regola 12): il problema NON e' nato oggi, e' nato con lo spostamento delle routine nella sessione dedicata; il collaudo di oggi lo ha SCOPERTO. Le vecchie routine legate alla sessione UI di Valerio funzionavano.
 - Mitigazione immediata: 4 routine in PAUSA (niente giri a vuoto ogni ora), agenti segnati "In pausa" in dashboard con nota onesta nel feed.
 - FIX (serve 1 minuto di Valerio): creare dalla UI di claude.ai una NUOVA sessione nello stesso ambiente (nome suggerito "RIVO Operativo 2"), che nasce coi connettori; poi Claude ricollega le 4 routine a quella sessione e rifa' il collaudo.
+
+## 28/8 pomeriggio — Dashboard v2: messaggi, approvazioni, interattivita
+- **Feedback di Valerio** (bottoni finti, niente sezione DM/email, log di test, dati Reddit vecchi) risolto con la v2, decisa via popup: PIN al primo Approva; "Approva" marca la bozza e l'agente invia al giro dopo (propose-then-commit, il click di Valerio E' l'OK esplicito della regola 1); storico messaggi completo; scheda creator completa.
+- **Sincronizzazione dati veri**: 190 messaggi (126 DM Instagram da 50 conversazioni + 64 email) caricati in dashboard, karma Reddit verificato 15 (era 4: cresciuto per gli upvote, nessun commento nuovo perche la routine era in pausa), CRM aggiornata su dashboard e Airtable con le verita dalle email: Vanessa call 9:00 saltata (guasto connessione, scuse inviate), Vincent&Claudia declinano (chiusura gentile), Giada&Loris idea creativa + fee ricevuta.
+- **Nuove funzioni**: sezione Messaggi con thread stile chat, bottoni Approva/Scarta protetti da PIN (impostato su Railway, mai nel repo), scheda creator drawer (conversazione vera + bozze + bottoni profilo IG/TikTok/email), Reddit e KPI cliccabili, polling di sicurezza se il realtime cade, op message_add per gli agenti.
+- **Collaudo E2E via browser vero**: bozza di collaudo -> click Approva -> PIN sbagliato respinto -> PIN giusto -> stato approvata + feed live. Poi ripulita.
+- Railway deploy automatico dal branch. Routine ancora in pausa: si riattivano appena Valerio crea la sessione UI (fix connettori).
