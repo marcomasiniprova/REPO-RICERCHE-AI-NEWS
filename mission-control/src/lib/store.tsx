@@ -277,14 +277,14 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
           if (k) setRedditKarma(Number(k.value));
         }) as unknown as Promise<void>,
       );
-    await Promise.all(jobs);
+    await Promise.allSettled(jobs);
   }, []);
 
   useEffect(() => {
     if (!hasSupabase) return;
     const c = createClient(SUPA_URL!, SUPA_KEY!);
     supa.current = c;
-    refetch().then(() => setLoading(false));
+    refetch().finally(() => setLoading(false));
 
     const tables = ['agents', 'agent_runs', 'activity_feed', 'creators', 'drafts', 'reddit_items', 'kv'];
     const ch = c.channel('mission-control');

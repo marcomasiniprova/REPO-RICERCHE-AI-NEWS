@@ -114,7 +114,7 @@ for r in reddit["items"]:
     )
 
 L.append("\n-- KV")
-L.append(f"insert into kv (key,value) values ('reddit_karma', {json.dumps(reddit['karma'])}) on conflict (key) do update set value=excluded.value, updated_at=now();")
+L.append(f"insert into kv (key,value) values ('reddit_karma', '{json.dumps(reddit['karma'])}'::jsonb) on conflict (key) do update set value=excluded.value, updated_at=now();")
 L.append("insert into kv (key,value) values ('reddit_account', '\"u/Valerio_alieri\"'::jsonb) on conflict (key) do nothing;")
 
 L.append("\n-- Primo evento nel feed")
