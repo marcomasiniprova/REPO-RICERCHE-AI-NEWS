@@ -21,6 +21,7 @@ import type {
   Message,
   RedditItem,
   ScoutStats,
+  VideoItem,
 } from './types';
 import { fmtFollowers } from './utils';
 import agentsSeed from '@/data/agents.json';
@@ -142,6 +143,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [redditKarma, setRedditKarma] = useState<number>(0);
   const [scoutStats, setScoutStats] = useState<ScoutStats | null>(null);
+  const [videos, setVideos] = useState<VideoItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [live, setLive] = useState(false);
   const supa = useRef<SupabaseClient | null>(null);
@@ -292,6 +294,12 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
           if (k) setRedditKarma(Number(k.value));
           const s = rows?.find((r) => r.key === 'scout_stats');
           if (s && s.value && typeof s.value === 'object') setScoutStats(s.value as ScoutStats);
+          // I video di RIVO VIDEO vivono nel kv: una chiave video_YYYY-MM-DD per giorno.
+          const vids = (rows ?? [])
+            .filter((r) => /^video_\d{4}-\d{2}-\d{2}$/.test(r.key) && r.value && typeof r.value === 'object')
+            .map((r) => ({ ...(r.value as Omit<VideoItem, 'key'>), key: r.key }) as VideoItem)
+            .sort((a, b) => (a.date < b.date ? 1 : -1));
+          setVideos(vids);
         }) as unknown as Promise<void>,
       );
     await Promise.allSettled(jobs);
@@ -338,12 +346,13 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
       redditKarma,
       leadTotals,
       scoutStats,
+      videos,
       leads: leadsSeed.rows as LeadRow[],
       loading,
       live,
       mode: hasSupabase ? 'supabase' : 'demo',
     };
-  }, [agents, messages, runs, feed, creators, drafts, reddit, redditKarma, scoutStats, loading, live, hasSupabase]);
+  }, [agents, messages, runs, feed, creators, drafts, reddit, redditKarma, scoutStats, videos, loading, live, hasSupabase]);
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
 }

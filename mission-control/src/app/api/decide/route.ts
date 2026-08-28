@@ -14,7 +14,7 @@ export async function POST(request: Request) {
     return Response.json({ ok: false, error: 'non configurato' }, { status: 503 });
   }
 
-  let body: { draft_id?: number; action?: string; pin?: string };
+  let body: { draft_id?: number; video_key?: string; action?: string; note?: string; pin?: string };
   try {
     body = await request.json();
   } catch {
@@ -24,6 +24,47 @@ export async function POST(request: Request) {
   if (!body.pin || body.pin !== pinEnv) {
     return Response.json({ ok: false, error: 'PIN errato' }, { status: 401 });
   }
+
+  // Video di RIVO VIDEO: vivono nel kv (chiave video_YYYY-MM-DD), il PIN
+  // porta lo stato a "approvato" o "scartato"; pubblica poi l'agente.
+  if (body.video_key) {
+    const keyName = String(body.video_key);
+    if (!/^video_\d{4}-\d{2}-\d{2}$/.test(keyName)) {
+      return Response.json({ ok: false, error: 'chiave video non valida' }, { status: 400 });
+    }
+    const db = createClient(url, key, { auth: { persistSession: false } });
+    const { data: row } = await db.from('kv').select('value').eq('key', keyName).single();
+    const video = row?.value as Record<string, unknown> | null;
+    if (!video || typeof video !== 'object') {
+      return Response.json({ ok: false, error: 'video non trovato' }, { status: 404 });
+    }
+    if (video.stato !== 'in_attesa') {
+      return Response.json({ ok: false, error: 'video gia deciso' }, { status: 409 });
+    }
+    const stato = body.action === 'reject' ? 'scartato' : 'approvato';
+    const next = {
+      ...video,
+      stato,
+      decided_at: new Date().toISOString(),
+      note: body.note ? `${video.note ? `${video.note}\n` : ''}Valerio: ${String(body.note)}` : video.note,
+    };
+    const { error: upErr } = await db
+      .from('kv')
+      .update({ value: next, updated_at: new Date().toISOString() })
+      .eq('key', keyName);
+    if (upErr) return Response.json({ ok: false, error: upErr.message }, { status: 500 });
+
+    await db.from('activity_feed').insert({
+      agent_slug: null,
+      kind: stato === 'approvato' ? 'success' : 'info',
+      message:
+        stato === 'approvato'
+          ? `Valerio ha approvato il video del ${String(video.date ?? keyName.slice(6))}: RIVO VIDEO lo pubblica su TikTok, Reels e Shorts al primo giro utile.`
+          : `Valerio ha scartato il video del ${String(video.date ?? keyName.slice(6))}.`,
+    });
+    return Response.json({ ok: true, status: stato });
+  }
+
   const id = Number(body.draft_id);
   const action = body.action === 'reject' ? 'scartata' : 'approvata';
   if (!id) return Response.json({ ok: false, error: 'draft_id mancante' }, { status: 400 });

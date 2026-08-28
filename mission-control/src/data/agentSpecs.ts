@@ -115,4 +115,31 @@ export const AGENT_SPECS: Record<string, AgentSpec> = {
       'Prima menzione di Rivolio solo a karma consolidato e con OK esplicito',
     ],
   },
+  video: {
+    missione:
+      'La macchina dei contenuti: ogni mattina produce un video UGC ultra-realistico con Giulia, il personaggio AI di Rivolio, e lo porta fino alla pubblicazione su TikTok, Reels e Shorts. Un video al giorno, fatto bene.',
+    tools: [
+      { name: 'Kie.ai (Veo 3.1)', detail: 'Generazione video image-to-video con audio italiano nativo' },
+      { name: 'Reference di Giulia', detail: '5 foto 4K in assets/giulia, volto e wardrobe fissi' },
+      { name: 'Composio social', detail: 'Pubblicazione su TikTok, Instagram Reels e YouTube Shorts' },
+      { name: 'Mission Control API', detail: 'I video aspettano il PIN nella pagina Contenuti' },
+    ],
+    skills: [
+      'Skill dedicata rivo-video (SKILL.md + reference.md + bibbia di Giulia nel repo)',
+      'Regia ultra-realismo: micro-espressioni, gesti coerenti, feel handheld',
+      'Hook nei primi 3 secondi, script 15-25s in italiano umano',
+      'Disclosure "Creato con AI" su ogni pubblicazione (EU AI Act)',
+    ],
+    flusso: [
+      { step: 'Saldo e angolo', detail: 'Controlla i crediti Kie, alterna educativo e smonta-miti' },
+      { step: 'Script e regia', detail: '3 hook, script parlato, prompt Veo 3.1 dettagliato' },
+      { step: 'Genera e QA', detail: 'Image-to-video da una reference, checklist qualita severa' },
+      { step: 'PIN e pubblica', detail: 'Il video aspetta il PIN in Contenuti, poi esce sui 3 canali' },
+    ],
+    regole: [
+      'Mai pubblicare senza il PIN di Valerio: semi-auto per scelta',
+      'Budget fisso: un video + massimo una rigenerazione al giorno',
+      'Se il video sa di AI non si propone: si riparte dalla regia',
+    ],
+  },
 };

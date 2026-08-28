@@ -42,5 +42,16 @@
     "schedule_label": "Ogni ora, 8:00-20:00",
     "cron": "0 6-18 * * *",
     "color": "#D4552F"
+  },
+  {
+    "slug": "video",
+    "name": "VIDEO",
+    "role": "La macchina dei contenuti",
+    "tagline": "Un video UGC perfetto al giorno, nato dai casi veri.",
+    "avatar": "/avatars/video.png",
+    "status": "idle",
+    "schedule_label": "Ogni mattina alle 7:30",
+    "cron": "30 5 * * *",
+    "color": "#8b5cf6"
   }
 ]

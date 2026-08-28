@@ -122,6 +122,31 @@ export interface ScoutStats {
   fonte?: string;
 }
 
+export type VideoStato = 'in_attesa' | 'approvato' | 'scartato' | 'pubblicato' | 'errore';
+
+/** Video del giorno di RIVO VIDEO: vive nel kv (chiave video_YYYY-MM-DD). */
+export interface VideoItem {
+  key: string; // chiave kv, es. video_2026-08-29
+  date: string;
+  angolo?: 'edu' | 'mito' | string;
+  tema?: string;
+  hook?: string;
+  script?: string;
+  reference_foto?: string;
+  video_url?: string;
+  duration_s?: number;
+  crediti_spesi?: number;
+  caption_tiktok?: string;
+  caption_ig?: string;
+  caption_youtube?: string;
+  stato: VideoStato;
+  note?: string;
+  created_at?: string;
+  decided_at?: string | null;
+  published_at?: string | null;
+  piattaforme_pubblicate?: string[];
+}
+
 export interface DashboardData {
   agents: Agent[];
   messages: Message[];
@@ -133,6 +158,7 @@ export interface DashboardData {
   redditKarma: number;
   leadTotals: { tot: number; pronto: number; da_arricchire: number; scartato: number };
   scoutStats: ScoutStats | null;
+  videos: VideoItem[];
   leads: LeadRow[];
   loading: boolean;
   live: boolean; // realtime collegato
