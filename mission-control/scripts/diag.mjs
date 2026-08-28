@@ -1,0 +1,10 @@
+import { chromium } from 'playwright-core';
+const b = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium', args: ['--no-sandbox'], proxy: { server: process.env.HTTPS_PROXY, bypass: 'localhost,127.0.0.1' } });
+const p = await b.newPage({ viewport: { width: 1400, height: 900 } });
+p.on('console', (m) => { if (['error','warning'].includes(m.type())) console.log('[' + m.type() + ']', m.text().slice(0, 220)); });
+p.on('pageerror', (e) => console.log('[pageerror]', String(e).slice(0, 300)));
+await p.goto('http://localhost:3200/', { waitUntil: 'domcontentloaded' });
+await p.waitForTimeout(6000);
+console.log('h1:', await p.locator('h1').first().textContent().catch(() => 'n/a'));
+console.log('agents cards:', await p.locator('a[href^="/agenti/"]').count());
+await b.close();

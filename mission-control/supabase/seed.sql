@@ -80,7 +80,7 @@ insert into reddit_items (date,subreddit,kind,title,body_summary,permalink_id,st
 insert into reddit_items (date,subreddit,kind,title,body_summary,permalink_id,status) values ('2026-08-27','r/CasualIT','comment','Compagnie telefoniche','Diritti consumatore: recesso, Corecom/conciliaweb','p69fyr9','pubblicato');
 
 -- KV
-insert into kv (key,value) values ('reddit_karma', 4) on conflict (key) do update set value=excluded.value, updated_at=now();
+insert into kv (key,value) values ('reddit_karma', '4'::jsonb) on conflict (key) do update set value=excluded.value, updated_at=now();
 insert into kv (key,value) values ('reddit_account', '"u/Valerio_alieri"'::jsonb) on conflict (key) do nothing;
 
 -- Primo evento nel feed
