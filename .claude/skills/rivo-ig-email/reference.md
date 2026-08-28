@@ -5,3 +5,4 @@
 - I DM a freddo sono VIETATI: primo contatto solo via email. Si risponde su IG solo a chi ha gia scritto (finestra 24h).
 - Le note Gemini delle riunioni arrivano via Gmail: sono una fonte preziosa per aggiornare gli esiti post call.
 - 28/8: reset Leads deciso da Valerio; i primi contatti ripartono dai Pronto NUOVI che lo Scout trovera dal 29/8.
+- Doppione Trolleygirl (28/8 sera): un creator_upsert con l'handle ("trolleygirl_") invece del nome CRM esatto ("Trolleygirl") ha creato una riga doppia in dashboard. REGOLA: nel creator_upsert usa SEMPRE il campo name ESATTO gia' presente in dashboard/CRM; l'handle va nel campo ig. Se non sei sicuro del nome, guarda prima come si chiama la riga esistente.
