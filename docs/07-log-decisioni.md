@@ -284,3 +284,9 @@ Ogni decisione importante va aggiunta qui, con data e motivazione. Dal più rece
 ## 28/8 notte — Branch intruso eliminato, chiarimenti split
 - Il terzo branch (claude/growth-rivo-operative-e94maq) era il branch di sessione auto-creato dalla sessione operativa quando i ruoli committavano gli appunti di giro: 7 righe recuperate su main, branch ELIMINATO via GraphQL. Confermata la struttura a 2 rami: main (agenti e docs) + claude/rivo-growth-team (codice dashboard, Railway). Coi nuovi prompt i ruoli non committano piu nulla sul repo.
 - La vecchia sessione operativa resta attiva finche i 4 trigger non sono ricablati sulle sessioni nuove, poi la archivia il check automatico (autorizzato da Valerio via popup).
+
+## 28/8 notte — Split completato: 4 ruoli, 4 sessioni, contesti isolati
+- Valerio ha creato le 4 sessioni UI (RIVO SCOUT / IG - DM / REDDIT / CAPO operative), tutte su RIVOLIO-GROWTH-AGENTS branch main, connettori verificati da ciascuna al primo messaggio.
+- Trigger ricablati subito (delete+create): SCOUT trig_018927nhJqfVVsLefhixxD1s (04:00 UTC), IG e Email trig_01CMRxqjmbbRSnA5Bqsc499E (15 6-18 UTC), REDDIT trig_01MCzR2LNjCrQaWBm978Bwjk (0 6-18 UTC), CAPO trig_01LP8chJe9KcbWa9ZM8yFHCF (30 6,18 UTC). Prompt blindati in piu rispetto a prima: divieto assoluto di commit/push sul repo per tutti i ruoli, guardia anti record sbagliato per IG (verifica che il record Airtable sia del creator giusto prima di scrivere), karma SOLO comment_karma per REDDIT (kv reddit_karma ora e il karma commenti), nota slot: se Valerio ha confermato per iscritto uno slot anche fuori Lun-Ven vale la sua conferma.
+- Vecchia sessione "Growth RIVO Team operative session" ARCHIVIATA; promemoria di rebind eliminato (fatto a mano prima che scattasse).
+- I check di collaudo restano: SCOUT 05:00 UTC, CAPO 07:05 UTC. Primo giro nelle sessioni nuove: SCOUT 06:00 italiane, REDDIT 08:00, CAPO 08:30, IG 08:15.
