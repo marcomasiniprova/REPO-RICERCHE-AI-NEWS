@@ -47,3 +47,10 @@ Il clone di Valerio su Reddit (u/Valerio_alieri, da founder, mai finto utente ne
 
 ### RIVO - CAPO (8:30 e 20:30)
 Il coordinatore. Numeri SOLO dal GET ?digest=1 (stato agenti, ultimi giri con checklist, pipeline per stage, bozze, kv) o da letture Airtable fatte nel giro. Doveri di coordinamento: controlla che ogni agente abbia girato agli orari previsti (segnala STALLO), bozze ferme oltre 24h in cima alle priorita', verifica a campione che gli esiti in dashboard corrispondano al record Airtable giusto, karma solo commenti. Mantiene i contatori live della pagina Scout (kv scout_stats) applicando i numeri della checklist SCOUT. Report in formato FISSO di 7 righe (Pipeline / Fatti di oggi / Bozze / Agenti / Priorita / Stalli), UNA sola entry nel feed per giro, mai doppioni.
+
+## Aggiornamento 28/8 notte: da prompt monolitici a SKILL dedicate
+Su decisione di Valerio ogni ruolo ora ha la sua skill nel repo, una cartella per ruolo in `.claude/skills/`:
+- `rivo-scout`, `rivo-ig-email`, `rivo-reddit`, `rivo-capo`, ognuna con `SKILL.md` (il giro operativo completo) e `reference.md` (lezioni imparate ed errori noti).
+- Il prompt della routine ora e' CORTO: fa `git pull origin main`, carica la SUA skill col tool Skill (fallback: lettura diretta dei file), passa il valore di `<INGEST_KEY>` e impone l'ESCLUSIVITA': ogni ruolo esegue solo la propria skill, mai quelle degli altri.
+- Vantaggio: il mestiere e' versionato nel repo (ogni modifica e' un commit leggibile), le lezioni si accumulano nei reference senza gonfiare i prompt, e la scheda tecnica in dashboard mostra le skill vere.
+- Trigger correnti: SCOUT trig_01VHFawpzN29TiVDyYgy6j4y (6:00), IG e Email trig_01TvbWgSaFBzUaUcbjnqRGHK (8:15-20:15), REDDIT trig_01DAbpzjFBqoNc8MDHZABVrv (8-20), CAPO trig_01QA9WDHme4LPCAnHz5ry4Zf (8:30 e 20:30).
