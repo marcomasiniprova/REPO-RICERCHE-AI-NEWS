@@ -5,11 +5,23 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { ArrowLeft, CalendarClock, History, PackageCheck, Timer } from 'lucide-react';
+import {
+  ArrowLeft,
+  CalendarClock,
+  History,
+  PackageCheck,
+  Timer,
+  Wrench,
+  Sparkles,
+  ListOrdered,
+  ShieldCheck,
+  Target,
+} from 'lucide-react';
 import { useData } from '@/lib/store';
-import { PageHeader, StatusPill, EmptyState, CountUp } from '@/components/ui';
+import { StatusPill, EmptyState, CountUp } from '@/components/ui';
 import LiveBadge from '@/components/LiveBadge';
 import { cn, fmtDay, fmtTime, nextRunLabel, timeAgo } from '@/lib/utils';
+import { AGENT_SPECS } from '@/data/agentSpecs';
 
 export default function AgentPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);
@@ -109,6 +121,97 @@ export default function AgentPage({ params }: { params: Promise<{ slug: string }
               </div>
             </div>
           </motion.div>
+
+          {/* Scheda tecnica */}
+          {AGENT_SPECS[slug] && (
+            <motion.div
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.12 }}
+              className="card mt-4 overflow-hidden"
+            >
+              <div className="border-b border-line bg-subtle/50 px-6 py-3.5">
+                <div className="flex items-center gap-2">
+                  <Target size={15} className="text-brand-600" />
+                  <h2 className="font-display text-[15px] font-bold tracking-tight text-deep">
+                    Come lavora
+                  </h2>
+                </div>
+                <p className="mt-1 text-[12.5px] leading-relaxed text-ink-2">
+                  {AGENT_SPECS[slug].missione}
+                </p>
+              </div>
+
+              <div className="grid gap-0 md:grid-cols-2">
+                {/* Tool collegati */}
+                <div className="border-b border-line px-6 py-4 md:border-r">
+                  <div className="mb-2.5 flex items-center gap-1.5 text-[10.5px] font-semibold uppercase tracking-wide text-ink-3">
+                    <Wrench size={11} /> Tool collegati
+                  </div>
+                  <div className="space-y-2">
+                    {AGENT_SPECS[slug].tools.map((t) => (
+                      <div key={t.name} className="flex items-baseline gap-2">
+                        <span className="shrink-0 rounded-lg bg-brand-50 px-2 py-0.5 text-[11px] font-bold text-brand-700">
+                          {t.name}
+                        </span>
+                        <span className="text-[11.5px] leading-snug text-ink-2">{t.detail}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Skill */}
+                <div className="border-b border-line px-6 py-4">
+                  <div className="mb-2.5 flex items-center gap-1.5 text-[10.5px] font-semibold uppercase tracking-wide text-ink-3">
+                    <Sparkles size={11} /> Skill
+                  </div>
+                  <ul className="space-y-1.5">
+                    {AGENT_SPECS[slug].skills.map((s) => (
+                      <li key={s} className="flex items-start gap-2 text-[12px] leading-snug text-ink-2">
+                        <span className="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-brand-400" />
+                        {s}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Flusso */}
+                <div className="border-b border-line px-6 py-4 md:border-b-0 md:border-r">
+                  <div className="mb-2.5 flex items-center gap-1.5 text-[10.5px] font-semibold uppercase tracking-wide text-ink-3">
+                    <ListOrdered size={11} /> Il suo giro, passo per passo
+                  </div>
+                  <ol className="space-y-2">
+                    {AGENT_SPECS[slug].flusso.map((f, i) => (
+                      <li key={f.step} className="flex items-start gap-2.5">
+                        <span className="mt-0.5 flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full bg-deep text-[9.5px] font-bold text-mint">
+                          {i + 1}
+                        </span>
+                        <div className="min-w-0">
+                          <span className="text-[12px] font-semibold text-deep">{f.step}</span>
+                          <span className="text-[11.5px] text-ink-3"> · {f.detail}</span>
+                        </div>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+
+                {/* Regole dure */}
+                <div className="px-6 py-4">
+                  <div className="mb-2.5 flex items-center gap-1.5 text-[10.5px] font-semibold uppercase tracking-wide text-ink-3">
+                    <ShieldCheck size={11} /> Regole dure
+                  </div>
+                  <ul className="space-y-1.5">
+                    {AGENT_SPECS[slug].regole.map((r) => (
+                      <li key={r} className="flex items-start gap-2 text-[12px] leading-snug text-ink-2">
+                        <ShieldCheck size={12} className="mt-0.5 shrink-0 text-brand-600" />
+                        {r}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </motion.div>
+          )}
 
           {/* Storico giri */}
           <div className="mb-3 mt-7 flex items-center justify-between">

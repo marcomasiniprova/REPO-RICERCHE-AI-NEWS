@@ -222,3 +222,11 @@ Ogni decisione importante va aggiunta qui, con data e motivazione. Dal più rece
 - **Nuove funzioni**: sezione Messaggi con thread stile chat, bottoni Approva/Scarta protetti da PIN (impostato su Railway, mai nel repo), scheda creator drawer (conversazione vera + bozze + bottoni profilo IG/TikTok/email), Reddit e KPI cliccabili, polling di sicurezza se il realtime cade, op message_add per gli agenti.
 - **Collaudo E2E via browser vero**: bozza di collaudo -> click Approva -> PIN sbagliato respinto -> PIN giusto -> stato approvata + feed live. Poi ripulita.
 - Railway deploy automatico dal branch. Routine ancora in pausa: si riattivano appena Valerio crea la sessione UI (fix connettori).
+
+## 28/8 sera — Dashboard v3: email leggibili, schede tecniche, sezioni Call e Scout
+- **Feedback di Valerio** (email nei thread illeggibili con citazioni, serve scheda tecnica per agente, sezione call, sezione scout) risolto con la v3, decisa via popup: email mostrano solo il messaggio nuovo; scheda "Come lavora" nella pagina agente; sezione Call completa (deck + script + obiezioni); pulizia repo confermata con main come branch unico.
+- **Fix email definitivo**: bonificati 50 dei 64 record email in Supabase (via citazioni "On ... wrote:", "Il giorno ... ha scritto:", righe ">", grassetti con asterischi); la stessa pulizia ora vive in `/api/ingest` (op message_add) quindi ogni email futura arriva gia pulita. I DM restano come sono.
+- **Schede tecniche agenti**: pannello "Come lavora" in ogni pagina agente con missione, tool collegati (Composio Instagram/Gmail, Airtable, n8n, Apify, GPT, Reddit), skill, flusso passo per passo e regole dure. Contenuto in `src/data/agentSpecs.ts`.
+- **Sezione Call** (`/call`): call in agenda dalla CRM, deck v4 apribile e scaricabile (copiato in `public/deck/`), framework ASK-SHOW-EARN in 6 passi, script slide per slide (13 slide), obiezioni con risposte pronte, checklist pre e post call. Fonte: docs/15.
+- **Sezione Scout** (`/scout`): pipeline Kanban dedicata (Da arricchire / Pronto / Scartato) con numeri veri dallo snapshot Airtable (100 scansionati, 2 pronti, 1 in arricchimento, 97 scartati), flusso in 4 passi, ricerca, link alla scheda tecnica.
+- **Numeri onesti**: i KPI Scout ora usano i totali veri dello snapshot Airtable, non il conteggio parziale delle righe in vista.

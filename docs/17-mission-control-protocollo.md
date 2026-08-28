@@ -32,6 +32,7 @@ Nuove operazioni (v2, 28/8 pomeriggio):
 ```
 -d '{"op":"message_add","external_id":"id univoco","creator_name":"Nome CRM","counterpart":"handle o email","channel":"dm|email","direction":"in|out","subject":"o null","body":"testo","ts":"ISO"}'
 ```
+Nota v3 (28/8 sera): per `channel: "email"` il server pulisce da solo il body (via citazioni "On ... wrote:", "Il giorno ... ha scritto:", righe ">", asterischi di grassetto): si puo' passare il testo grezzo della mail senza pre-pulirlo. I DM vengono salvati come arrivano.
 **Bozze approvate (propose-then-commit):** Valerio approva dalla dashboard col PIN (il click e' il suo OK esplicito, regola 1). A ogni giro l'agente IG e Email DEVE: leggere le drafts con status `approvata`, INVIARE quelle (email via Gmail, DM via Instagram), marcarle `inviata` con draft_upsert (stesso id), registrare il messaggio con message_add e aggiornare Airtable. Le bozze `scartata` non si inviano mai. Nessun invio per bozze in stato `bozza`.
 
 Slug agenti: `scout`, `ig_email`, `reddit`, `capo`.
