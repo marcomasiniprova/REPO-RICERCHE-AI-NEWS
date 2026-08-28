@@ -20,6 +20,7 @@ import type {
   LeadRow,
   Message,
   RedditItem,
+  ScoutStats,
 } from './types';
 import { fmtFollowers } from './utils';
 import agentsSeed from '@/data/agents.json';
@@ -140,6 +141,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
   const [reddit, setReddit] = useState<RedditItem[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [redditKarma, setRedditKarma] = useState<number>(0);
+  const [scoutStats, setScoutStats] = useState<ScoutStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [live, setLive] = useState(false);
   const supa = useRef<SupabaseClient | null>(null);
@@ -285,10 +287,11 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     if (want('kv'))
       jobs.push(
         c.from('kv').select('*').then(({ data }) => {
-          const k = (data as Array<{ key: string; value: unknown }> | null)?.find(
-            (r) => r.key === 'reddit_karma',
-          );
+          const rows = data as Array<{ key: string; value: unknown }> | null;
+          const k = rows?.find((r) => r.key === 'reddit_karma');
           if (k) setRedditKarma(Number(k.value));
+          const s = rows?.find((r) => r.key === 'scout_stats');
+          if (s && s.value && typeof s.value === 'object') setScoutStats(s.value as ScoutStats);
         }) as unknown as Promise<void>,
       );
     await Promise.allSettled(jobs);
@@ -321,15 +324,9 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
   }, [hasSupabase, refetch]);
 
   const value = useMemo<DashboardData>(() => {
-    const scoutRows = creators.filter((c) => c.source === 'scout');
-    const leadTotals = hasSupabase
-      ? {
-          tot: scoutRows.length,
-          pronto: scoutRows.filter((c) => c.stage === 'Nuovo').length,
-          da_arricchire: scoutRows.filter((c) => c.esito?.includes('arricchimento')).length,
-          scartato: scoutRows.filter((c) => c.stage === 'Scartato').length,
-        }
-      : (leadsSeed.totals as DashboardData['leadTotals']);
+    // Contatori Leads: prima scelta il kv scout_stats (numeri veri di Airtable,
+    // mantenuti dagli agenti), altrimenti lo snapshot impacchettato nel build.
+    const leadTotals = scoutStats ?? (leadsSeed.totals as DashboardData['leadTotals']);
     return {
       agents,
       messages,
@@ -340,12 +337,13 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
       reddit,
       redditKarma,
       leadTotals,
+      scoutStats,
       leads: leadsSeed.rows as LeadRow[],
       loading,
       live,
       mode: hasSupabase ? 'supabase' : 'demo',
     };
-  }, [agents, messages, runs, feed, creators, drafts, reddit, redditKarma, loading, live, hasSupabase]);
+  }, [agents, messages, runs, feed, creators, drafts, reddit, redditKarma, scoutStats, loading, live, hasSupabase]);
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
 }

@@ -20,11 +20,6 @@ import { PageHeader, StatCard, Badge, StatusPill } from '@/components/ui';
 import LiveBadge from '@/components/LiveBadge';
 import { cn, fmtFollowers, nextRunLabel } from '@/lib/utils';
 import type { LeadRow } from '@/lib/types';
-import leadsSeed from '@/data/leads.json';
-
-/* Numeri veri dell'ultimo snapshot Airtable Leads: la lista qui sotto
-   mostra i lead piu rilevanti, il totale scansionato e questo. */
-const TOTALS = leadsSeed.totals as { tot: number; pronto: number; da_arricchire: number; scartato: number };
 
 const FLOW = [
   { step: 'Scoperta', detail: 'Hashtag travel e profili collegati, scansione larga' },
@@ -83,7 +78,7 @@ function LeadCard({ lead, index }: { lead: LeadRow; index: number }) {
 }
 
 export default function ScoutPage() {
-  const { leads, agents, loading } = useData();
+  const { leads, agents, loading, leadTotals, scoutStats } = useData();
   const agent = agents.find((a) => a.slug === 'scout');
   const [q, setQ] = useState('');
   const [allScartati, setAllScartati] = useState(false);
@@ -163,17 +158,22 @@ export default function ScoutPage() {
       </div>
 
       {/* KPI */}
-      <div className="mb-6 grid grid-cols-2 gap-3.5 lg:grid-cols-4">
+      <div className="mb-2 grid grid-cols-2 gap-3.5 lg:grid-cols-4">
         {loading ? (
           Array.from({ length: 4 }).map((_, i) => <div key={i} className="skeleton h-[108px]" />)
         ) : (
           <>
-            <StatCard label="Lead scansionati" value={TOTALS.tot} hint="Tutti i profili passati dai giri" icon={<Radar size={16} />} />
-            <StatCard label="In arricchimento" value={TOTALS.da_arricchire} hint="Profilo ancora da completare" icon={<Sparkle size={16} />} />
-            <StatCard label="Pronti" value={TOTALS.pronto} hint="In target, passano al contatto" icon={<CheckCircle2 size={16} />} accent />
-            <StatCard label="Scartati" value={TOTALS.scartato} hint="Fuori target: meglio pochi ma buoni" icon={<XCircle size={16} />} />
+            <StatCard label="Lead scansionati" value={leadTotals.tot} hint="Tutti i profili passati dai giri" icon={<Radar size={16} />} />
+            <StatCard label="In arricchimento" value={leadTotals.da_arricchire} hint="Profilo ancora da completare" icon={<Sparkle size={16} />} />
+            <StatCard label="Pronti" value={leadTotals.pronto} hint="In target, passano al contatto" icon={<CheckCircle2 size={16} />} accent />
+            <StatCard label="Scartati" value={leadTotals.scartato} hint="Fuori target: meglio pochi ma buoni" icon={<XCircle size={16} />} />
           </>
         )}
+      </div>
+      <div className="mb-6 px-1 text-[10.5px] text-ink-3">
+        {scoutStats?.updated_at
+          ? `Contatori live dalla tabella Leads di Airtable, ultimo aggiornamento ${new Date(scoutStats.updated_at).toLocaleString('it-IT', { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' })}.`
+          : 'Contatori dallo snapshot impacchettato: appena gli agenti scrivono i numeri live, compaiono qui da soli.'}
       </div>
 
       {/* Ricerca */}
@@ -268,9 +268,9 @@ export default function ScoutPage() {
                 {allScartati ? 'Mostra meno' : `Mostra tutti i ${cols.scartato.length} in vista`}
               </button>
             )}
-            {TOTALS.scartato > cols.scartato.length && (
+            {leadTotals.scartato > cols.scartato.length && (
               <p className="mt-2.5 px-1 text-[10.5px] leading-snug text-ink-3">
-                Qui i piu rilevanti: gli scartati totali sono {TOTALS.scartato}, la lista completa
+                Qui i piu rilevanti: gli scartati totali sono {leadTotals.scartato}, la lista completa
                 vive in Airtable.
               </p>
             )}
@@ -279,8 +279,9 @@ export default function ScoutPage() {
       )}
 
       <div className="mt-8 text-[10.5px] leading-relaxed text-ink-3">
-        Snapshot della tabella Leads (Airtable). Con lo Scout attivo, ogni giro del mattino aggiorna
-        questa pipeline in automatico.
+        I contatori qui sopra sono i numeri veri di Airtable, mantenuti a ogni giro dello Scout e del
+        CAPO. Le card della pipeline mostrano un estratto dei lead piu rilevanti: la lista completa
+        vive in Airtable.
       </div>
     </div>
   );

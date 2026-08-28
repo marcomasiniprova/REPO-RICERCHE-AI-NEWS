@@ -29,6 +29,8 @@ function admin() {
  *  - GET /api/ingest?messages_hours=48      -> indice dei messaggi gia' in dashboard
  *    nelle ultime N ore (external_id, canale, controparte, direzione, ts):
  *    l'agente lo confronta con Instagram/Gmail e aggiunge SOLO cio' che manca.
+ *  - GET /api/ingest?digest=1               -> il quadro per il CAPO in una chiamata:
+ *    stato agenti, ultimi giri, pipeline per stage, bozze per stato, kv.
  */
 export async function GET(request: Request) {
   const auth = request.headers.get('authorization') ?? '';
@@ -55,6 +57,40 @@ export async function GET(request: Request) {
     return Response.json({ ok: true, drafts: data });
   }
 
+  if (params.get('digest')) {
+    const [agents, runs, creators, drafts, kv] = await Promise.all([
+      db.from('agents').select('slug, status, last_run_at, today_count, current_task').order('sort'),
+      db
+        .from('agent_runs')
+        .select('agent_slug, status, started_at, finished_at, summary, items')
+        .order('started_at', { ascending: false })
+        .limit(12),
+      db.from('creators').select('name, ig, stage, esito, updated_at').eq('source', 'crm'),
+      db.from('drafts').select('id, creator, channel, status, created_at'),
+      db.from('kv').select('key, value, updated_at'),
+    ]);
+    const err = agents.error ?? runs.error ?? creators.error ?? drafts.error ?? kv.error;
+    if (err) return Response.json({ ok: false, error: err.message }, { status: 500 });
+
+    const byStage: Record<string, number> = {};
+    for (const c of creators.data ?? []) byStage[c.stage] = (byStage[c.stage] ?? 0) + 1;
+    const draftsByStatus: Record<string, number> = {};
+    for (const d of drafts.data ?? []) draftsByStatus[d.status] = (draftsByStatus[d.status] ?? 0) + 1;
+    const pendingDrafts = (drafts.data ?? []).filter((d) => d.status === 'bozza');
+
+    return Response.json({
+      ok: true,
+      now: new Date().toISOString(),
+      agents: agents.data,
+      ultimi_giri: runs.data,
+      pipeline_per_stage: byStage,
+      creators: creators.data,
+      bozze_per_stato: draftsByStatus,
+      bozze_in_attesa: pendingDrafts,
+      kv: kv.data,
+    });
+  }
+
   const hoursRaw = params.get('messages_hours');
   if (hoursRaw) {
     const hours = Math.min(Math.max(Number(hoursRaw) || 48, 1), 168);
@@ -71,7 +107,7 @@ export async function GET(request: Request) {
     return Response.json({ ok: true, since, count: data.length, messages: data });
   }
 
-  return Response.json({ ok: false, error: 'parametro mancante: drafts o messages_hours' }, { status: 400 });
+  return Response.json({ ok: false, error: 'parametro mancante: drafts, messages_hours o digest' }, { status: 400 });
 }
 
 export async function POST(request: Request) {

@@ -5,14 +5,13 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Users, MessagesSquare, PhoneCall, MailOpen, ArrowRight, Video } from 'lucide-react';
 import { useData } from '@/lib/store';
-import leadsSeed from '@/data/leads.json';
 import { PageHeader, StatCard, EmptyState } from '@/components/ui';
 import AgentCard from '@/components/AgentCard';
 import LiveBadge from '@/components/LiveBadge';
 
 export default function Home() {
-  const { agents, creators, drafts, loading } = useData();
-  const leadTot = (leadsSeed.totals as { tot: number }).tot;
+  const { agents, creators, drafts, loading, leadTotals } = useData();
+  const leadTot = leadTotals.tot;
 
   const crm = creators.filter((c) => c.source === 'crm');
   const inTrattativa = crm.filter((c) => c.stage === 'Risposto').length;

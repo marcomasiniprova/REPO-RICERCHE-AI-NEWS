@@ -110,6 +110,18 @@ export interface LeadRow {
   url: string | null;
 }
 
+/** Contatori live della tabella Leads, scritti in kv (chiave scout_stats)
+ *  dallo SCOUT/CAPO a ogni giro. */
+export interface ScoutStats {
+  tot: number;
+  pronto: number;
+  da_arricchire: number;
+  scartato: number;
+  contattato?: number;
+  updated_at?: string;
+  fonte?: string;
+}
+
 export interface DashboardData {
   agents: Agent[];
   messages: Message[];
@@ -120,6 +132,7 @@ export interface DashboardData {
   reddit: RedditItem[];
   redditKarma: number;
   leadTotals: { tot: number; pronto: number; da_arricchire: number; scartato: number };
+  scoutStats: ScoutStats | null;
   leads: LeadRow[];
   loading: boolean;
   live: boolean; // realtime collegato
