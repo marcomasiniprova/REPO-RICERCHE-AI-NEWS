@@ -82,7 +82,20 @@ export interface RedditItem {
   title: string;
   body_summary: string | null;
   permalink_id: string | null;
+  permalink_url?: string | null;
   status: string;
+}
+
+export interface Message {
+  id: number;
+  external_id: string | null;
+  creator_name: string | null;
+  counterpart: string;
+  channel: 'dm' | 'email';
+  direction: 'in' | 'out';
+  subject: string | null;
+  body: string;
+  ts: string;
 }
 
 export interface LeadRow {
@@ -99,6 +112,7 @@ export interface LeadRow {
 
 export interface DashboardData {
   agents: Agent[];
+  messages: Message[];
   runs: AgentRun[];
   feed: FeedItem[];
   creators: Creator[];

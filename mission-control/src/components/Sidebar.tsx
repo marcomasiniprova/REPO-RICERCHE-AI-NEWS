@@ -3,13 +3,14 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutGrid, Users, MailOpen, MessageCircle, Radio } from 'lucide-react';
+import { LayoutGrid, Users, MailOpen, MessageCircle, MessagesSquare, Radio } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useData } from '@/lib/store';
 
 const NAV = [
   { href: '/', label: 'Mission Control', icon: LayoutGrid },
   { href: '/creator', label: 'Creator', icon: Users },
+  { href: '/messaggi', label: 'Messaggi', icon: MessagesSquare },
   { href: '/bozze', label: 'Bozze', icon: MailOpen },
   { href: '/reddit', label: 'Reddit', icon: MessageCircle },
 ];

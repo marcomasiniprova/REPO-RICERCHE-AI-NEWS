@@ -183,8 +183,29 @@ export async function POST(request: Request) {
           title: String(body.title ?? ''),
           body_summary: body.body_summary ? String(body.body_summary) : null,
           permalink_id: body.permalink_id ? String(body.permalink_id) : null,
+          permalink_url: body.permalink_url ? String(body.permalink_url) : null,
           status: String(body.status ?? 'pubblicato'),
         });
+        if (error) throw error;
+        return Response.json({ ok: true });
+      }
+
+      case 'message_add': {
+        const body_ = String(body.body ?? '').trim();
+        if (!body_) throw new Error('body mancante');
+        const { error } = await db.from('messages').upsert(
+          {
+            external_id: body.external_id ? String(body.external_id) : `manual_${Date.now()}`,
+            creator_name: body.creator_name ? String(body.creator_name) : null,
+            counterpart: String(body.counterpart ?? ''),
+            channel: body.channel === 'email' ? 'email' : 'dm',
+            direction: body.direction === 'in' ? 'in' : 'out',
+            subject: body.subject ? String(body.subject) : null,
+            body: body_,
+            ts: body.ts ? String(body.ts) : nowIso,
+          },
+          { onConflict: 'external_id' },
+        );
         if (error) throw error;
         return Response.json({ ok: true });
       }

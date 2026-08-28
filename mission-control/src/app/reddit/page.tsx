@@ -72,12 +72,16 @@ export default function RedditPage() {
       {!loading && (
         <div className="space-y-2.5">
           {reddit.map((r, i) => (
-            <motion.div
+            <motion.a
               key={r.id}
+              href={r.permalink_url ?? `https://www.reddit.com/${r.subreddit.replace(/^r\//, 'r/')}/`}
+              target="_blank"
+              rel="noreferrer"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: i * 0.04 }}
               className="card card-hover flex items-start gap-3.5 p-4"
+              title={r.permalink_url ? 'Apri il commento su Reddit' : 'Apri la community su Reddit'}
             >
               <span
                 className={cn(
@@ -90,12 +94,10 @@ export default function RedditPage() {
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
                   <span className="truncate text-[13.5px] font-semibold text-deep">«{r.title}»</span>
-                  {r.permalink_id && (
-                    <span className="inline-flex shrink-0 items-center gap-1 text-[10.5px] text-ink-3">
-                      <ExternalLink size={11} />
-                      {r.permalink_id}
-                    </span>
-                  )}
+                  <span className="inline-flex shrink-0 items-center gap-1 text-[10.5px] font-semibold text-brand-600">
+                    <ExternalLink size={11} />
+                    apri
+                  </span>
                 </div>
                 {r.body_summary && (
                   <p className="mt-0.5 text-[12px] leading-snug text-ink-2">{r.body_summary}</p>
@@ -107,7 +109,7 @@ export default function RedditPage() {
                 </div>
                 <div className="text-[10px] uppercase tracking-wide text-ok">{r.status}</div>
               </div>
-            </motion.div>
+            </motion.a>
           ))}
         </div>
       )}
