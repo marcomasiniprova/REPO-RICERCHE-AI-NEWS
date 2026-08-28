@@ -259,3 +259,8 @@ Ogni decisione importante va aggiunta qui, con data e motivazione. Dal più rece
 - **RIVO IG e Email**: giro delle 15:18 (run 18) ha gestito un caso vero non previsto nei test: la call di Stefi/Trolleygirl saltata per casa allagata (gestita da Valerio in diretta su IG), sincronizzati 8 messaggi mancanti, e l'agente ha SCOPERTO E CORRETTO DA SOLO un proprio errore precedente (esito di Stefi scritto sul record Airtable di Julian per sbaglio). Verificato con lettura diretta Airtable: entrambi i record (Julian, Trolleygirl) ora corretti e coerenti con la dashboard.
 - Verifica Julian: sollecito email inviato da Valerio alle 17:05 (non era entrato in call), registrato su dashboard e Airtable ("Call fissata", in attesa esito).
 - Nessun intervento necessario sui prompt: la squadra lavora pulita. Prossimo checkpoint: report CAPO delle 20:30 e giro vero SCOUT domattina alle 6:00.
+
+## 28/8 sera — Report CAPO pulito, bottleneck reale segnalato
+- **RIVO CAPO**: giro delle 18:34-18:36 pulito (run_start/run_finish presenti, numeri contati da Airtable, esito onesto). Report: CRM 55 contatti (20 Risposto, 29 Contattato, 1 Julian in trattativa, 4 Scartati), Leads Scout 2848 totali con 32 Pronto ma solo 5 con email, 12 bozze in attesa del PIN (2 DM, 6 email, 4 reddit), 0 inviate oggi, Reddit karma 16.
+- **Bottleneck reale segnalato dal CAPO**: 32 lead "Pronto" ma solo 5 hanno l'email (il primo contatto a freddo si fa SOLO via email, il DM a freddo non e' permesso). Se lo Scout continua a non trovare email nei prossimi giri, e' un limite strutturale della fonte, non un difetto dell'agente: da valutare con Valerio se emerge di nuovo.
+- Check programmato: primo giro vero dello SCOUT (workflow n8n reali) alle 04:04 UTC di domani, verifica alle 05:00 UTC.
