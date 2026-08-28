@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import { cleanEmailBody } from '@/lib/emailClean';
 
 /**
  * Endpoint unico con cui gli agenti RIVO aggiornano la Mission Control.
@@ -191,14 +192,16 @@ export async function POST(request: Request) {
       }
 
       case 'message_add': {
-        const body_ = String(body.body ?? '').trim();
+        const channel_ = body.channel === 'email' ? 'email' : 'dm';
+        let body_ = String(body.body ?? '').trim();
+        if (channel_ === 'email') body_ = cleanEmailBody(body_);
         if (!body_) throw new Error('body mancante');
         const { error } = await db.from('messages').upsert(
           {
             external_id: body.external_id ? String(body.external_id) : `manual_${Date.now()}`,
             creator_name: body.creator_name ? String(body.creator_name) : null,
             counterpart: String(body.counterpart ?? ''),
-            channel: body.channel === 'email' ? 'email' : 'dm',
+            channel: channel_,
             direction: body.direction === 'in' ? 'in' : 'out',
             subject: body.subject ? String(body.subject) : null,
             body: body_,

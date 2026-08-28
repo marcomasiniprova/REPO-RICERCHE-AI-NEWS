@@ -5,12 +5,14 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Users, MessagesSquare, PhoneCall, MailOpen, ArrowRight, Video } from 'lucide-react';
 import { useData } from '@/lib/store';
+import leadsSeed from '@/data/leads.json';
 import { PageHeader, StatCard, EmptyState } from '@/components/ui';
 import AgentCard from '@/components/AgentCard';
 import LiveBadge from '@/components/LiveBadge';
 
 export default function Home() {
-  const { agents, creators, drafts, loading, leadTotals } = useData();
+  const { agents, creators, drafts, loading } = useData();
+  const leadTot = (leadsSeed.totals as { tot: number }).tot;
 
   const crm = creators.filter((c) => c.source === 'crm');
   const inTrattativa = crm.filter((c) => c.stage === 'Risposto').length;
@@ -35,7 +37,7 @@ export default function Home() {
               <StatCard
                 label="Creator in pipeline"
                 value={crm.length}
-                hint={`+ ${leadTotals.tot} lead scansionati dallo Scout`}
+                hint={`+ ${leadTot} lead scansionati dallo Scout`}
                 icon={<Users size={16} />}
               />
             </Link>
@@ -95,10 +97,10 @@ export default function Home() {
               Call in agenda
             </h2>
             <Link
-              href="/creator"
+              href="/call"
               className="group inline-flex items-center gap-1 text-[12px] font-semibold text-brand-600 hover:text-brand-700"
             >
-              Tutta la pipeline
+              Materiale call e script
               <ArrowRight size={13} className="transition-transform group-hover:translate-x-0.5" />
             </Link>
           </div>
