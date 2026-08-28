@@ -77,6 +77,7 @@ Nessun tool esterno da collegare: il Capo si costruisce e parte subito. Serve so
 
 ## Stato
 - 26/8/2026: playbook del Capo scritto e approvato come primo pezzo del Growth RIVO Team. Ordine di costruzione deciso: prima il Capo, poi RIVO-SCOUT, poi gli altri (i ruoli che aspettano tool di Valerio per ultimi). Report deciso: mattina ~9:00 / sera ~18:00. Prossimo passo: costruire RIVO-SCOUT.
+- 28/8/2026 18:34 (primo giro reale, report sera): numeri contati da Airtable. CRM contatti (tblgzKN2LFWfuDEK6): 55 totali, 20 Risposto, 29 Contattato, 4 Scartato, 1 In trattativa (Julian Vigato), 1 Visualizzato. Leads Scout (tblNjhgOrmCeFAH3R): 2848 totali, 32 Pronto, 4 Da arricchire, 2812 Scartato. Bottleneck trovato: dei 32 Pronto solo 5 hanno l'email (unico canale per primo contatto, il DM freddo non e' permesso), e quei 5 hanno gia' tutti una bozza pronta in attesa di OK. Dashboard: 12 bozze in attesa del PIN (2 DM, 6 email, 4 reddit), 0 approvate, 0 invii oggi. Reddit karma 16 stabile, 2/15 commenti pubblicati oggi. Prossimo passo: Valerio sblocca le bozze pendenti, decide su Giada&Loris (fee 700e) e travelin.yellow (ibrido/chiusura), poi va rilanciato un nuovo giro di scouting perche' la scorta di lead Pronto+email si sta esaurendo.
 
 ## Correzioni di Valerio (memoria di addestramento)
 (si riempie con le sue note su come vuole il coordinamento e i report)
