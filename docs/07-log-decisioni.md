@@ -201,3 +201,10 @@ Ogni decisione importante va aggiunta qui, con data e motivazione. Dal più rece
 - **API `/api/ingest`** con chiave a basso privilegio per le scritture degli agenti; schema SQL + seed dai dati veri; modalità demo etichettata quando il DB non è collegato (mai demo spacciata per live).
 - **Collaudo visivo** fatto con Playwright/Chromium su tutte le pagine (iterato: bg, race della simulazione, formati follower).
 - **Bloccanti esterni:** accesso al NUOVO account Supabase (Valerio deve dare un Personal Access Token o riconnettere il connettore) e workspace ID Railway (il token del connettore non espone la lista workspace).
+
+## 28/8 pomeriggio — Mission Control IN PRODUZIONE + collaudo E2E
+- **Live su Railway:** https://mission-control-production-b349.up.railway.app (workspace Artec AI, deploy automatico dal branch). Supabase nuovo account: org "Rivolio", progetto rivo-mission-control (Francoforte), schema + dati veri, realtime su tutte le tabelle, RLS sola lettura.
+- **Collaudo tecnico superato:** giro simulato del CAPO via API (run_start → feed → run_finish) visto muoversi a schermo: stato Al lavoro con anello live, storico giri, feed. Chiave rifiutata se assente (401). Fix robustezza: fetch con allSettled per non restare mai in caricamento.
+- **Routine aggiornate col protocollo Mission Control** (run_start/feed/run_finish/creator_upsert/draft_upsert/reddit_add/kv_set): IG e Email, SCOUT, REDDIT ricreate (il tool non modifica prompt di routine legate ad altra sessione), + creata la routine RIVO - CAPO (report 8:00 e 20:00). Giro vero di collaudo IG lanciato subito.
+- **Nota tecnica onesta:** la chiave ingest (basso privilegio, scrive solo stato dashboard) sta nei prompt delle routine: compromesso accettato e documentato; le chiavi Supabase invece non sono mai passate in chiaro (impostate server-side). Il warning "no MCP connectors" sulle routine ricreate va verificato col giro di collaudo: se la sessione operativa perde i connettori, va ricreata la routine dalla UI claude.ai.
+- Decisioni popup: collaudo tecnico + giro vero; routine CAPO subito; dominio Railway; Airtable si stacca dopo 3-4 giorni di doppio binario se tutto fila.
