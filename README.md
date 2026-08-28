@@ -35,6 +35,7 @@ Documentazione operativa del progetto: reclutare creator travel italiani per una
 | [`docs/14-scout.md`](docs/14-scout.md) | RIVO - SCOUT: trova creator nano travel IT (Apify+Exa+Firecrawl+n8n), arricchisce, consegna in pipeline |
 | [`docs/15-framework-call.md`](docs/15-framework-call.md) | Framework/SOP per le call con i creator (ASK-SHOW-EARN, 15-20 min, CLOSER adattato) |
 | [`docs/16-growth-mission-control.md`](docs/16-growth-mission-control.md) | RIVO Growth Mission Control: dashboard live degli agenti (Supabase + Railway), architettura e milestone |
+| [`docs/17-mission-control-protocollo.md`](docs/17-mission-control-protocollo.md) | Protocollo con cui gli agenti aggiornano la dashboard + runbook deploy |
 
 > ⚠️ **[`CLAUDE.md`](CLAUDE.md) contiene le 12 regole ferree** da rispettare sempre. Leggerlo a inizio sessione.
 
