@@ -194,3 +194,10 @@ Ogni decisione importante va aggiunta qui, con data e motivazione. Dal più rece
 - **Fondamenta dashboard (popup):** Supabase realtime come motore dati, hosting web app sempre online su Railway, home focalizzata sulla squadra agenti (vederli lavorare live), stile in attesa delle foto di Valerio.
 - **Architettura** in docs/16: agenti scrivono su Supabase → Realtime → dashboard. Regola d'oro: lo stato rispecchia la realtà, mai dashboard-finzione. Chiavi Supabase/Railway solo in env (regola 8).
 - Ricerca fatta su mission control per agenti (pattern confermato: roster agenti live + Kanban + activity feed).
+
+## 28/8 — Mission Control v1 costruita
+- **App completa in `mission-control/`** (Next 16, Tailwind 4, Supabase realtime, Framer Motion): home focus squadra con stato live e avatar 3D a tema (pilota=CAPO, detective=SCOUT, lettera=IG e Email, alien=REDDIT), KPI, Kanban creator multi-vista (Kanban/Tabella/Card) con la CRM vera importata (55 creator + lead Scout), bozze con drawer di lettura, pagina Reddit coi contributi veri (karma 4 verificato), pagina dettaglio per agente con storico giri.
+- **Decisioni popup:** transizione morbida da Airtable (doppio aggiornamento finché rodata), nomi RIVO + avatar a tema, URL segreto senza password, codice in questa repo.
+- **API `/api/ingest`** con chiave a basso privilegio per le scritture degli agenti; schema SQL + seed dai dati veri; modalità demo etichettata quando il DB non è collegato (mai demo spacciata per live).
+- **Collaudo visivo** fatto con Playwright/Chromium su tutte le pagine (iterato: bg, race della simulazione, formati follower).
+- **Bloccanti esterni:** accesso al NUOVO account Supabase (Valerio deve dare un Personal Access Token o riconnettere il connettore) e workspace ID Railway (il token del connettore non espone la lista workspace).
