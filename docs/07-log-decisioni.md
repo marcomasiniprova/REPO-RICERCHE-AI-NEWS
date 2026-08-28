@@ -187,3 +187,10 @@ Ogni decisione importante va aggiunta qui, con data e motivazione. Dal più rece
 - **Numero ~296€ inquadrato:** slide 8 chiarisce che si guadagna sulle PRATICHE (non a video, non un fisso); slide 9 è un esempio legato al volume, coi numeri tracciabili riga per riga (115 famiglia + 61 singole + 50 su 100 check + 70 bonus = 296). Verificati sul modello bloccato di docs/02.
 - **Note di conduzione (docs/15):** scritte slide per slide (cosa dici e cosa fai) + spiegato il "contorno": deck come rotaia, Valerio parla, dashboard mostrata dal vivo alla slide 10 come passo-prova.
 - Regola 1 rispettata: niente inviato. Il deck è materiale per le call, non un invio a terzi.
+
+## 28/8 — Riordino ruoli + Growth Mission Control
+- **Problema sollevato da Valerio:** troppe sessioni/routine sparse, non riesce a seguire nulla. Soluzione decisa: una web app "mission control" dove vedere tutto il growth pulito e live, mentre gli agenti restano ognuno nella sua sessione.
+- **Puliti i residui:** cancellati i 3 trigger duplicati SPENTI (SCOUT/IG e Email/REDDIT appesi alla sessione di lavoro). Restano attive SOLO le 3 buone nella sessione RIVO Operativo. DAILY AI NEWS e RIVOLIO non toccati (altri progetti).
+- **Fondamenta dashboard (popup):** Supabase realtime come motore dati, hosting web app sempre online su Railway, home focalizzata sulla squadra agenti (vederli lavorare live), stile in attesa delle foto di Valerio.
+- **Architettura** in docs/16: agenti scrivono su Supabase → Realtime → dashboard. Regola d'oro: lo stato rispecchia la realtà, mai dashboard-finzione. Chiavi Supabase/Railway solo in env (regola 8).
+- Ricerca fatta su mission control per agenti (pattern confermato: roster agenti live + Kanban + activity feed).

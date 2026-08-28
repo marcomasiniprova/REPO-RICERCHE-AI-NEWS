@@ -34,6 +34,7 @@ Documentazione operativa del progetto: reclutare creator travel italiani per una
 | [`docs/13-capo.md`](docs/13-capo.md) | Il Capo: orchestra i 10 ruoli del Growth RIVO Team, report mattina/sera, decide sui dati |
 | [`docs/14-scout.md`](docs/14-scout.md) | RIVO - SCOUT: trova creator nano travel IT (Apify+Exa+Firecrawl+n8n), arricchisce, consegna in pipeline |
 | [`docs/15-framework-call.md`](docs/15-framework-call.md) | Framework/SOP per le call con i creator (ASK-SHOW-EARN, 15-20 min, CLOSER adattato) |
+| [`docs/16-growth-mission-control.md`](docs/16-growth-mission-control.md) | RIVO Growth Mission Control: dashboard live degli agenti (Supabase + Railway), architettura e milestone |
 
 > ⚠️ **[`CLAUDE.md`](CLAUDE.md) contiene le 12 regole ferree** da rispettare sempre. Leggerlo a inizio sessione.
 
