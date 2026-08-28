@@ -42,13 +42,27 @@ Condividi schermo: "Questa è la tua dashboard. Ogni pratica è legata al tuo li
 **6. Chiusura a bassa frizione — 2 min** [CLOSER: Reinforce]
 Non chiedere "allora ti va di entrare?". Fai il setup dal vivo: "Facciamo così: ti creo l'account adesso, così non devi compilare niente, il link ce l'hai oggi, e pubblichi quando ti viene naturale. Tra un paio di settimane ci risentiamo per vedere come sta andando. Ti va che ti sistemo tutto?" (togli ogni passo tra il sì e l'operativo; il check-in a 14 giorni è il prossimo aggancio)
 
-## Obiezioni + risposte
-| Obiezione | Cosa c'è sotto | Risposta |
-|---|---|---|
-| **"Voglio un fisso"** | Paura dell'imprevedibilità, poco controllo (obiezione n.1 al performance) | Non discutere. Reframe su senza-tetto + trasparente: "Un fisso ti paga una volta e ti mette un tetto. Qui non c'è soffitto: un contenuto che funziona può rendere più di qualsiasi fisso, lo vedi maturare in diretta, e ti pago ogni 15 giorni." Poi punta alla dashboard. Eventuale bonus prima-pratica per de-rischiare. |
-| **"Ma converte?"** | Paura di lavorare per zero | (1) I conti, alla loro maniera: "Vediamolo per 100 visualizzazioni a un tasso realistico." (2) Rilevanza: "Quasi tutti quelli che volano EU hanno avuto un ritardo e non hanno mai chiesto niente. Non è vendere, sono soldi che gli spettano." |
-| **"Ho già un competitor"** | Esclusività; è anche prova che è buona | Non esclusivo + additivo: "Nessun problema, qui niente è esclusivo ed è una categoria diversa dai soliti link. È reddito in più, non uno scambio." |
-| **"Quanto lavoro / cosa devo postare?"** | Paura dell'obbligo | Il tuo differenziatore vero: "Zero obblighi. Nessuna quota, nessuna scadenza, nessuna approvazione. Pubblichi come e quando ti viene, il link funziona quando lo usi." |
+## Obiezioni + risposte (versione forte, 28/8)
+Struttura di ogni risposta: RICONOSCI (mai discutere), RIBALTA con un fatto concreto, CHIUDI con una domanda che riprende il controllo. Ogni obiezione ha anche la seconda risposta "se insiste". Le versioni pronte parola per parola sono nella sezione Call della dashboard.
+
+- **"Voglio un fisso"** (paura dell'imprevedibilita, la n.1 sul performance)
+  - Risposta: "Ti capisco, il fisso sembra sicurezza. Ma guardalo al contrario: un fisso ti paga una volta e ti mette un tetto, e ti conviene solo se il contenuto va MALE. Se va bene, quel tetto lo stai pagando tu. Qui un reel che funziona continua a generarti pratiche per settimane, lo vedi maturare in diretta e ogni 15 giorni arriva il bonifico. L'ultima collaborazione a fisso quanto ti ha reso in tutto? Una cifra, una volta sola, giusto?"
+  - Se insiste: patto sui dati: si parte a performance col primo bonus a traguardo vicino; se dopo un mese i numeri non gli danno ragione, se ne riparla coi dati davanti.
+- **"Ma converte?"** (paura di lavorare per zero)
+  - Risposta: "La risposta ce l'hai gia in casa: quante persone del tuo pubblico hanno avuto un ritardo nell'ultimo anno e non hanno chiesto UN euro? Quasi tutte. Non devi convincere nessuno a comprare: indichi soldi LORO che stanno lasciando alle compagnie, fino a 600 euro a passeggero, e con noi il rimborso resta tutto a loro. Facciamo i conti adesso sui TUOI numeri?"
+  - Se insiste: "Non ti chiedo di credermi, ti chiedo di provarlo: zero costi, un contenuto quando ti viene naturale, e tra due settimane guardiamo la dashboard insieme. Cosa perdi a provare?"
+- **"Ho gia un competitor"** (esclusivita; ed e' la prova che la categoria funziona)
+  - Risposta: "Perfetto, allora sai gia che la categoria converte. Niente esclusiva, non togli nulla per aggiungere noi. E la differenza il tuo pubblico la sente: con gli altri il passeggero lascia un terzo del rimborso, con Rivolio si tiene il 100%. Piuttosto: con loro ti pagano puntuali? Vedi quanto maturi?"
+  - Se insiste: "Tienili entrambi un mese e lascia parlare i numeri: stessa audience, due link, a fine mese decide chi ha reso di piu. Sui dati non si discute."
+- **"Quanto lavoro devo fare?"** (paura dell'obbligo)
+  - Risposta: "Zero, ed e' la parte a cui non credono mai: nessuna quota, nessuna scadenza, nessuna approvazione. Il link lavora quando lo usi, anche solo dal link in bio. Ti chiedo io: nelle collaborazioni di oggi quanto ti pesa la parte obblighi e revisioni?"
+  - Se insiste: "Si parte con una storia singola la prima settimana, dieci minuti di lavoro, e da li decidi tu quanto spingere."
+- **"Ci devo pensare"** (quasi sempre nasconde UN dubbio preciso non detto)
+  - Risposta: "Certo. Pero aiutami a pensarci con te: il dubbio e' sui soldi, sul tempo, o sul proporre una cosa nuova al tuo pubblico? Su ognuna ho una risposta concreta, e se e' altro preferisco sentirlo ora a voce."
+  - Se insiste: "Oggi non decidi niente: ti attivo l'account che tanto e' gratis e non obbliga a nulla, il link ce l'hai in tasca. Se ti va lo usi, se no non e' successo niente."
+- **"Quanto guadagno davvero?"** (vuole numeri: e' interesse, non attacco)
+  - Risposta: "Coi numeri, non con le promesse: 40% a pratica andata a buon fine piu bonus, ogni 15 giorni. Un mese realistico fa circa 296 euro, ma senza tetto: dipende dal volume tuo, non da un budget mio. Facciamo i conti sulle TUE views adesso?"
+  - Se insiste: "La cifra esatta non te la prometto, e diffiderei di chi lo fa. Ti prometto la trasparenza: tutto in dashboard in tempo reale, bonifico ogni 15 giorni, rischio zero."
 
 ## Regole del progetto che restano valide in call
 - Regola 1: niente parte verso una persona senza OK di Valerio (vale per messaggi e slot). Il framework e' il CONTENUTO della call, non un invio.
