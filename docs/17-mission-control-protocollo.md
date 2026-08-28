@@ -52,3 +52,11 @@ Transizione morbida (decisa 28/8): per qualche giorno le routine aggiornano SIA 
 - 28/8 mattina: v1 in demo. 28/8 pomeriggio: v1 IN PRODUZIONE (vedi docs/16).
 - 28/8 pomeriggio, v2: sezione Messaggi (190 messaggi veri sincronizzati: 126 DM + 64 email), bottoni Approva/Scarta con PIN (env APPROVE_PIN su Railway; propose-then-commit: il click marca, l'agente invia al giro dopo), scheda creator completa (conversazione + bozze + link profili), Reddit cliccabile, KPI cliccabili, polling di sicurezza 45s se il realtime cade, op message_add. Karma Reddit verificato 15. CRM allineata alle email vere (Vanessa call saltata, Vincent declinato, Giada&Loris idea+fee ricevuta) su dashboard E Airtable. Collaudo E2E via browser: PIN sbagliato respinto, PIN giusto approva, feed aggiornato live.
 - APERTO: routine in pausa in attesa della sessione UI di Valerio (RIVO Operativo 2) per il fix connettori; al rebind aggiungere ai prompt il dovere "invia le bozze approvate + message_add".
+
+## Aggiornamento 28/8 sera — squadra riattivata, lezioni imparate
+- Le 4 routine sono ATTIVE e legate alla sessione operativa "Growth RIVO Team operative session" (creata da Valerio dalla UI: e' quella coi connettori). Orari: SCOUT 6:00, IG e Email ogni ora 8:15-20:15, REDDIT ogni ora 8:00-20:00, CAPO 8:30 e 20:30 (spostato di mezz'ora per non scattare insieme a REDDIT).
+- Collaudo end-to-end del 28/8 riuscito: giro IG vero nella sessione operativa, connettori attivi, 8 bozze preparate, zero invii non autorizzati.
+- LEZIONE 1 (connettori): le sessioni create via API non hanno i connettori; quelle create dalla UI li mantengono anche nei giri delle routine. Le routine dei RIVO devono restare legate a una sessione UI.
+- LEZIONE 2 (fire manuale): un fire_trigger con testo extra allegato NON entra nella sessione legata, parte in una sessione a parte senza connettori. I fire manuali di collaudo si fanno SENZA testo.
+- Lettura bozze per gli agenti: GET /api/ingest?drafts=<stato> con la stessa chiave ingest. Le "approvata" vanno inviate e marcate "inviata" + message_add (propose-then-commit).
+- Branch: main = lavoro agenti (docs, playbook); claude/rivo-growth-team = codice dashboard (Railway deploya da li). mission-control/ non vive piu' su main.
