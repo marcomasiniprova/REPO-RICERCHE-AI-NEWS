@@ -24,8 +24,11 @@ function admin() {
 }
 
 /**
- * Lettura per gli agenti (stessa chiave): GET /api/ingest?drafts=approvata
- * restituisce le bozze in quello stato, cosi' l'agente sa cosa inviare.
+ * Lettura per gli agenti (stessa chiave):
+ *  - GET /api/ingest?drafts=approvata       -> bozze in quello stato (da inviare)
+ *  - GET /api/ingest?messages_hours=48      -> indice dei messaggi gia' in dashboard
+ *    nelle ultime N ore (external_id, canale, controparte, direzione, ts):
+ *    l'agente lo confronta con Instagram/Gmail e aggiunge SOLO cio' che manca.
  */
 export async function GET(request: Request) {
   const auth = request.headers.get('authorization') ?? '';
@@ -37,19 +40,38 @@ export async function GET(request: Request) {
   if (!db) {
     return Response.json({ ok: false, error: 'database non configurato' }, { status: 503 });
   }
-  const status = new URL(request.url).searchParams.get('drafts');
-  if (!status) {
-    return Response.json({ ok: false, error: 'parametro drafts mancante' }, { status: 400 });
+  const params = new URL(request.url).searchParams;
+
+  const status = params.get('drafts');
+  if (status) {
+    const { data, error } = await db
+      .from('drafts')
+      .select('id, creator, channel, subject, body, status, agent_slug, created_at')
+      .eq('status', status)
+      .order('created_at', { ascending: true });
+    if (error) {
+      return Response.json({ ok: false, error: error.message }, { status: 500 });
+    }
+    return Response.json({ ok: true, drafts: data });
   }
-  const { data, error } = await db
-    .from('drafts')
-    .select('id, creator, channel, subject, body, status, agent_slug, created_at')
-    .eq('status', status)
-    .order('created_at', { ascending: true });
-  if (error) {
-    return Response.json({ ok: false, error: error.message }, { status: 500 });
+
+  const hoursRaw = params.get('messages_hours');
+  if (hoursRaw) {
+    const hours = Math.min(Math.max(Number(hoursRaw) || 48, 1), 168);
+    const since = new Date(Date.now() - hours * 3600_000).toISOString();
+    const { data, error } = await db
+      .from('messages')
+      .select('external_id, channel, counterpart, creator_name, direction, ts')
+      .gte('ts', since)
+      .order('ts', { ascending: true })
+      .limit(1000);
+    if (error) {
+      return Response.json({ ok: false, error: error.message }, { status: 500 });
+    }
+    return Response.json({ ok: true, since, count: data.length, messages: data });
   }
-  return Response.json({ ok: true, drafts: data });
+
+  return Response.json({ ok: false, error: 'parametro mancante: drafts o messages_hours' }, { status: 400 });
 }
 
 export async function POST(request: Request) {
