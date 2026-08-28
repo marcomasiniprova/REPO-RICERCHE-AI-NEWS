@@ -21,10 +21,10 @@ export const AGENT_SPECS: Record<string, AgentSpec> = {
       { name: 'Routine claude.ai', detail: 'Si attiva da solo mattina e sera' },
     ],
     skills: [
-      'Analisi pipeline e conversioni',
-      'Report sintetici e onesti',
-      'Priorita decise sui dati (regola 11)',
-      'Segnala rischi e colli di bottiglia senza indorare (regola 12)',
+      'Skill dedicata rivo-capo (SKILL.md + reference.md nel repo)',
+      'Report a formato fisso: 7 righe leggibili in 20 secondi',
+      'Fonte numeri unica: il digest della dashboard, mai la memoria',
+      'Coordinamento vero: stalli, bozze ferme, coerenza CRM, contatori Scout',
     ],
     flusso: [
       { step: 'Legge la pipeline', detail: 'Stadi, risposte, call fissate e bozze in attesa' },
@@ -48,10 +48,10 @@ export const AGENT_SPECS: Record<string, AgentSpec> = {
       { name: 'Mission Control API', detail: 'Stato e output del giro su questa dashboard' },
     ],
     skills: [
-      'Scoperta via hashtag e profili simili',
-      'Arricchimento: follower, email pubblica, nicchia',
-      'Scoring A/B/C con soglia di qualita',
-      'Scarta senza pieta chi non e in target',
+      'Skill dedicata rivo-scout (SKILL.md + reference.md nel repo)',
+      'Orchestra i 3 workflow n8n fino a success o error',
+      'Nessun lead nel limbo: o Pronto o Scartato',
+      'Checklist numerica contata da Airtable a fine giro',
     ],
     flusso: [
       { step: 'Scoperta', detail: 'Scansiona hashtag travel e profili collegati' },
@@ -74,10 +74,10 @@ export const AGENT_SPECS: Record<string, AgentSpec> = {
       { name: 'Mission Control API', detail: 'Bozze, messaggi e stato del giro' },
     ],
     skills: [
-      'Copywriting italiano umano (skill dedicata 2026)',
-      'Personalizzazione sul singolo creator (regola 5)',
-      'Framing dell\'offerta serio, numeri in call (regola 6)',
-      'Propose-then-commit: prima la bozza, poi l\'OK, poi l\'invio',
+      'Skill dedicata rivo-ig-email (SKILL.md + reference.md nel repo)',
+      'Copywriting italiano umano (skill condivisa 2026)',
+      'Bonifica totale 48h e test meccanico di freschezza sulle bozze',
+      'Guardia record: mai scrivere sul creator sbagliato',
     ],
     flusso: [
       { step: 'Legge la posta', detail: 'DM e email in arrivo, chi ha risposto e cosa chiede' },
@@ -99,9 +99,9 @@ export const AGENT_SPECS: Record<string, AgentSpec> = {
       { name: 'Mission Control API', detail: 'Ogni contributo registrato con link' },
     ],
     skills: [
-      'Risposte tecniche su EU261, ritardi e cancellazioni',
-      'Tono da utente vero, mai da brand',
-      'Selezione dei thread dove puo dare valore reale',
+      'Skill dedicata rivo-reddit (SKILL.md + reference.md nel repo)',
+      'Karma ufficiale: solo quello dei commenti, mai il totale',
+      'Tono da utente vero, valore prima di tutto, tetto 15 al giorno',
     ],
     flusso: [
       { step: 'Scansiona le community', detail: 'r/ViaggiITA, r/CasualIT e le altre in lista' },
