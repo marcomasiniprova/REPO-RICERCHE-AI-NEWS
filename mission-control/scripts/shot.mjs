@@ -1,0 +1,11 @@
+import { chromium } from 'playwright-core';
+const [,, url, out, wait = '1800'] = process.argv;
+const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium', args: ['--no-sandbox'] });
+const page = await browser.newPage({ viewport: { width: 1600, height: 950 } });
+page.on('console', (m) => { if (m.type() === 'error') console.log('[console.error]', m.text()); });
+page.on('pageerror', (e) => console.log('[pageerror]', e.message));
+await page.goto(url, { waitUntil: 'networkidle' });
+await page.waitForTimeout(Number(wait));
+await page.screenshot({ path: out });
+await browser.close();
+console.log('shot →', out);

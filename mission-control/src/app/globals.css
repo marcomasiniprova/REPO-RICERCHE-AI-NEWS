@@ -1,0 +1,160 @@
+@import 'tailwindcss';
+
+@theme inline {
+  --font-display: var(--font-grotesk);
+  --font-sans: var(--font-inter);
+
+  /* Brand Rivolio */
+  --color-deep: #0a3b31;
+  --color-deep-2: #07281f;
+  --color-brand-50: #ecf7f3;
+  --color-brand-100: #d5efe6;
+  --color-brand-200: #a9dfcd;
+  --color-brand-400: #2ea78d;
+  --color-brand-500: #12866f;
+  --color-brand-600: #0e7c6b;
+  --color-brand-700: #0b5f52;
+  --color-mint: #63e0b6;
+  --color-tan: #e3a469;
+  --color-tan-ink: #3a2410;
+
+  /* Surfaces (light, warm come il deck) */
+  --color-base: #f6f4ec;
+  --color-subtle: #efece0;
+  --color-card: #ffffff;
+  --color-line: #e6e1d2;
+  --color-line-strong: #d5cfba;
+
+  /* Text */
+  --color-ink: #12211c;
+  --color-ink-2: #44554f;
+  --color-ink-3: #75837d;
+
+  /* Semantic */
+  --color-ok: #12866f;
+  --color-warn: #b07a2a;
+  --color-err: #c0392b;
+
+  --shadow-card: 0 1px 3px rgba(10, 45, 36, 0.05), 0 2px 10px rgba(10, 45, 36, 0.04);
+  --shadow-lift: 0 10px 24px rgba(10, 45, 36, 0.09), 0 4px 8px rgba(10, 45, 36, 0.05);
+  --shadow-glow: 0 0 0 1px rgba(14, 124, 107, 0.35), 0 4px 16px rgba(14, 124, 107, 0.28);
+
+  --radius-card: 16px;
+}
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  background: var(--color-base);
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  background: var(--color-base);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ===== Sfondo pagina: glow radiale mint + griglia sottile ===== */
+.page-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(1000px 420px at 78% -10%, rgba(99, 224, 182, 0.16), transparent 65%),
+    radial-gradient(800px 380px at -8% 8%, rgba(14, 124, 107, 0.08), transparent 60%);
+}
+.page-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(10, 59, 49, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(10, 59, 49, 0.035) 1px, transparent 1px);
+  background-size: 36px 36px;
+  mask-image: radial-gradient(1200px 700px at 50% 0%, black 30%, transparent 85%);
+}
+
+/* ===== Glass ===== */
+.glass {
+  background: rgba(255, 255, 255, 0.66);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  box-shadow: 0 8px 32px rgba(10, 45, 36, 0.07);
+}
+
+/* ===== Card standard ===== */
+.card {
+  background: var(--color-card);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+.card-hover {
+  transition:
+    transform 200ms cubic-bezier(0, 0, 0.2, 1),
+    box-shadow 200ms cubic-bezier(0, 0, 0.2, 1),
+    border-color 200ms;
+}
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lift);
+  border-color: var(--color-line-strong);
+}
+
+/* ===== Dot "working" pulsante ===== */
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgba(18, 134, 111, 0.45); }
+  70% { box-shadow: 0 0 0 7px rgba(18, 134, 111, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(18, 134, 111, 0); }
+}
+.dot-working {
+  animation: pulse-ring 1.6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* ===== Shimmer skeleton ===== */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, #efece0 25%, #e6e1d2 50%, #efece0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: 8px;
+}
+
+/* ===== Anello avatar live ===== */
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+.ring-live {
+  background: conic-gradient(from 0deg, #12866f, #63e0b6, #12866f);
+  animation: spin-slow 2.6s linear infinite;
+}
+
+/* ===== Scrollbar sottile ===== */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(10, 59, 49, 0.18) transparent;
+}
+*::-webkit-scrollbar { width: 8px; height: 8px; }
+*::-webkit-scrollbar-thumb {
+  background: rgba(10, 59, 49, 0.16);
+  border-radius: 8px;
+}
+*::-webkit-scrollbar-track { background: transparent; }
+
+/* ===== Feed: entrata nuovi item ===== */
+@keyframes feed-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: none; }
+}
+.feed-in { animation: feed-in 320ms cubic-bezier(0, 0, 0.2, 1); }
