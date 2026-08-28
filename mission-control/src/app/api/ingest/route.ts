@@ -23,6 +23,35 @@ function admin() {
   return createClient(url, key, { auth: { persistSession: false } });
 }
 
+/**
+ * Lettura per gli agenti (stessa chiave): GET /api/ingest?drafts=approvata
+ * restituisce le bozze in quello stato, cosi' l'agente sa cosa inviare.
+ */
+export async function GET(request: Request) {
+  const auth = request.headers.get('authorization') ?? '';
+  const expected = process.env.INGEST_KEY;
+  if (!expected || auth !== `Bearer ${expected}`) {
+    return Response.json({ ok: false, error: 'non autorizzato' }, { status: 401 });
+  }
+  const db = admin();
+  if (!db) {
+    return Response.json({ ok: false, error: 'database non configurato' }, { status: 503 });
+  }
+  const status = new URL(request.url).searchParams.get('drafts');
+  if (!status) {
+    return Response.json({ ok: false, error: 'parametro drafts mancante' }, { status: 400 });
+  }
+  const { data, error } = await db
+    .from('drafts')
+    .select('id, creator, channel, subject, body, status, agent_slug, created_at')
+    .eq('status', status)
+    .order('created_at', { ascending: true });
+  if (error) {
+    return Response.json({ ok: false, error: error.message }, { status: 500 });
+  }
+  return Response.json({ ok: true, drafts: data });
+}
+
 export async function POST(request: Request) {
   const auth = request.headers.get('authorization') ?? '';
   const expected = process.env.INGEST_KEY;
