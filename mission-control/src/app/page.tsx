@@ -31,31 +31,39 @@ export default function Home() {
           Array.from({ length: 4 }).map((_, i) => <div key={i} className="skeleton h-[108px]" />)
         ) : (
           <>
-            <StatCard
-              label="Creator in pipeline"
-              value={crm.length}
-              hint={`+ ${leadTotals.tot} lead scansionati dallo Scout`}
-              icon={<Users size={16} />}
-            />
-            <StatCard
-              label="In trattativa"
-              value={inTrattativa}
-              hint="Hanno risposto, si lavora"
-              icon={<MessagesSquare size={16} />}
-            />
-            <StatCard
-              label="Call fissate"
-              value={callFissate.length}
-              hint="Tutte performance pura"
-              icon={<PhoneCall size={16} />}
-              accent
-            />
-            <StatCard
-              label="Bozze da approvare"
-              value={pendingDrafts}
-              hint={pendingDrafts > 0 ? 'Aspettano il tuo OK' : 'Nessuna in attesa'}
-              icon={<MailOpen size={16} />}
-            />
+            <Link href="/creator" className="block">
+              <StatCard
+                label="Creator in pipeline"
+                value={crm.length}
+                hint={`+ ${leadTotals.tot} lead scansionati dallo Scout`}
+                icon={<Users size={16} />}
+              />
+            </Link>
+            <Link href="/messaggi" className="block">
+              <StatCard
+                label="In trattativa"
+                value={inTrattativa}
+                hint="Hanno risposto, si lavora"
+                icon={<MessagesSquare size={16} />}
+              />
+            </Link>
+            <Link href="/creator" className="block">
+              <StatCard
+                label="Call fissate"
+                value={callFissate.length}
+                hint="Tutte performance pura"
+                icon={<PhoneCall size={16} />}
+                accent
+              />
+            </Link>
+            <Link href="/bozze" className="block">
+              <StatCard
+                label="Bozze da approvare"
+                value={pendingDrafts}
+                hint={pendingDrafts > 0 ? 'Aspettano il tuo OK' : 'Nessuna in attesa'}
+                icon={<MailOpen size={16} />}
+              />
+            </Link>
           </>
         )}
       </div>

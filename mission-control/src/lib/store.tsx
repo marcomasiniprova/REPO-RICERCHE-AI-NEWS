@@ -18,6 +18,7 @@ import type {
   Draft,
   FeedItem,
   LeadRow,
+  Message,
   RedditItem,
 } from './types';
 import { fmtFollowers } from './utils';
@@ -137,6 +138,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
   const [creators, setCreators] = useState<Creator[]>([]);
   const [drafts, setDrafts] = useState<Draft[]>([]);
   const [reddit, setReddit] = useState<RedditItem[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [redditKarma, setRedditKarma] = useState<number>(0);
   const [loading, setLoading] = useState(true);
   const [live, setLive] = useState(false);
@@ -150,6 +152,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
       setCreators(demoCreators());
       setFeed(demoFeed());
       setReddit(demoReddit());
+      setMessages([]);
       setRedditKarma((redditSeed as { karma: number }).karma);
       setDrafts([]);
       setRuns([]);
@@ -268,6 +271,17 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
             if (data) setReddit(data as RedditItem[]);
           }) as unknown as Promise<void>,
       );
+    if (want('messages'))
+      jobs.push(
+        c
+          .from('messages')
+          .select('*')
+          .order('ts', { ascending: false })
+          .limit(800)
+          .then(({ data }) => {
+            if (data) setMessages(data as Message[]);
+          }) as unknown as Promise<void>,
+      );
     if (want('kv'))
       jobs.push(
         c.from('kv').select('*').then(({ data }) => {
@@ -286,14 +300,21 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     supa.current = c;
     refetch().finally(() => setLoading(false));
 
-    const tables = ['agents', 'agent_runs', 'activity_feed', 'creators', 'drafts', 'reddit_items', 'kv'];
+    const tables = ['agents', 'agent_runs', 'activity_feed', 'creators', 'drafts', 'reddit_items', 'kv', 'messages'];
     const ch = c.channel('mission-control');
     for (const t of tables) {
       ch.on('postgres_changes', { event: '*', schema: 'public', table: t }, () => refetch(t));
     }
     ch.subscribe((status) => setLive(status === 'SUBSCRIBED'));
 
+    // Rete di sicurezza: se il realtime cade, i dati restano freschi comunque.
+    const poll = setInterval(() => refetch(), 45000);
+    const onFocus = () => refetch();
+    window.addEventListener('focus', onFocus);
+
     return () => {
+      clearInterval(poll);
+      window.removeEventListener('focus', onFocus);
       c.removeChannel(ch);
       supa.current = null;
     };
@@ -311,6 +332,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
       : (leadsSeed.totals as DashboardData['leadTotals']);
     return {
       agents,
+      messages,
       runs,
       feed,
       creators,
@@ -323,7 +345,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
       live,
       mode: hasSupabase ? 'supabase' : 'demo',
     };
-  }, [agents, runs, feed, creators, drafts, reddit, redditKarma, loading, live, hasSupabase]);
+  }, [agents, messages, runs, feed, creators, drafts, reddit, redditKarma, loading, live, hasSupabase]);
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
 }

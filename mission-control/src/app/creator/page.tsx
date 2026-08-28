@@ -13,7 +13,11 @@ import {
   Eye,
   EyeOff,
   Send,
+  X,
+  ExternalLink,
 } from 'lucide-react';
+import { AnimatePresence } from 'framer-motion';
+import { fmtDay, fmtTime } from '@/lib/utils';
 import { useData } from '@/lib/store';
 import { PageHeader, Badge, EmptyState } from '@/components/ui';
 import LiveBadge from '@/components/LiveBadge';
@@ -38,9 +42,14 @@ function CanaleIcon({ c }: { c: Creator }) {
   return <AtSign size={12} className="text-ink-3" />;
 }
 
-function CreatorCard({ c, compact = false }: { c: Creator; compact?: boolean }) {
+function CreatorCard({ c, compact = false, onOpen }: { c: Creator; compact?: boolean; onOpen?: (c: Creator) => void }) {
   return (
-    <div className="card card-hover p-3.5">
+    <div
+      className="card card-hover cursor-pointer p-3.5"
+      onClick={() => onOpen?.(c)}
+      role="button"
+      tabIndex={0}
+    >
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
           <div className="flex items-center gap-1.5">
@@ -71,10 +80,11 @@ function CreatorCard({ c, compact = false }: { c: Creator; compact?: boolean }) 
 }
 
 export default function CreatorPage() {
-  const { creators, loading } = useData();
+  const { creators, loading, messages, drafts } = useData();
   const [view, setView] = useState<View>('kanban');
   const [q, setQ] = useState('');
   const [showScartati, setShowScartati] = useState(false);
+  const [sel, setSel] = useState<Creator | null>(null);
 
   const filtered = useMemo(() => {
     const t = q.trim().toLowerCase();
@@ -180,7 +190,7 @@ export default function CreatorPage() {
                   </div>
                   <div className="space-y-2.5">
                     {items.map((c) => (
-                      <CreatorCard key={c.id} c={c} />
+                      <CreatorCard key={c.id} c={c} onOpen={setSel} />
                     ))}
                     {items.length === 0 && (
                       <div className="rounded-xl border border-dashed border-line px-3 py-6 text-center text-[11px] text-ink-3">
@@ -214,7 +224,7 @@ export default function CreatorPage() {
                 {filtered
                   .filter((c) => showScartati || c.stage !== 'Scartato')
                   .map((c) => (
-                    <tr key={c.id} className="border-b border-line/60 transition-colors last:border-0 hover:bg-brand-50/40">
+                    <tr key={c.id} onClick={() => setSel(c)} className="cursor-pointer border-b border-line/60 transition-colors last:border-0 hover:bg-brand-50/40">
                       <td className="px-4 py-2.5">
                         <div className="font-semibold text-deep">{c.name}</div>
                         {c.ig && <div className="text-[11px] text-brand-600">@{c.ig}</div>}
@@ -252,7 +262,7 @@ export default function CreatorPage() {
                     {c.stage}
                   </span>
                 </div>
-                <CreatorCard c={c} />
+                <CreatorCard c={c} onOpen={setSel} />
               </div>
             ))}
         </div>
@@ -261,6 +271,151 @@ export default function CreatorPage() {
       {!loading && filtered.length === 0 && (
         <EmptyState title="Nessun creator trovato" note="Prova con un altro nome o svuota la ricerca." />
       )}
+
+      {/* Scheda creator */}
+      <AnimatePresence>
+        {sel && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSel(null)}
+              className="fixed inset-0 z-40 bg-deep-2/30 backdrop-blur-[2px]"
+            />
+            <motion.div
+              initial={{ x: 40, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: 40, opacity: 0 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+              className="fixed right-0 top-0 z-50 flex h-screen w-full max-w-[520px] flex-col border-l border-line bg-white shadow-2xl"
+            >
+              <div className="border-b border-line px-5 py-4">
+                <div className="flex items-start justify-between gap-2">
+                  <div>
+                    <div className="font-display text-[18px] font-bold text-deep">{sel.name}</div>
+                    <div className="mt-1 flex flex-wrap items-center gap-1.5">
+                      <span className="inline-flex items-center gap-1.5 rounded-full bg-subtle px-2 py-0.5 text-[11px] font-semibold text-ink-2">
+                        <span className={cn('h-1.5 w-1.5 rounded-full', STAGE_META[sel.stage].dot)} />
+                        {sel.stage}
+                      </span>
+                      {sel.followers && <Badge tone="outline">{sel.followers} follower</Badge>}
+                      {sel.fascia && <Badge tone="neutral">{sel.fascia}</Badge>}
+                      {sel.priorita && <Badge tone={sel.priorita === 'Alta' ? 'tan' : 'neutral'}>Priorita {sel.priorita}</Badge>}
+                    </div>
+                  </div>
+                  <button onClick={() => setSel(null)} className="rounded-lg p-2 text-ink-3 hover:bg-subtle hover:text-deep">
+                    <X size={16} />
+                  </button>
+                </div>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {sel.ig && (
+                    <a
+                      href={sel.url ?? `https://www.instagram.com/${sel.ig}/`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-1.5 rounded-xl bg-deep px-3 py-1.5 text-[12px] font-bold text-white shadow-[0_3px_10px_rgba(10,59,49,0.25)] transition-transform hover:-translate-y-0.5"
+                    >
+                      <AtSign size={13} className="text-mint" /> Instagram <ExternalLink size={11} />
+                    </a>
+                  )}
+                  {sel.tiktok && !sel.tiktok.startsWith('s') && (
+                    <a
+                      href={`https://www.tiktok.com/@${sel.tiktok}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-1.5 rounded-xl border border-line bg-white px-3 py-1.5 text-[12px] font-bold text-deep transition-transform hover:-translate-y-0.5"
+                    >
+                      <Music2 size={13} /> TikTok <ExternalLink size={11} />
+                    </a>
+                  )}
+                  {sel.email && (
+                    <a
+                      href={`mailto:${sel.email}`}
+                      className="inline-flex items-center gap-1.5 rounded-xl border border-line bg-white px-3 py-1.5 text-[12px] font-semibold text-ink-2 transition-colors hover:text-deep"
+                    >
+                      <Mail size={13} /> {sel.email}
+                    </a>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex-1 space-y-4 overflow-y-auto px-5 py-4">
+                {sel.esito && (
+                  <div>
+                    <div className="mb-1 text-[10.5px] font-bold uppercase tracking-wider text-ink-3">Dove siamo</div>
+                    <p className="rounded-xl border border-line bg-subtle/60 px-3.5 py-2.5 text-[12.5px] leading-relaxed text-ink">
+                      {sel.esito}
+                    </p>
+                  </div>
+                )}
+
+                {(() => {
+                  const dr = drafts.filter((d) => d.creator === sel.name);
+                  if (dr.length === 0) return null;
+                  return (
+                    <div>
+                      <div className="mb-1.5 text-[10.5px] font-bold uppercase tracking-wider text-ink-3">
+                        Bozze ({dr.length})
+                      </div>
+                      <div className="space-y-2">
+                        {dr.map((d) => (
+                          <div key={d.id} className="rounded-xl border border-line px-3.5 py-2.5">
+                            <div className="flex items-center gap-2 text-[11px] text-ink-3">
+                              <span className="font-bold uppercase">{d.channel}</span>
+                              <span>·</span>
+                              <span>{d.status}</span>
+                            </div>
+                            <p className="mt-1 line-clamp-3 text-[12px] leading-snug text-ink-2">{d.body}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })()}
+
+                {(() => {
+                  const ms = messages
+                    .filter((m) => m.creator_name === sel.name || m.counterpart === sel.ig)
+                    .sort((a, b) => (a.ts < b.ts ? -1 : 1));
+                  if (ms.length === 0)
+                    return (
+                      <div className="rounded-xl border border-dashed border-line px-4 py-5 text-center text-[12px] text-ink-3">
+                        Nessun messaggio sincronizzato con questo creator.
+                      </div>
+                    );
+                  return (
+                    <div>
+                      <div className="mb-1.5 text-[10.5px] font-bold uppercase tracking-wider text-ink-3">
+                        Conversazione ({ms.length} messaggi)
+                      </div>
+                      <div className="space-y-2.5">
+                        {ms.map((m) => (
+                          <div key={m.id} className={cn('flex', m.direction === 'out' ? 'justify-end' : 'justify-start')}>
+                            <div
+                              className={cn(
+                                'max-w-[85%] rounded-2xl px-3.5 py-2 text-[12px] leading-relaxed',
+                                m.direction === 'out'
+                                  ? 'rounded-br-md bg-deep text-white'
+                                  : 'rounded-bl-md border border-line bg-white text-ink shadow-[var(--shadow-card)]',
+                              )}
+                            >
+                              <div className="whitespace-pre-wrap">{m.body}</div>
+                              <div className={cn('mt-1 text-right text-[9.5px]', m.direction === 'out' ? 'text-white/60' : 'text-ink-3')}>
+                                {fmtDay(m.ts)} {fmtTime(m.ts)} · {m.channel === 'dm' ? 'DM' : 'email'}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })()}
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
 
       {/* Nota Scout */}
       {!loading && (
