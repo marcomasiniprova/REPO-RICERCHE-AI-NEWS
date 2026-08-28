@@ -18,8 +18,7 @@ Personaggio **fisso** di tutti i video RivoVideo. Coerenza assoluta: è sempre l
 - Credibile: parla di un **diritto vero** (Reg. CE 261/2004), con tono diretto e un pizzico irriverente (come il brand Rivolio).
 
 ## Le 5 foto reference (frame di partenza per l'image-to-video)
-In `assets/giulia/`:
-- `giulia_master.png` — master 2K (fonte della coerenza del volto)
+In `assets/giulia/` (alla root del repo). Il master 2K (`rivolio_influencer_2k.png`) non è ancora nel repo: se serve, chiederlo a Valerio. Per l'image-to-video le 5 reference bastano.
 - `giulia_1.png` — casa, seduta, parla in camera (gesto con una mano)
 - `giulia_2.png` — casa, in piedi, gesticola con due mani
 - `giulia_3.png` — casa, primo piano ravvicinato

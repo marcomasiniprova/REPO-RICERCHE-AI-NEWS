@@ -1,32 +1,58 @@
-# RivoVideo — il tuo agente video
+# 🛫 Rivolio — Creator Marketing Engine
 
-Cartella-agente autosufficiente: gestisce **Giulia** e produce **1 video UGC al giorno** per Rivolio, pronto per TikTok, Instagram Reels e YouTube Shorts. Crescita organica.
+Documentazione operativa del progetto: reclutare creator travel italiani per una collaborazione **affiliate a performance** e portare traffico/clienti a **Rivolio** (rimborsi voli EU261).
 
-## Cosa c'è dentro
-```
-RivoVideo/
-  SKILL.md                     ← il ruolo/agente (leggi questo per primo)
-  GIULIA_pacchetto_ruolo_AI.md ← scheda completa di Giulia (handoff)
-  references/
-    00-giulia.md               ← bibbia del personaggio (identità, gesti, wardrobe lock)
-    01-angoli-hook.md          ← angoli Rivolio + scienza dell'hook (3 secondi)
-    02-script-copy.md          ← struttura script, italiano umano
-    03-regia-realismo.md       ← IL CUORE: micro-espressioni, gesti umani, feel iPhone
-    04-kie-tecnico.md          ← Veo 3.1 su Kie, image-to-video, crediti
-    05-pubblicazione.md        ← flusso semi-auto + disclosure AI
-    06-routine-giornaliera.md  ← il loop esatto che gira ogni giorno
-  assets/giulia/               ← master + 5 foto reference 4K di Giulia
-```
+> **Come usare questo repo:** questa è la fonte di verità unica del progetto. A inizio di ogni sessione, leggi il README e i doc rilevanti. Ogni decisione importante va aggiunta al **log decisioni**.
 
-## Come si usa
-- **A mano:** apri una sessione in questa cartella e di' "RivoVideo, fammi il video di oggi". L'agente segue `SKILL.md`.
-- **In automatico (routine quotidiana):** crea uno scheduled task / routine che ogni giorno apre una sessione dedicata in questa cartella con il prompt: *"Esegui RivoVideo: produci il video del giorno seguendo SKILL.md, poi fermati e aspetta il mio OK prima di pubblicare."*
-  - Il posting è **semi-auto**: l'agente prepara tutto e aspetta il tuo sì (così non finisce online un video sbagliato).
+---
 
-## Prerequisiti
-- **Crediti Kie** (l'agente non genera senza; li ricarichi tu).
-- **Account social connessi** per la pubblicazione (Composio: TikTok, Instagram, YouTube). Se non connessi, l'agente prepara il video e te lo lascia da postare a mano.
-- Chiave `KIE_API_KEY` nel `.env` del progetto.
+## 📌 Snapshot (aggiornato: 24 Ago 2026)
 
-## Config attuale
-Semi-auto · Veo 3.1 · UGC 15-25s 9:16 · stesso video su TikTok+Reels+Shorts · mix educativo + smonta-miti.
+- **Modello collaborazione:** 🔒 bloccato — vedi [`docs/02-modello-collaborazione.md`](docs/02-modello-collaborazione.md)
+- **Pipeline:** 56 creator contattati, **16 interessati** (5 email + 11 DM) — vedi [`docs/04-pipeline-creator.md`](docs/04-pipeline-creator.md)
+- **Fase attuale:** onboarding dei primi creator + messa in opera del **tracking vendite** (blocco #1)
+- **Obiettivo settembre:** 5-10 creator **attivi** + funnel di conversione **provato con numeri veri** (NON €10k)
+
+---
+
+## 🗂️ Indice documenti
+
+| Doc | Contenuto |
+|---|---|
+| [`docs/01-progetto.md`](docs/01-progetto.md) | Cos'è Rivolio, il cuneo competitivo, l'ICP creator, i rischi onesti |
+| [`docs/02-modello-collaborazione.md`](docs/02-modello-collaborazione.md) | L'offerta bloccata + economia per unità + tutti i calcoli + regole |
+| [`docs/03-infrastruttura.md`](docs/03-infrastruttura.md) | Airtable, n8n harvest, Byparr, Gmail, tracking + **sicurezza segreti** |
+| [`docs/04-pipeline-creator.md`](docs/04-pipeline-creator.md) | I 56 contattati, i 16 interessati, gli stati |
+| [`docs/05-strategia-e-piano.md`](docs/05-strategia-e-piano.md) | Come funziona l'affiliate, il funnel da misurare, il piano a settembre |
+| [`docs/06-playbook-messaggi.md`](docs/06-playbook-messaggi.md) | Template messaggio-filtro, risposte, script call (bozze) |
+| [`docs/07-log-decisioni.md`](docs/07-log-decisioni.md) | Log cronologico di ogni decisione presa, con motivazione |
+| [`docs/08-copywriting.md`](docs/08-copywriting.md) | Come scrivere il copy ogni volta (regole anti-AI, voce Rivolio, framing offerta) |
+| [`docs/09-contratto.md`](docs/09-contratto.md) | Bozza contratto Partner Rivolio (col modello bloccato) |
+| [`docs/10-rivo-reddit.md`](docs/10-rivo-reddit.md) | Playbook RIVO - REDDIT: fasi, regole anti-ban, voce, approvazioni |
+| [`docs/11-rivo-video.md`](docs/11-rivo-video.md) | Playbook RIVO - VIDEO: avatar Giulia, stack Kie/Higgsfield, pipeline |
+| [`docs/12-brief-dashboard-affiliati.md`](docs/12-brief-dashboard-affiliati.md) | Brief per la sessione dev: dashboard affiliati (admin + creator) |
+| [`docs/13-capo.md`](docs/13-capo.md) | Il Capo: orchestra i 10 ruoli del Growth RIVO Team, report mattina/sera, decide sui dati |
+| [`docs/14-scout.md`](docs/14-scout.md) | RIVO - SCOUT: trova creator nano travel IT (Apify+Exa+Firecrawl+n8n), arricchisce, consegna in pipeline |
+| [`docs/15-framework-call.md`](docs/15-framework-call.md) | Framework/SOP per le call con i creator (ASK-SHOW-EARN, 15-20 min, CLOSER adattato) |
+| [`docs/16-growth-mission-control.md`](docs/16-growth-mission-control.md) | RIVO Growth Mission Control: dashboard live degli agenti (Supabase + Railway), architettura e milestone |
+| [`docs/17-mission-control-protocollo.md`](docs/17-mission-control-protocollo.md) | Protocollo con cui gli agenti aggiornano la dashboard + runbook deploy |
+| [`docs/20-prompt-ruoli.md`](docs/20-prompt-ruoli.md) | I prompt delle routine dei ruoli + mappa routine → sessione → skill |
+
+## 🎬 RIVO VIDEO (la macchina dei contenuti)
+
+Il quinto ruolo del Growth RIVO Team: produce **1 video UGC al giorno** con **Giulia** (avatar AI di Rivolio) per TikTok, Instagram Reels e YouTube Shorts. Tutto il ruolo vive in [`.claude/skills/rivo-video/`](.claude/skills/rivo-video/): `SKILL.md` (il giro), `reference.md` (protocollo dashboard), `references/00..06` (bibbia di Giulia, hook, script, regia, Kie, pubblicazione, routine) e `GIULIA_pacchetto_ruolo_AI.md` (handoff completo). Le 5 foto reference di Giulia sono in [`assets/giulia/`](assets/giulia/). Approvazione video: pagina **Contenuti** della dashboard, col PIN.
+
+> ⚠️ **[`CLAUDE.md`](CLAUDE.md) contiene le 12 regole ferree** da rispettare sempre. Leggerlo a inizio sessione.
+
+---
+
+## 👤 Chi
+
+**Valerio**, founder di Rivolio (rivolio.it). Email di lavoro: valerio@artecai.it.
+
+## ⚖️ Regole d'oro del progetto
+
+1. **Mai inventare numeri.** Se un dato non è verificato, si dice "da verificare".
+2. **Sempre profittevoli:** ogni euro pagato a un creator esce da soldi già incassati.
+3. **Decidere sui dati, non sulla fede:** il progetto vive o muore sul tasso di conversione del funnel, da misurare.
+4. **Segreti mai nei commit** (vedi doc 03).
