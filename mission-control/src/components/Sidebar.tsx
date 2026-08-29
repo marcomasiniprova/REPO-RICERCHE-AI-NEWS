@@ -15,6 +15,7 @@ import {
   PhoneCall,
   Radar,
   Radio,
+  Send,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useData } from '@/lib/store';
@@ -30,6 +31,7 @@ const NAV = [
   { href: '/strategia', label: 'Strategia', icon: Brain },
   { href: '/contenuti', label: 'Contenuti', icon: Clapperboard },
   { href: '/caroselli', label: 'Caroselli', icon: GalleryHorizontalEnd },
+  { href: '/pubblicazione', label: 'Pubblicazione', icon: Send },
 ];
 
 export default function Sidebar() {

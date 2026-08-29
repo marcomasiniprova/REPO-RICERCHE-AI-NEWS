@@ -77,6 +77,17 @@
     "color": "#2596be"
   },
   {
+    "slug": "publisher",
+    "name": "PUBLISHER",
+    "role": "Pubblica ovunque",
+    "tagline": "Porta i contenuti approvati su Reels, TikTok e Shorts. In test: verifica, non pubblica.",
+    "avatar": "/avatars/publisher.png",
+    "status": "idle",
+    "schedule_label": "Dopo le approvazioni",
+    "cron": "0 6-18/3 * * *",
+    "color": "#e0a52f"
+  },
+  {
     "slug": "guardiano",
     "name": "GUARDIANO",
     "role": "Il manutentore",

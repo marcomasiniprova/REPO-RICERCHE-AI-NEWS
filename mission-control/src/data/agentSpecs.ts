@@ -196,6 +196,33 @@ export const AGENT_SPECS: Record<string, AgentSpec> = {
       'Numeri veri o niente, mai il trattino lungo',
     ],
   },
+  publisher: {
+    missione:
+      'La mano che porta i contenuti approvati sul mondo: video e caroselli su Instagram Reels, TikTok e YouTube Shorts, con la caption giusta per canale e la disclosure AI, e li ripubblica nel tempo. FASE DI TEST: per ora verifica che tutta la catena funzioni end-to-end ma NON pubblica davvero. TikTok lo colleghi tu come ultimo passo.',
+    tools: [
+      { name: 'Composio Instagram', detail: 'Reels di @valerio_alieri: verifica tool e collegamento' },
+      { name: 'Composio YouTube', detail: 'Shorts: verifica canale e tool di upload' },
+      { name: 'Composio TikTok', detail: 'Da collegare (ultimo passo di Valerio)' },
+      { name: 'Mission Control API', detail: 'Legge la coda degli approvati, scrive lo stato canali' },
+    ],
+    skills: [
+      'Skill dedicata rivo-publisher (SKILL.md + reference.md nel repo)',
+      'Legge zero in fase di test: verifica, NON pubblica (pubblicati sempre 0)',
+      'Disclosure AI su ogni contenuto (EU AI Act), una caption per canale',
+      'Riuso: un pezzo forte si ripubblica 3-4 volte nel tempo',
+    ],
+    flusso: [
+      { step: 'Legge la coda', detail: 'I video e caroselli approvati, pronti da pubblicare' },
+      { step: 'Verifica i canali', detail: 'Quali collegati, quali tool esistono, senza postare' },
+      { step: 'Prova a secco', detail: 'Costruisce il payload per ogni canale, dry run' },
+      { step: 'Riporta lo stato', detail: 'Cosa e pronto e cosa manca (es. collega TikTok)' },
+    ],
+    regole: [
+      'In fase di test non esce nulla: si passa a live solo con tuo OK esplicito',
+      'Pubblica solo contenuti approvati, mai in attesa o scartati',
+      'Ogni contenuto AI esce con la disclosure "Creato con AI"',
+    ],
+  },
   guardiano: {
     missione:
       'Il manutentore tecnico della squadra: controlla che tutti i ruoli girino e aggiornino la dashboard, ripara gli intoppi che sa sistemare e chiama il builder solo per i bug di codice. Cosi Valerio guarda solo la dashboard, mai i log.',

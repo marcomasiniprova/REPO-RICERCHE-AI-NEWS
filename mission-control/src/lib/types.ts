@@ -172,6 +172,33 @@ export interface VideoItem {
   piattaforme_pubblicate?: string[];
 }
 
+/** Stato di un canale di pubblicazione visto da RIVO PUBLISHER. */
+export interface PublisherChannel {
+  nome: string; // instagram | tiktok | youtube
+  stato: 'collegato' | 'da_collegare' | string;
+  tool?: 'trovato' | 'assente' | string;
+  test?: 'ok' | 'ko' | 'na' | string;
+}
+
+/** Un contenuto approvato in coda di pubblicazione. */
+export interface PublisherQueueItem {
+  tipo: 'video' | 'carosello' | string;
+  key: string;
+  tema?: string;
+  pronto_per?: string[];
+  blocchi?: string[];
+}
+
+/** Lo stato della pubblicazione scritto da RIVO PUBLISHER (kv publisher_stato).
+ *  In fase di test: verifica la catena, non pubblica (pubblicati sempre 0). */
+export interface PublisherStato {
+  modo: 'test' | 'live' | string;
+  canali: PublisherChannel[];
+  coda?: PublisherQueueItem[];
+  ultimo_test?: string;
+  nota?: string;
+}
+
 export type CarouselStato = 'in_attesa' | 'approvato' | 'scartato' | 'pubblicato' | 'errore';
 
 /** Una slide del carosello scritta da RIVO CAROSELLI. */
@@ -298,6 +325,7 @@ export interface DashboardData {
   scoutStats: ScoutStats | null;
   videos: VideoItem[];
   carousels: CarouselItem[];
+  publisherStato: PublisherStato | null;
   guardianoHealth: GuardianoHealth | null;
   meetLink: MeetLink | null;
   meetings: Meeting[];

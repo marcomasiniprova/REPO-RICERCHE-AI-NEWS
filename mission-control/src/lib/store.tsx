@@ -29,6 +29,7 @@ import type {
   EditorialPlan,
   StrategaStato,
   CarouselItem,
+  PublisherStato,
 } from './types';
 import { fmtFollowers } from './utils';
 import agentsSeed from '@/data/agents.json';
@@ -152,6 +153,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
   const [scoutStats, setScoutStats] = useState<ScoutStats | null>(null);
   const [videos, setVideos] = useState<VideoItem[]>([]);
   const [carousels, setCarousels] = useState<CarouselItem[]>([]);
+  const [publisherStato, setPublisherStato] = useState<PublisherStato | null>(null);
   const [guardianoHealth, setGuardianoHealth] = useState<GuardianoHealth | null>(null);
   const [meetLink, setMeetLink] = useState<MeetLink | null>(null);
   const [meetings, setMeetings] = useState<Meeting[]>([]);
@@ -320,6 +322,8 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
             .map((r) => ({ ...(r.value as Omit<CarouselItem, 'key'>), key: r.key }) as CarouselItem)
             .sort((a, b) => (a.date < b.date ? 1 : -1));
           setCarousels(cars);
+          const ps = rows?.find((r) => r.key === 'publisher_stato');
+          if (ps && ps.value && typeof ps.value === 'object') setPublisherStato(ps.value as PublisherStato);
           const gh = rows?.find((r) => r.key === 'guardiano_health');
           if (gh && gh.value && typeof gh.value === 'object') setGuardianoHealth(gh.value as GuardianoHealth);
           const ml = rows?.find((r) => r.key === 'meet_link');
@@ -381,6 +385,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
       scoutStats,
       videos,
       carousels,
+      publisherStato,
       guardianoHealth,
       meetLink,
       meetings,
@@ -392,7 +397,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
       live,
       mode: hasSupabase ? 'supabase' : 'demo',
     };
-  }, [agents, messages, runs, feed, creators, drafts, reddit, redditKarma, scoutStats, videos, carousels, guardianoHealth, meetLink, meetings, draftsSend, editorialPlan, strategaStato, loading, live, hasSupabase]);
+  }, [agents, messages, runs, feed, creators, drafts, reddit, redditKarma, scoutStats, videos, carousels, publisherStato, guardianoHealth, meetLink, meetings, draftsSend, editorialPlan, strategaStato, loading, live, hasSupabase]);
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
 }
