@@ -21,7 +21,12 @@ Mai andare a cieco. A OGNI giro, prima di generare, in quest'ordine:
 4. **Dichiara i conti** nel feed e nel summary: saldo, prezzo per durata, durata scelta e perché, crediti che spenderai, crediti che restano.
 5. Se **nemmeno 8s a qualità piena** ci stanno nel saldo: STOP, feed kind "error", chiedi la ricarica a Valerio. Mai ripiegare su durata < 8s o su un modello economico per farcelo stare.
 
-> Esempio reale (29/8): saldo ~80 crediti → un Veo 3.1 pieno di **8-10s** ci sta, un 15-25s no. Con 80 crediti si punta a 8-10s. Con un saldo più alto si sale verso 12-15s e oltre. È il CALCOLO a decidere la durata, non un numero fisso.
+> Prezzi Kie VERIFICATI il 29/8 (da riverificare sempre, Kie li cambia; 1 credito = $0,005):
+> - **Veo 3.1 QUALITÀ piena, 8s con audio = 400 crediti ($2,00)**
+> - **Veo 3.1 FAST, 8s con audio = 80 crediti ($0,40)** — NON usare senza OK esplicito di Valerio (qualità inferiore).
+> - Durate maggiori scalano circa in proporzione (10s ≈ 500 cr, 15s ≈ 750 cr a qualità piena).
+>
+> Esempio reale (29/8): saldo 80 crediti → NON basta nemmeno per un Veo 3.1 qualità piena da 8s (servono 400). Con 80 crediti ci sta solo un FAST da 8s. Quindi a qualità piena: STOP e chiedi ricarica (per 8s servono almeno 400 cr, meglio ~500 col margine). È il CALCOLO sui prezzi VERI letti live a decidere, mai un numero a memoria.
 
 ## API Kie (base)
 - Base: `https://api.kie.ai/api/v1`
