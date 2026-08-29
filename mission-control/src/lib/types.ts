@@ -208,6 +208,8 @@ export interface CarouselSlide {
   titolo?: string;
   testo?: string;
   visual?: string; // direzione visiva (cosa si vede, colori, icone)
+  img?: string; // URL dell'immagine generata su Kie (GPT Image 2)
+  prompt?: string; // prompt di generazione (riferimento)
 }
 
 /** Il carosello del giorno di RIVO CAROSELLI: vive nel kv (chiave carosello_YYYY-MM-DD).
@@ -220,6 +222,8 @@ export interface CarouselItem {
   slides: CarouselSlide[];
   caption?: string;
   canali?: string[];
+  modello_img?: string; // modello Kie usato per le immagini
+  crediti_spesi?: number;
   stato: CarouselStato;
   note?: string;
   created_at?: string;
