@@ -32,3 +32,15 @@ Nota: tutte condividono lo stesso environment, quindi le variabili (chiavi API) 
 - Niente esce senza il PIN di Valerio (regola 1). Il Publisher in fase di test NON pubblica.
 - TikTok lo colleghi tu come ultimo passo.
 - Le routine le aggancia il builder; Valerio crea solo le sessioni (decisione 29/8: il ruolo di Valerio e' la dashboard).
+
+## 29/8 sera — Pubblicazione via ZERNIO (non piu' Composio pezzo-per-pezzo)
+Decisione di Valerio dopo ricerca: il PUBLISHER (e in futuro il COMMUNITY per commenti/DM) pubblica tramite **Zernio**, un layer unico. Perche': un solo collegamento per TikTok + Instagram Reels + YouTube Shorts (+ Reddit), post illimitati, MCP nativo per Claude, e soprattutto Zernio ha gia' passato l'audit TikTok, quindi TikTok si collega con un semplice login OAuth (niente app developer, niente client id/secret come chiedeva Composio). Costo: primi 2 account gratis, poi ~$6/account, quindi pochi euro/mese per i 3 canali.
+
+Passi per Valerio (quando arriviamo al Publisher):
+1. Crea un account su Zernio (zernio.com), genera la API key.
+2. Collega dentro Zernio gli account social: TikTok, Instagram, YouTube (login OAuth, non serve altro).
+3. Metti la `ZERNIO_API_KEY` nelle variabili d'ambiente (stesso environment dei RIVO), e aggiungi l'MCP di Zernio alla sessione RIVO PUBLISHER operative.
+4. Il Publisher resta in fase di TEST (verifica, non pubblica) finche' non dai l'OK esplicito per il "live".
+
+## 29/8 sera — RIVO CAPO ritirato
+Il ruolo CAPO e' stato ritirato (non coordinava davvero: osservava e riportava). Il controllo tecnico e' del GUARDIANO, il riepilogo della giornata lo fa il builder (Claude) su richiesta. La routine RIVO - CAPO e' disabilitata (trig_01S88EMToiFpSrJBm1NUmBKu). L'agente resta nello storico ma non gira piu'.

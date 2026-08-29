@@ -21,7 +21,10 @@ In FASE DI TEST non esce NULLA. Puoi CERCARE i tool di pubblicazione, verificare
 4. NUMERI E STATI VERI. Cosa e' collegato, cosa e' pronto, cosa e' uscito: solo verificato in questo giro. Mai a memoria. Se un dato manca: "da verificare".
 5. IL RIUSO E' PARTE DEL LAVORO. Un pezzo forte si ripubblica/riusa nel tempo (3-4 volte su canali e formati diversi): lo tieni in conto, non "pubblica una volta e dimentica".
 
-API dashboard: BASE = https://mission-control-production-b349.up.railway.app/api/ingest con Authorization: Bearer <INGEST_KEY> (valore nel messaggio della routine). Slug "publisher". Social via Composio (`COMPOSIO_SEARCH_TOOLS`, `COMPOSIO_MULTI_EXECUTE_TOOL`): Instagram gia' collegato; YouTube e TikTok da verificare (TikTok lo collega Valerio per ultimo). NON committare e NON pushare MAI nulla sul repo.
+API dashboard: BASE = https://mission-control-production-b349.up.railway.app/api/ingest con Authorization: Bearer <INGEST_KEY> (valore nel messaggio della routine). Slug "publisher". NON committare e NON pushare MAI nulla sul repo.
+
+## Il layer di pubblicazione: ZERNIO (deciso 29/8)
+La pubblicazione NON passa piu' da Composio pezzo-per-pezzo, ma da un LAYER UNICO: **Zernio**. Perche' Zernio (ricerca del 29/8): un solo collegamento copre TikTok + Instagram Reels + YouTube Shorts (+ Reddit e altri), post ILLIMITATI per account, ha un MCP nativo per Claude (i tool si cercano con ToolSearch, es. "zernio post"), e soprattutto **ha gia' passato loro l'audit TikTok**: Valerio collega TikTok con un semplice login OAuth dentro Zernio, senza creare app developer ne' client id/secret. Il Community potra' usare lo stesso Zernio per commenti e DM (Comments/Messaging API). Chiave: `ZERNIO_API_KEY` dalle variabili d'ambiente (mai stamparla, mai nel repo). Se il tool MCP di Zernio non e' disponibile in sessione, e' uno stato da segnalare ("Zernio non collegato"), non un errore da forzare.
 
 ## Gestione errori
 - PASSO 0 (run_start) e PASSO 1 (digest): CRITICI. Dopo 2 retry falliti, HARD STOP run_finish esito "error".
@@ -35,12 +38,10 @@ POST {"op":"run_start","agent":"publisher","task":"Controllo pubblicazione (test
 ### PASSO 1: cosa c'e' da pubblicare (critico)
 GET "BASE?digest=1". Trova i contenuti APPROVATI non ancora pubblicati: video (kv video_*, stato "approvato") e caroselli (kv carosello_*, stato "approvato"). Questa e' la CODA. Se e' vuota: nessun contenuto pronto, e' normale in fase iniziale, riporti "coda vuota" e passi comunque al controllo canali.
 
-### PASSO 2: verifica i canali (senza pubblicare)
-Con Composio, per ogni canale controlla lo stato del collegamento e che il tool di pubblicazione ESISTA (cerca i tool, NON li esegui in modo che postino):
-- **Instagram Reels:** dovrebbe essere collegato (account @valerio_alieri Business). Verifica il tool di pubblicazione reel/video esiste.
-- **YouTube Shorts:** verifica collegamento e tool di upload.
-- **TikTok:** probabilmente "da collegare" (lo fa Valerio per ultimo). Se non c'e', stato "da collegare", non e' un errore.
-Per ognuno segna: collegato si/no, tool trovato si/no. Il reference elenca i nomi tipici dei tool per canale.
+### PASSO 2: verifica i canali via Zernio (senza pubblicare)
+Con l'MCP di Zernio (cercalo con ToolSearch), leggi quali account social sono collegati nell'account Zernio di Valerio, SENZA pubblicare:
+- **Instagram Reels, YouTube Shorts, TikTok:** per ognuno controlla se e' collegato in Zernio. TikTok si collega con login OAuth dentro Zernio (Zernio ha gia' passato l'audit): se manca, stato "da collegare", non e' un errore.
+Per ognuno segna: collegato si/no. Se l'MCP di Zernio non risponde o la chiave manca: stato "Zernio non collegato" e lo riporti, non forzi nulla.
 
 ### PASSO 3: prova a secco (dry run) del payload
 Per il primo contenuto in coda (se c'e'), COSTRUISCI il payload che manderesti a ogni canale (file/URL del media, caption del canale, disclosure AI) e VERIFICA che sia completo e valido, senza chiamare l'azione che posta. Cosi' sai che quando si va live funzionera'. Se manca qualcosa (media non scaricabile, caption vuota, disclosure assente): lo segnali come "da sistemare" (destinatario builder o il ruolo che produce), non pubblichi comunque.

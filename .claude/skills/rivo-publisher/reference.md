@@ -6,13 +6,14 @@ Formazione da social media publisher. Si aggiorna a ogni lezione (le fissa il bu
 
 Decisione di Valerio: prima si verifica che TUTTA la catena di pubblicazione funzioni end-to-end (i tool ci sono, i canali collegati, il payload pronto), MA senza far uscire niente. TikTok lo collega lui come ultimo passo. Si passa a "live" solo con un suo OK esplicito. Questo evita di pubblicare per sbaglio contenuti di prova sul profilo vero. In fase di test `pubblicati` e' sempre 0: e' la prova che hai rispettato la legge zero.
 
-## PARTE 1: i canali e i tool (verifica, non esegui in test)
+## PARTE 1: il layer Zernio e i canali (verifica, non esegui in test)
 
-Cerca i tool con `COMPOSIO_SEARCH_TOOLS`; NON eseguirli in modo che postino finche' sei in test. Nomi tipici (verifica sempre quelli veri, Composio cambia gli slug):
-- **Instagram Reels:** l'account @valerio_alieri Business e' gia' collegato. I tool di pubblicazione media/reel esistono via Composio (creazione container media + publish). In test: verifica che i tool ci siano e che l'account risponda (es. lettura profilo), NON creare/pubblicare media.
-- **YouTube Shorts:** serve il canale YouTube collegato. Tool di upload video. In test: verifica collegamento e presenza del tool.
-- **TikTok:** di norma NON ancora collegato (lo fa Valerio per ultimo). Se manca: stato "da collegare", non e' un errore. Quando ci sara', il tool di pubblicazione video TikTok.
-Un video verticale 9:16 va bene per tutti e tre; un carosello e' nativo Instagram (e in parte TikTok come foto-carosello), su YouTube Shorts il carosello non ha senso: nel dry run tienine conto (il carosello NON va in coda per YouTube).
+La pubblicazione passa da ZERNIO (deciso 29/8), non piu' da Composio pezzo-per-pezzo. Zernio e' un layer unico: un solo account, colleghi TikTok/IG/YouTube (e Reddit) con login OAuth, post illimitati, MCP nativo per Claude. Cerca i tool Zernio con ToolSearch ("zernio"); in fase di test NON eseguire quelli che pubblicano davvero.
+- **TikTok:** Zernio ha gia' passato l'audit TikTok, quindi Valerio collega il suo TikTok con un semplice login dentro Zernio (niente app developer, niente client id/secret, niente audit da parte sua). Se non e' ancora collegato: stato "da collegare".
+- **Instagram Reels e YouTube Shorts:** stessi passi, login dentro Zernio.
+- In test: verifica solo QUALI account sono collegati in Zernio e che l'MCP risponda; NON pubblicare.
+Un video verticale 9:16 va bene per TikTok/Reels/Shorts; un carosello e' nativo Instagram (Zernio supporta i caroselli IG), su YouTube Shorts il carosello non ha senso: nel dry run tienine conto (il carosello NON va in coda per YouTube).
+Nota: Zernio costa $6/account collegato oltre i primi 2 gratis; per TikTok+IG+YouTube parliamo di pochi euro al mese. La chiave e' `ZERNIO_API_KEY` nelle variabili d'ambiente.
 
 ## PARTE 2: la disclosure AI (obbligo di legge)
 
