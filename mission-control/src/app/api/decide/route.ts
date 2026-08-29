@@ -18,6 +18,7 @@ export async function POST(request: Request) {
     draft_id?: number;
     video_key?: string;
     carosello_key?: string;
+    community_reply_id?: string;
     action?: string;
     note?: string;
     pin?: string;
@@ -149,6 +150,40 @@ export async function POST(request: Request) {
           : `Valerio ha scartato il carosello del ${dateLabel}.`,
     });
     return Response.json({ ok: true, status: stato });
+  }
+
+  // Risposte di RIVO COMMUNITY: vivono in un array dentro il kv community_stato.
+  // Il PIN porta la singola risposta a "approvato"; l'agente la invia al giro dopo.
+  if (body.community_reply_id) {
+    const replyId = String(body.community_reply_id);
+    const db = createClient(url, key, { auth: { persistSession: false } });
+    const { data: row } = await db.from('kv').select('value').eq('key', 'community_stato').single();
+    const stato = row?.value as { risposte?: Array<Record<string, unknown>> } | null;
+    if (!stato || !Array.isArray(stato.risposte)) {
+      return Response.json({ ok: false, error: 'stato community non trovato' }, { status: 404 });
+    }
+    const idx = stato.risposte.findIndex((r) => String(r.id) === replyId);
+    if (idx < 0) {
+      return Response.json({ ok: false, error: 'risposta non trovata' }, { status: 404 });
+    }
+    if (stato.risposte[idx].stato !== 'in_attesa') {
+      return Response.json({ ok: false, error: 'risposta gia decisa' }, { status: 409 });
+    }
+    const nowIso = new Date().toISOString();
+    const nuovoStato = body.action === 'reject' ? 'scartato' : 'approvato';
+    stato.risposte[idx] = { ...stato.risposte[idx], stato: nuovoStato, deciso_at: nowIso };
+    const { error: upErr } = await db.from('kv').update({ value: stato, updated_at: nowIso }).eq('key', 'community_stato');
+    if (upErr) return Response.json({ ok: false, error: upErr.message }, { status: 500 });
+    const da = String(stato.risposte[idx].da ?? 'un utente');
+    await db.from('activity_feed').insert({
+      agent_slug: null,
+      kind: nuovoStato === 'approvato' ? 'success' : 'info',
+      message:
+        nuovoStato === 'approvato'
+          ? `Valerio ha approvato la risposta a ${da}: RIVO COMMUNITY la invia al prossimo giro.`
+          : `Valerio ha scartato la risposta a ${da}.`,
+    });
+    return Response.json({ ok: true, status: nuovoStato });
   }
 
   const id = Number(body.draft_id);

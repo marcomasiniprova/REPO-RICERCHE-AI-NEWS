@@ -88,6 +88,17 @@
     "color": "#e0a52f"
   },
   {
+    "slug": "community",
+    "name": "COMMUNITY",
+    "role": "Tiene viva la pagina",
+    "tagline": "Risponde a commenti e DM, presidia i primi 60 minuti dei post. Sempre col tuo PIN.",
+    "avatar": "/avatars/community.png",
+    "status": "idle",
+    "schedule_label": "Ogni ora, 8:00-20:00",
+    "cron": "0 6-18 * * *",
+    "color": "#b45cc9"
+  },
+  {
     "slug": "guardiano",
     "name": "GUARDIANO",
     "role": "Il manutentore",

@@ -223,6 +223,32 @@ export const AGENT_SPECS: Record<string, AgentSpec> = {
       'Ogni contenuto AI esce con la disclosure "Creato con AI"',
     ],
   },
+  community: {
+    missione:
+      'Tiene viva la pagina: legge i commenti e i DM del pubblico sui contenuti, prepara risposte umane e presidia i primi 60 minuti di ogni post nuovo, la finestra che decide se l\'algoritmo lo spinge. Prepara le risposte, non le manda senza il tuo OK.',
+    tools: [
+      { name: 'Composio Instagram', detail: 'Commenti e DM di @valerio_alieri: lettura e risposta entro 24h' },
+      { name: 'Mission Control API', detail: 'Le risposte aspettano il PIN, il cruscotto engagement' },
+      { name: 'Finestra 60 minuti', detail: 'Presidia i post appena usciti: risposte urgenti per prime' },
+    ],
+    skills: [
+      'Skill dedicata rivo-community (SKILL.md + reference.md nel repo)',
+      'Copywriting italiano umano: risposte calde e personalizzate, mai copia-incolla',
+      'Garbo con gli hater, valore alle domande vere, mai numeri inventati',
+      'Presidio dei primi 60 minuti: la finestra che fa spingere un post',
+    ],
+    flusso: [
+      { step: 'Invia le approvate', detail: 'Le risposte che hai sbloccato col PIN partono ora' },
+      { step: 'Legge commenti e DM', detail: 'Domande, complimenti, critiche: cosa serve gestire' },
+      { step: 'Presidia i 60 minuti', detail: 'I post appena usciti: risposte urgenti per prime' },
+      { step: 'Prepara le risposte', detail: 'Bozze umane in attesa del tuo PIN + cruscotto engagement' },
+    ],
+    regole: [
+      'Mai rispondere senza il tuo OK: ogni risposta e una bozza col PIN (regola 1)',
+      'Mai litigare o essere difensivi: garbo sempre',
+      'Mai primo DM a freddo, mai numeri inventati',
+    ],
+  },
   guardiano: {
     missione:
       'Il manutentore tecnico della squadra: controlla che tutti i ruoli girino e aggiornino la dashboard, ripara gli intoppi che sa sistemare e chiama il builder solo per i bug di codice. Cosi Valerio guarda solo la dashboard, mai i log.',

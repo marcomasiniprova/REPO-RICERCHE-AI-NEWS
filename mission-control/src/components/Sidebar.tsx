@@ -16,6 +16,7 @@ import {
   Radar,
   Radio,
   Send,
+  Heart,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useData } from '@/lib/store';
@@ -32,14 +33,16 @@ const NAV = [
   { href: '/contenuti', label: 'Contenuti', icon: Clapperboard },
   { href: '/caroselli', label: 'Caroselli', icon: GalleryHorizontalEnd },
   { href: '/pubblicazione', label: 'Pubblicazione', icon: Send },
+  { href: '/community', label: 'Community', icon: Heart },
 ];
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const { drafts, videos, carousels, live, mode } = useData();
+  const { drafts, videos, carousels, communityStato, live, mode } = useData();
   const pending = drafts.filter((d) => d.status === 'bozza').length;
   const pendingVideos = videos.filter((v) => v.stato === 'in_attesa').length;
   const pendingCarousels = carousels.filter((c) => c.stato === 'in_attesa').length;
+  const pendingReplies = (communityStato?.risposte ?? []).filter((r) => r.stato === 'in_attesa').length;
 
   return (
     <aside className="glass sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-[var(--color-line)] px-4 py-5 md:flex">
@@ -88,6 +91,11 @@ export default function Sidebar() {
               {href === '/caroselli' && pendingCarousels > 0 && (
                 <span className="ml-auto rounded-full bg-tan px-2 py-0.5 text-[11px] font-bold text-tan-ink">
                   {pendingCarousels}
+                </span>
+              )}
+              {href === '/community' && pendingReplies > 0 && (
+                <span className="ml-auto rounded-full bg-tan px-2 py-0.5 text-[11px] font-bold text-tan-ink">
+                  {pendingReplies}
                 </span>
               )}
             </Link>

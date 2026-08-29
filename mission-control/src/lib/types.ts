@@ -228,6 +228,44 @@ export interface CarouselItem {
   piattaforme_pubblicate?: string[];
 }
 
+export type CommunityReplyStato = 'in_attesa' | 'approvato' | 'scartato' | 'inviato' | string;
+
+/** Una risposta preparata da RIVO COMMUNITY a un commento o DM (in community_stato.risposte). */
+export interface CommunityReply {
+  id: string;
+  tipo: 'commento' | 'dm' | string;
+  da?: string; // handle di chi ha scritto
+  dove?: string; // post o "DM"
+  loro?: string; // cosa hanno scritto
+  bozza?: string; // la risposta pronta
+  urgente?: boolean; // nei primi 60 minuti
+  stato: CommunityReplyStato;
+  creato?: string;
+  inviato_at?: string | null;
+}
+
+/** Una finestra "primi 60 minuti" attiva su un post. */
+export interface CommunityWindow {
+  post?: string;
+  scade?: string;
+  commenti?: number;
+}
+
+/** Il cruscotto di RIVO COMMUNITY (kv community_stato): l'aria nei commenti,
+ *  le risposte pronte da approvare, la finestra dei primi 60 minuti. */
+export interface CommunityStato {
+  commenti_nuovi?: number;
+  dm_nuovi?: number;
+  in_attesa_pin?: number;
+  urgenti?: number;
+  sentiment?: string;
+  tempo_medio_attesa?: string;
+  finestra_60min?: CommunityWindow[];
+  risposte?: CommunityReply[];
+  updated_at?: string;
+  nota?: string;
+}
+
 /** Semaforo di salute scritto dal GUARDIANO nel kv (chiave guardiano_health). */
 export interface GuardianoHealth {
   stato: 'ok' | 'attenzione' | 'critico';
@@ -326,6 +364,7 @@ export interface DashboardData {
   videos: VideoItem[];
   carousels: CarouselItem[];
   publisherStato: PublisherStato | null;
+  communityStato: CommunityStato | null;
   guardianoHealth: GuardianoHealth | null;
   meetLink: MeetLink | null;
   meetings: Meeting[];
