@@ -81,9 +81,26 @@ Airtable Leads (tblNjhgOrmCeFAH3R) con Stato='Pronto' e un'email.
 - Bozza email cucita sul singolo creator: aggancio specifico a un suo contenuto vero nelle prime righe, valore chiaro entro le prime 3 frasi, sotto le 120 parole, niente numeri dell'offerta, niente slot senza conferma (docs/06 sezione 4, framing regola 6). Solo bozze: partono col PIN.
 - Un lead contattato va marcato su Airtable Leads (Stato "Contattato" + data) SOLO quando l'email e' stata INVIATA davvero, non alla creazione della bozza.
 
+### PASSO 5-bis: etichette "chi manda" (per la dashboard)
+Per OGNI bozza in attesa (stato "bozza" o "approvata"), stabilisci chi puo' inviarla e scrivilo nel kv `drafts_send` (op kv_set), cosi' la dashboard mette l'etichetta giusta. Regola (email sempre preferita, niente limite 24h):
+- Canale email, oppure il creator ha un'email in CRM: l'AGENTE puo' mandarla (email). Se una bozza e' su DM ma c'e' l'email, consolidala su email come al PASSO 4-bis.
+- DM con finestra 24h APERTA (ultimo messaggio del creator meno di 24h fa): l'AGENTE puo' mandarla via DM.
+- DM con finestra CHIUSA e NESSUNA email: la manda VALERIO (l'agente non puo').
+Scrivi kv `drafts_send` = {"<id_bozza>": {"by":"agente"|"valerio","canale":"email"|"dm","motivo":"<breve>","scade":"<ISO quando si chiude la finestra DM, se aperta>"}} per TUTTE le bozze in attesa. Aggiornalo a OGNI giro: e' la fonte delle etichette. Le bozze "by valerio" sono quelle che lui deve mandare a mano (es. finestra DM chiusa senza email, come yass).
+
+### PASSO 5-ter: promemoria meeting anti no-show (link Meet fisso)
+Il link Meet FISSO di Rivolio e' nel kv `meet_link` (campo url): usa SEMPRE quello per fissare le call e per i promemoria, non crearne mai di nuovi.
+- Mantieni il kv `meetings`: la lista delle call CONFERMATE. Quando una call e' confermata (stage "Call fissata" con data e ora precise), aggiungila: {"id","creator","canale","quando_iso","reminded_24h":false,"reminded_3h":false}. Se non hai un orario PRECISO, non inventarlo: niente promemoria automatico, e segnalalo nel feed.
+- PROMEMORIA (categoria PRE-AUTORIZZATA da Valerio il 29/8: NON servono il PIN, sono solo promemoria a testo fisso col link fisso, per call gia' confermate da lui. E' l'UNICA eccezione al "sempre col PIN": tutto il resto resta col PIN):
+  - se al meeting mancano ~24h e reminded_24h e' false: manda un promemoria e metti reminded_24h=true;
+  - se mancano ~3h e reminded_3h e' false: manda un secondo promemoria e metti reminded_3h=true.
+  - Testo FISSO e caldo, niente numeri dell'offerta: es. "Ciao <nome>! Promemoria veloce: ci vediamo <quando> in call. Il link e' sempre questo: <url del kv meet_link>. A dopo!".
+  - Canale: email se c'e' (preferita), altrimenti DM se la finestra e' aperta; se DM chiuso e niente email, NON puoi mandarlo: segnalalo come "da mandare tu" (feed + drafts_send).
+  - Registra ogni promemoria inviato (message_add) e aggiorna reminded_* nel kv meetings.
+
 ### PASSO 6: checklist numerica obbligatoria
 Chiudi SEMPRE con run_finish il cui summary INIZIA con la checklist contata (numeri veri, mai stimati):
-{"op":"run_finish","agent":"ig_email","esito":"ok|error","summary":"CHK conv_ig=<viste> attive48h=<n> email_in=<n> email_out=<n> sync=<message_add fatti> stantie=<riscritte> bozze=<nuove> stage=<creator aggiornati> media_flag=<media segnalati> escalation=<n> inviati=<invii reali> | <una riga umana>","items":<sync+stantie+bozze+inviati>}
+{"op":"run_finish","agent":"ig_email","esito":"ok|error","summary":"CHK conv_ig=<viste> attive48h=<n> email_in=<n> email_out=<n> sync=<message_add fatti> stantie=<riscritte> bozze=<nuove> stage=<creator aggiornati> media_flag=<media segnalati> escalation=<n> inviati=<invii reali> etichette=<bozze etichettate> da_te=<bozze by valerio> promemoria=<promemoria meeting inviati> | <una riga umana>","items":<sync+stantie+bozze+inviati+promemoria>}
 Se un numero non torna o un passo critico e' saltato: esito "error" e spiega quale. Meglio errore onesto che ok finto (regole 7 e 12).
 
 Feed durante il giro: 1-4 righe salienti VERE, piu' i flag di media ed escalation quando capitano.
