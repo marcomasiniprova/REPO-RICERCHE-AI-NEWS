@@ -13,6 +13,10 @@ import {
   Ear,
   Monitor,
   Handshake,
+  Link2,
+  Copy,
+  Check,
+  BellRing,
 } from 'lucide-react';
 import { useData } from '@/lib/store';
 import { PageHeader, EmptyState, Badge } from '@/components/ui';
@@ -272,10 +276,81 @@ const CHECKLIST_POST = [
   'Note e obiezioni nuove aggiunte al framework',
 ];
 
+function MeetLinkCard({ url, nota }: { url: string; nota?: string }) {
+  const [copied, setCopied] = useState(false);
+  const short = url.replace(/^https?:\/\//, '');
+  return (
+    <div className="card mb-5 flex flex-col gap-3 p-4 sm:flex-row sm:items-center">
+      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-deep text-mint">
+        <Link2 size={18} />
+      </span>
+      <div className="min-w-0 flex-1">
+        <div className="flex items-center gap-2">
+          <span className="text-[13.5px] font-bold text-deep">Link Meet fisso</span>
+          <Badge tone="brand">sempre questo</Badge>
+        </div>
+        <div className="mt-0.5 truncate font-mono text-[12.5px] text-brand-600">{short}</div>
+        <p className="mt-0.5 text-[11px] leading-snug text-ink-3">
+          {nota || 'Gli agenti usano questo link per tutte le call e i promemoria. Non serve crearne di nuovi.'}
+        </p>
+      </div>
+      <div className="flex shrink-0 gap-2">
+        <button
+          onClick={() => {
+            try {
+              navigator.clipboard.writeText(url);
+              setCopied(true);
+              setTimeout(() => setCopied(false), 1600);
+            } catch {}
+          }}
+          className="inline-flex items-center gap-1.5 rounded-xl border border-line bg-white px-3 py-2 text-[12px] font-semibold text-ink-2 transition-colors hover:border-line-strong hover:text-deep"
+        >
+          {copied ? <Check size={14} className="text-brand-600" /> : <Copy size={14} />}
+          {copied ? 'Copiato' : 'Copia'}
+        </button>
+        <a
+          href={url}
+          target="_blank"
+          rel="noreferrer"
+          className="inline-flex items-center gap-1.5 rounded-xl bg-brand-600 px-3 py-2 text-[12px] font-bold text-white transition-colors hover:bg-brand-700"
+        >
+          <Video size={14} />
+          Entra
+        </a>
+      </div>
+    </div>
+  );
+}
+
+function reminderBadges(m: { quando_iso?: string; reminded_24h?: boolean; reminded_3h?: boolean }) {
+  return (
+    <span className="inline-flex items-center gap-1.5">
+      <span
+        className={cn(
+          'inline-flex items-center gap-1 rounded-full px-1.5 py-0.5 text-[9.5px] font-bold',
+          m.reminded_24h ? 'bg-brand-100 text-brand-700' : 'bg-subtle text-ink-3',
+        )}
+      >
+        <BellRing size={9} /> 24h
+      </span>
+      <span
+        className={cn(
+          'inline-flex items-center gap-1 rounded-full px-1.5 py-0.5 text-[9.5px] font-bold',
+          m.reminded_3h ? 'bg-brand-100 text-brand-700' : 'bg-subtle text-ink-3',
+        )}
+      >
+        <BellRing size={9} /> 3h
+      </span>
+    </span>
+  );
+}
+
 export default function CallPage() {
-  const { creators, loading } = useData();
+  const { creators, loading, meetLink, meetings } = useData();
   const [openSlide, setOpenSlide] = useState<number | null>(3);
   const callFissate = creators.filter((c) => c.source === 'crm' && c.stage === 'Call fissata');
+  const meetingFor = (name: string) =>
+    meetings.find((m) => (m.creator || '').toLowerCase() === name.toLowerCase());
 
   return (
     <div className="mx-auto max-w-[1060px]">
@@ -284,6 +359,8 @@ export default function CallPage() {
         subtitle="Tutto il materiale per portare un creator dal si alla partenza: agenda, deck, script e risposte."
         right={<LiveBadge />}
       />
+
+      {meetLink?.url && <MeetLinkCard url={meetLink.url} nota={meetLink.nota} />}
 
       {/* Agenda + deck */}
       <div className="mb-7 grid gap-3.5 lg:grid-cols-[1fr_380px]">
@@ -325,6 +402,7 @@ export default function CallPage() {
                         </a>
                       )}
                       {c.followers && <Badge tone="neutral">{c.followers}</Badge>}
+                      {meetingFor(c.name) && reminderBadges(meetingFor(c.name)!)}
                     </div>
                     {c.esito && <p className="mt-0.5 text-[11.5px] leading-snug text-ink-3">{c.esito}</p>}
                   </div>

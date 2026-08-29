@@ -31,7 +31,7 @@ function ChannelIcon({ d }: { d: Draft }) {
 }
 
 export default function BozzePage() {
-  const { drafts, agents, loading } = useData();
+  const { drafts, agents, loading, draftsSend } = useData();
   const [filter, setFilter] = useState<DraftStatus | 'tutte'>('bozza');
   const [open, setOpen] = useState<Draft | null>(null);
   const [pinAsk, setPinAsk] = useState<{ draft: Draft; action: 'approve' | 'reject' } | null>(null);
@@ -158,6 +158,25 @@ export default function BozzePage() {
                         <span className={cn('shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold', tone.cls)}>
                           {tone.label}
                         </span>
+                        {(() => {
+                          const ds = draftsSend[String(d.id)];
+                          if (!ds) return null;
+                          return ds.by === 'valerio' ? (
+                            <span
+                              className="shrink-0 rounded-full bg-[#fbe9e2] px-2 py-0.5 text-[10px] font-bold text-[#a63d20]"
+                              title={ds.motivo || 'La finestra DM e chiusa e non c e email: mandalo tu a mano'}
+                            >
+                              Mandi tu
+                            </span>
+                          ) : (
+                            <span
+                              className="shrink-0 rounded-full bg-brand-50 px-2 py-0.5 text-[10px] font-semibold text-brand-600"
+                              title={ds.motivo || `L agente lo invia via ${ds.canale || 'messaggio'}`}
+                            >
+                              L&apos;agente lo invia{ds.canale === 'email' ? ' (email)' : ''}
+                            </span>
+                          );
+                        })()}
                       </div>
                       <div className="mt-0.5 flex items-center gap-2 text-[11px] text-ink-3">
                         <span className="font-medium text-brand-600">{d.creator}</span>

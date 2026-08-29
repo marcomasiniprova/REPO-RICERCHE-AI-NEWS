@@ -23,6 +23,9 @@ import type {
   ScoutStats,
   VideoItem,
   GuardianoHealth,
+  MeetLink,
+  Meeting,
+  DraftSend,
 } from './types';
 import { fmtFollowers } from './utils';
 import agentsSeed from '@/data/agents.json';
@@ -146,6 +149,9 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
   const [scoutStats, setScoutStats] = useState<ScoutStats | null>(null);
   const [videos, setVideos] = useState<VideoItem[]>([]);
   const [guardianoHealth, setGuardianoHealth] = useState<GuardianoHealth | null>(null);
+  const [meetLink, setMeetLink] = useState<MeetLink | null>(null);
+  const [meetings, setMeetings] = useState<Meeting[]>([]);
+  const [draftsSend, setDraftsSend] = useState<Record<string, DraftSend>>({});
   const [loading, setLoading] = useState(true);
   const [live, setLive] = useState(false);
   const supa = useRef<SupabaseClient | null>(null);
@@ -304,6 +310,12 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
           setVideos(vids);
           const gh = rows?.find((r) => r.key === 'guardiano_health');
           if (gh && gh.value && typeof gh.value === 'object') setGuardianoHealth(gh.value as GuardianoHealth);
+          const ml = rows?.find((r) => r.key === 'meet_link');
+          if (ml && ml.value && typeof ml.value === 'object') setMeetLink(ml.value as MeetLink);
+          const mt = rows?.find((r) => r.key === 'meetings');
+          if (mt && Array.isArray(mt.value)) setMeetings(mt.value as Meeting[]);
+          const ds = rows?.find((r) => r.key === 'drafts_send');
+          if (ds && ds.value && typeof ds.value === 'object') setDraftsSend(ds.value as Record<string, DraftSend>);
         }) as unknown as Promise<void>,
       );
     await Promise.allSettled(jobs);
@@ -352,6 +364,9 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
       scoutStats,
       videos,
       guardianoHealth,
+      meetLink,
+      meetings,
+      draftsSend,
       leads: leadsSeed.rows as LeadRow[],
       loading,
       live,

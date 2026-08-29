@@ -183,6 +183,30 @@ export interface GuardianoHealth {
   updated_at?: string;
 }
 
+/** Link Meet fisso di Rivolio (kv meet_link), usato per tutte le call. */
+export interface MeetLink {
+  url: string;
+  nota?: string;
+}
+
+/** Un appuntamento confermato (kv meetings), con lo stato dei promemoria. */
+export interface Meeting {
+  id?: string;
+  creator: string;
+  canale?: string;
+  quando_iso?: string;
+  reminded_24h?: boolean;
+  reminded_3h?: boolean;
+}
+
+/** Chi puo' inviare una bozza (kv drafts_send), per l'etichetta in dashboard. */
+export interface DraftSend {
+  by: 'agente' | 'valerio';
+  canale?: 'email' | 'dm';
+  motivo?: string;
+  scade?: string;
+}
+
 export interface DashboardData {
   agents: Agent[];
   messages: Message[];
@@ -196,6 +220,9 @@ export interface DashboardData {
   scoutStats: ScoutStats | null;
   videos: VideoItem[];
   guardianoHealth: GuardianoHealth | null;
+  meetLink: MeetLink | null;
+  meetings: Meeting[];
+  draftsSend: Record<string, DraftSend>;
   leads: LeadRow[];
   loading: boolean;
   live: boolean; // realtime collegato
