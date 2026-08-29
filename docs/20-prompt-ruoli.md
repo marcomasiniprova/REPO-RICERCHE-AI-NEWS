@@ -105,3 +105,13 @@ Dopo la ricerca sulla crescita organica, la macchina contenuti diventa un vero t
 - Quando sara' LIVE (solo con OK esplicito di Valerio + TikTok collegato): pubblica i contenuti in stato "approvato" su Reels/TikTok/Shorts con caption per canale + disclosure AI, poi marca il contenuto "pubblicato". Ogni pubblicazione reale col PIN.
 - Confini: non produce i contenuti (Video/Caroselli), non decide (Stratega), non risponde ai commenti (Community). Prende l'approvato e lo porta fuori.
 - Da attivare: integrazione dashboard (pagina Pubblicazione: stato canali + coda); sessione "RIVO PUBLISHER operative" creata da Valerio; routine agganciata dal builder.
+
+## 29/8 sera — Quinto pezzo: RIVO COMMUNITY (il team contenuti e' completo)
+### RIVO - COMMUNITY (tiene viva la pagina, presidia i primi 60 minuti)
+- Skill: `.claude/skills/rivo-community/` (SKILL.md + reference.md). Slug "community".
+- Cosa fa: legge commenti e DM del pubblico sui contenuti, prepara risposte umane (bozze in attesa PIN, regola 1), presidia i primi 60 minuti dei post nuovi (le risposte a quei commenti sono URGENTI). Invia solo le risposte gia' approvate col PIN. Scrive il cruscotto nel kv `community_stato` (commenti/DM nuovi, in attesa PIN, urgenti, sentiment, tempo medio, finestra 60min).
+- Confini: il PUBBLICO, non i creator/partnership (IG e Email). Non decide (Stratega), non produce (Video/Caroselli), non pubblica (Publisher). Mai primo DM a freddo, mai litigare, mai numeri inventati.
+- Da attivare: pagina Community in dashboard (engagement + risposte con PIN); sessione "RIVO COMMUNITY operative" creata da Valerio; routine agganciata dal builder.
+
+### Il team contenuti dei sogni: COMPLETO (5 ruoli)
+STRATEGA (cervello/social media manager) -> VIDEO (Giulia UGC) + CAROSELLI (post-guida) -> PUBLISHER (pubblica ovunque, per ora in test) -> COMMUNITY (tiene viva la pagina). Piu' i 4 ruoli sales (CAPO, SCOUT, IG e Email, REDDIT) e il GUARDIANO. Attivazione dei nuovi: Valerio crea le sessioni, il builder aggancia le routine.
