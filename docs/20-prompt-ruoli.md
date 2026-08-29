@@ -97,3 +97,11 @@ Dopo la ricerca sulla crescita organica, la macchina contenuti diventa un vero t
 - Cosa fa: legge il piano dello Stratega (kv piano_editoriale, pezzi assegnato_a=caroselli), progetta il carosello slide per slide (copertina che ferma il pollice, contenuto numerato, CTA soft), scrive la caption con hashtag, consegna nel kv `carosello_YYYY-MM-DD` in stato in_attesa. 5-8 slide, una idea per slide.
 - Confini: non pubblica (PUBLISHER col PIN), non decide i temi (Stratega), non risponde ai commenti (Community), non inventa numeri. Consegna il contenuto perfetto delle slide + la direzione visiva; la resa in immagini vere e' del render del Publisher.
 - Da attivare: integrazione dashboard (anteprima slide in Contenuti + PIN); sessione "RIVO CAROSELLI operative" creata da Valerio; routine agganciata dal builder (cadenza proposta: mattina, dopo lo Stratega). Attivazione insieme agli altri ruoli contenuti.
+
+## 29/8 sera — Quarto pezzo della macchina contenuti: RIVO PUBLISHER (test)
+### RIVO - PUBLISHER (pubblica ovunque + ripubblica, per ora a secco)
+- Skill: `.claude/skills/rivo-publisher/` (SKILL.md + reference.md). Slug "publisher".
+- FASE DI TEST (vincolo Valerio): NON pubblica. Verifica che i tool di pubblicazione esistano (Composio), che i canali siano collegati (Instagram ok, YouTube da verificare, TikTok da collegare come ultimo passo di Valerio), costruisce il payload a secco e scrive lo stato nel kv `publisher_stato`. In test pubblicati=0 sempre.
+- Quando sara' LIVE (solo con OK esplicito di Valerio + TikTok collegato): pubblica i contenuti in stato "approvato" su Reels/TikTok/Shorts con caption per canale + disclosure AI, poi marca il contenuto "pubblicato". Ogni pubblicazione reale col PIN.
+- Confini: non produce i contenuti (Video/Caroselli), non decide (Stratega), non risponde ai commenti (Community). Prende l'approvato e lo porta fuori.
+- Da attivare: integrazione dashboard (pagina Pubblicazione: stato canali + coda); sessione "RIVO PUBLISHER operative" creata da Valerio; routine agganciata dal builder.
