@@ -73,13 +73,23 @@ export function nextRunLabel(cron: string | null): string {
   const { h: nowH, m: nowM } = romeNow();
   const nowMin = nowH * 60 + nowM;
 
-  let hours: number[] = [];
-  if (hourS.includes('-')) {
-    const [a, b] = hourS.split('-').map(Number);
-    for (let h = a; h <= b; h++) hours.push(toRome(h));
-  } else {
-    hours = [toRome(Number(hourS))];
+  // Parsa il campo ore del cron: liste con virgola (5,17), intervalli (8-20),
+  // intervalli con passo (5-19/2) e valori singoli. Ignora i pezzi non validi.
+  const hours: number[] = [];
+  for (const part of hourS.split(',')) {
+    const [rangePart, stepS] = part.split('/');
+    const step = stepS ? Number(stepS) : 1;
+    if (rangePart.includes('-')) {
+      const [a, b] = rangePart.split('-').map(Number);
+      if (Number.isNaN(a) || Number.isNaN(b) || Number.isNaN(step) || step <= 0) continue;
+      for (let h = a; h <= b; h += step) hours.push(toRome(h));
+    } else {
+      const h = Number(rangePart);
+      if (Number.isNaN(h)) continue;
+      hours.push(toRome(h));
+    }
   }
+  if (hours.length === 0) return 'pianificato';
   hours.sort((a, b) => a - b);
 
   for (const h of hours) {
