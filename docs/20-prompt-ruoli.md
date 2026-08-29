@@ -62,3 +62,15 @@ Su decisione di Valerio ogni ruolo ora ha la sua skill nel repo, una cartella pe
 - Budget: autorizzato 1 video + max 1 rigenerazione al giorno; saldo Kie controllato a inizio giro, con crediti a zero il giro si ferma e urla nel feed (destinatario: Valerio, ricarica).
 - Chiavi: `KIE_API_KEY` dalle variabili dell'environment (vedi `.env.example` alla root: nel repo SOLO i nomi delle chiavi, mai i valori, regola 8). Pubblicazione via Composio (account social di Rivolio collegati da Valerio).
 - Routine: RIVO - VIDEO, ogni mattina 7:30 italiane (cron 30 5 * * * UTC), agganciata alla sessione "RIVO VIDEO operative" creata da Valerio. Prompt corto come gli altri: git pull, carica la skill rivo-video, esclusivita', INGEST_KEY nel messaggio.
+
+## 29/8 pomeriggio — Tutte e 5 le routine blindate (prompt a prova di container vuoto)
+Dopo i problemi del ruolo VIDEO (container svuotato dal cambio ambiente + contesto stale sui re-fire ravvicinati), TUTTE le 5 routine sono state ricreate con lo stesso prompt blindato: "OGNI FIRE E' UN GIRO NUOVO DA ZERO" (mai a memoria) + PASSO ZERO che clona il repo se il container e' vuoto e fa SEMPRE git pull + rilettura del digest da zero. Nuovi trigger id:
+- SCOUT: trig_01NuXDkrkZu6jZDSLzoJcwGQ (0 4 UTC = 6:00 IT) -> session_01JG8SAgg9iJ3VxMNHcCUnsQ
+- IG e Email: trig_01HmBxBdk3YYAnqE7mCwdpKj (15 6-18 UTC = 8:15-20:15 IT) -> session_01L8ijRZeY15T4eCWkZ6qqzD
+- REDDIT: trig_013C4p235ZbFjKco1b4Mg6ny (0 6-18 UTC = 8-20 IT) -> session_01FydgQ9ZgE4Vtoj47N4VVyP
+- CAPO: trig_01S88EMToiFpSrJBm1NUmBKu (30 6,18 UTC = 8:30 e 20:30 IT) -> session_01V7gAxxPXdsr4q51VN1GaKD
+- VIDEO: trig_019TfbbbBF4gDwobdrcRPMzS (0 6-18/3 UTC = 8,11,14,17,20 IT) -> session_01Qt543vKnFPbxMaAguXtDB3
+I vecchi trigger sono stati eliminati. Collaudo del 29/8 16:39 (giro di prova simultaneo dei 5): IG ok (sync pulito), REDDIT ok (karma 15), CAPO ok (report sera coordinato, ha visto anche il video in attesa PIN), VIDEO ok (idempotente: non ha rigenerato, video gia' in_attesa), SCOUT in corso (n8n discovery). Le 2 call sono per LUNEDI: Marina 15:30, yass 16:30.
+
+## 29/8 — Roadmap fase 2 (decisa con Valerio, da costruire in ordine)
+Il ruolo di Valerio da ora e' SOLO la dashboard (approva/guarda), mai piu' sessioni/log. Il manutentore diventa un ruolo dedicato. Ordine deciso: (1) robustezza dei 4 [FATTO]; poi (2) Guardiano/manutentore (ripara i ruoli fermi, rilancia i giri saltati, sistema n8n; chiama il builder solo per i bug di codice); (3) etichette bozze in dashboard ("manda l'agente" se DM entro 24h o c'e' email; "mandi tu" se DM oltre 24h e senza email; email sempre preferita); (4) promemoria meeting anti no-show (automatici 24h e 3h prima, dalla sezione Call + Airtable, MAI da approvare); (5) link Meet fisso globale (nella dashboard, riusato per tutte le call; l'invio del link alla conferma call e' da approvare, i promemoria no). Serve da Valerio: il link Meet fisso.
