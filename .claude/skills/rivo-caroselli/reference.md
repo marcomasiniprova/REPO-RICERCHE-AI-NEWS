@@ -21,7 +21,7 @@ Rivolio parla di rimborsi voli EU261: il tono e' rassicurante, competente, dalla
 - **Font:** un display forte e pulito per i titoli, un sans leggibile per il corpo. Testo GRANDE: si legge su un telefono in un secondo.
 - **Elementi:** icone semplici (aereo, orologio del ritardo, euro, spunta), niente immagini caotiche. Coerenza slide dopo slide (stessa griglia, stessi margini): un carosello si riconosce come "di Rivolio".
 - **Numeri in evidenza:** "600 EUR", "3 ore", "4 passi" vanno resi grandi: sono l'aggancio.
-La resa in PNG vera la fara' il render del PUBLISHER da questa direzione: tu descrivi bene cosa si deve vedere, con parole precise.
+GENERAZIONE (novita' 29/8): ogni slide e' un'IMMAGINE generata su Kie con un modello per testo-in-immagine (default GPT Image 2), NON piu' testo/HTML. Il tuo `prompt` per ogni slide deve: mettere il TESTO ESATTO tra virgolette (cosi' il modello lo scrive giusto), descrivere questa griglia di brand, e chiedere formato 4:5. Usa lo stesso prompt-base su tutte le slide (cambia solo testo e icona) per la coerenza. Modelli forti sul testo nel 2026: GPT Image 2 (il migliore per infografiche/testo), Ideogram v3, Nano Banana Pro, Seedream (economico). Verifica sempre lo slug esatto sui docs Kie.
 
 ## PARTE 4: i pilastri-guida sempre validi (se il piano non ha un tema)
 
