@@ -58,8 +58,18 @@ CONTROLLO QUALITA' A CAMPIONE: dopo la qualifica, apri 2-3 lead promossi a Pront
 Per ogni creator NUOVO promosso a Pronto: {"op":"creator_upsert","name":"username","ig":"handle o null","tiktok":"handle o null","followers":"es. 12k","stage":"Nuovo","source":"scout","email":"se trovata","esito":"Trovato dallo SCOUT: perche' e' in target, una riga specifica (non generica)","url":"link profilo"}. IDEMPOTENZA: usa lo username esatto come name, cosi' l'upsert non crea doppioni ai giri successivi.
 Hashtag spazzatura e problemi veri (Apify al limite, credenziali, workflow rotto dopo i retry) si segnalano nel FEED, non altrove.
 
-### PASSO 5: checklist numerica obbligatoria
-{"op":"run_finish","agent":"scout","esito":"ok|error","summary":"CHK prima_arricchire=<n> nuovi_scoperti=<n> qualificati=<n> pronto_nuovi=<n> pronto_con_email=<x/y> scartati_nuovi=<n> declassati=<falsi positivi corretti> resta_arricchire=<n> exec=<id esecuzioni n8n> | <riga umana: hashtag usati e come sono andati>","items":<pronto_nuovi>}
+### PASSO 5: aggiorna TU i contatori della dashboard (scout_stats)
+Sei TU l'autorita' sui tuoi numeri: aggiorna il kv scout_stats a fine giro, NON aspettare il CAPO (altrimenti i contatori restano indietro finche' non gira il CAPO, come e' successo il 29/8). Leggi lo scout_stats attuale (GET BASE?digest=1, campo kv), poi kv_set con i numeri aggiornati:
+- tot += (nuovi_scoperti + prima_arricchire effettivamente processati in questo giro)
+- pronto += (pronto_nuovi - declassati)
+- scartato += (scartati_nuovi + declassati)
+- da_arricchire = resta_arricchire (valore assoluto, non somma)
+- contattato: lascialo come sta (lo muove IG/CAPO)
+- updated_at = adesso, fonte = una riga su questo giro.
+Se e' il primo giro dopo un reset, parti dai valori che trovi (che il builder/CAPO ha messo a zero). Il CAPO poi VERIFICA i tuoi numeri contro Airtable e corregge solo se sbagliano: la scrittura di base la fai tu.
+
+### PASSO 6: checklist numerica obbligatoria
+{"op":"run_finish","agent":"scout","esito":"ok|error","summary":"CHK prima_arricchire=<n> nuovi_scoperti=<n> qualificati=<n> pronto_nuovi=<n> pronto_con_email=<x/y> scartati_nuovi=<n> declassati=<falsi positivi corretti> resta_arricchire=<n> scout_stats_scritto=<si/no> exec=<id esecuzioni n8n> | <riga umana: hashtag usati e come sono andati>","items":<pronto_nuovi>}
 Tutto CONTATO da Airtable a fine giro. Se resta_arricchire e' maggiore di 0 senza motivo documentato: esito "error". Meglio errore onesto che ok finto.
 
 Feed durante il giro: 1-4 righe salienti. Doppio binario: Airtable e' la fonte, la dashboard lo specchio.

@@ -35,8 +35,8 @@ c) BOZZE: quante in attesa e da quando. Una bozza ferma oltre 24h va in cima all
 d) COERENZA CRM: prendi 2-3 creator aggiornati oggi e verifica che l'esito in dashboard corrisponda al record Airtable GIUSTO (stesso creator) e che non ci siano righe doppie dello stesso creator (nomi vs handle). Se trovi un errore: correggi ENTRAMBI i lati e dichiaralo nel report.
 e) KARMA: SOLO comment_karma (kv reddit_karma). Mai il totale del profilo.
 
-### PASSO 3: scout live
-Se nel digest c'e' un giro SCOUT finito DOPO l'updated_at di kv scout_stats: aggiorna i contatori coi numeri della SUA checklist: tot += nuovi_scoperti, pronto += pronto_nuovi (meno eventuali declassati), scartato += scartati_nuovi + declassati, da_arricchire = resta_arricchire. Poi kv_set scout_stats con TUTTI i campi + updated_at adesso + fonte. Se lo SCOUT non ha girato da allora: NON toccare il kv.
+### PASSO 3: scout live (ora VERIFICHI, non scrivi da zero)
+Da fine agosto lo SCOUT aggiorna DA SOLO il kv scout_stats a fine giro (cosi' i contatori non restano mai indietro). Il tuo compito ora e' VERIFICARE, non riscrivere: prendi scout_stats dal digest e controlla che i numeri siano coerenti con i Pronto/Scartati reali (contali dai creator source=scout in dashboard e, se serve il dettaglio, da Airtable Leads). Se combaciano: NON toccare il kv. Se NON combaciano (lo Scout ha sbagliato una somma, o non l'ha aggiornato): correggi tu il kv coi numeri veri contati e dichiaralo nel report ("contatori Scout riallineati: pronto 8 non 0"). Mai un doppio conteggio: o lo ha scritto lo Scout e tu confermi, o e' sbagliato e tu correggi.
 
 ### PASSO 4: il report (formato FISSO, 8 righe, leggibile in 20 secondi)
 Riga TREND: confronta i numeri chiave di oggi con quelli del TUO report precedente (lo trovi nel digest, tra gli ultimi_giri del capo): risposte, call, pronto, bozze. Se il report precedente non c'e' o non e' leggibile: "vs ieri: da verificare". Mai trend stimati.
