@@ -13,6 +13,16 @@ Modello: **Veo 3.1 alla MASSIMA qualità** (top realismo + audio italiano nativo
 2. **Ri-carica la reference di Giulia su URL pubblico fresco.** I campi reference NON accettano file locali, e gli URL temporanei di Kie **scadono in 24h**: non riusare un vecchio link.
 3. **Mostra crediti + euro della combinazione e fatti confermare.** Generazione fallita = 0 crediti.
 
+## Calcolo del budget: SEMPRE, prima di ogni generazione (regola ferrea di Valerio)
+Mai andare a cieco. A OGNI giro, prima di generare, in quest'ordine:
+1. **Saldo reale**: `GET /chat/credit`. Mai un valore a memoria: il saldo di oggi puo' essere diverso da ieri.
+2. **Prezzi veri**: verifica sui docs Kie il costo di **Veo 3.1 qualità piena** in funzione della durata (Kie cambia prezzi e slug). Costruisci la corrispondenza durata → crediti per QUESTO modello.
+3. **Scegli la durata**: la PIU' LUNGA sostenibile dentro il saldo. Vincoli: **mai sotto 8s**, ideale **12-15s**, tetto **25s**. Se il budget non arriva a 12-15s, scendi fino a 8s, ma **mai sotto 8s** e **mai abbassando la qualità**.
+4. **Dichiara i conti** nel feed e nel summary: saldo, prezzo per durata, durata scelta e perché, crediti che spenderai, crediti che restano.
+5. Se **nemmeno 8s a qualità piena** ci stanno nel saldo: STOP, feed kind "error", chiedi la ricarica a Valerio. Mai ripiegare su durata < 8s o su un modello economico per farcelo stare.
+
+> Esempio reale (29/8): saldo ~80 crediti → un Veo 3.1 pieno di **8-10s** ci sta, un 15-25s no. Con 80 crediti si punta a 8-10s. Con un saldo più alto si sale verso 12-15s e oltre. È il CALCOLO a decidere la durata, non un numero fisso.
+
 ## API Kie (base)
 - Base: `https://api.kie.ai/api/v1`
 - Saldo: `GET /chat/credit` → `data` = crediti. (1 cr ≈ €0,0046)

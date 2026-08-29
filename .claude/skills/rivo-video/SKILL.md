@@ -36,8 +36,8 @@ GET "BASE?digest=1" e guarda nel kv le chiavi `video_*` degli ultimi 3 giorni + 
 - Un video con stato "scartato": leggi le note di Valerio (campo note) e tienine conto oggi. Non riproporre lo stesso tema.
 - Un video di OGGI gia' esistente (giro doppio): non crearne un secondo, HARD STOP con run_finish "ok" e summary che lo spiega.
 
-### PASSO 2: saldo Kie
-GET https://api.kie.ai/api/v1/chat/credit (Bearer KIE_API_KEY). Calcola il costo del video del giorno (Veo 3.1 QUALITÀ PIENA 1080p, ~15-25s, mai la variante fast: vedi `references/04-kie-tecnico.md`). Se il saldo non copre costo + eventuale rigenerazione, applica la gestione errori e fermati: mai ripiegare su un modello scadente per risparmiare.
+### PASSO 2: saldo Kie e CALCOLO DEL BUDGET (mai a cieco)
+GET https://api.kie.ai/api/v1/chat/credit (Bearer KIE_API_KEY) per il saldo reale, poi verifica sui docs Kie il prezzo di Veo 3.1 QUALITÀ PIENA 1080p per durata, e CALCOLA la durata più lunga sostenibile dentro il budget: mai sotto 8s, ideale 12-15s, tetto 25s (con ~80 crediti si sta su 8-10s). Segui alla lettera la sezione "Calcolo del budget" di `references/04-kie-tecnico.md` e dichiara i conti (saldo, prezzo, durata scelta, crediti spesi e residui). Se nemmeno 8s a qualità piena ci stanno: gestione errori e stop, mai ripiegare su durata < 8s o su un modello scadente.
 
 ### PASSO 3: angolo, script, regia (leggi i references 01, 02, 03 e 00)
 - Alterna Educativo e Smonta-miti rispetto a ieri (`video_diario`). Scegli tema e foto reference di Giulia adatta (casa vs aeroporto, da `assets/giulia/`).
