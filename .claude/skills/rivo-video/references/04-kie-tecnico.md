@@ -1,6 +1,12 @@
 # 04 — Operatore Kie (generazione)
 
-Modello di default: **Veo 3.1** (top realismo + audio italiano nativo). Video **image-to-video** partendo da una foto reference di Giulia.
+Modello: **Veo 3.1 alla MASSIMA qualità** (top realismo + audio italiano nativo). Video **image-to-video** partendo da una foto reference di Giulia.
+
+## Qualità: sempre la massima (decisione ferrea di Valerio)
+- Usa **Veo 3.1 nella variante di QUALITÀ PIENA**, MAI la versione "fast" / "flash" / "economy" / "lite": quelle abbassano il realismo e per Rivolio non vanno bene.
+- Risoluzione **1080p** (o la più alta che Veo 3.1 offre), aspetto **9:16 verticale**.
+- Verifica sui docs Kie lo slug esatto del modello a qualità piena e il nome del parametro qualità/risoluzione PRIMA di chiamare (Kie cambia gli slug). Nel dubbio tra due varianti, scegli sempre quella più costosa/di qualità superiore, non quella economica.
+- Non scendere MAI di qualità per risparmiare crediti senza un OK esplicito di Valerio: se i crediti non bastano per un Veo 3.1 pieno, fermati e chiedi la ricarica, non ripiegare su un modello scadente.
 
 ## Regole prima di generare
 1. **Verifica lo slug/endpoint esatto sui docs di Kie PRIMA di chiamare** (Kie cambia gli slug). Veo ha spesso endpoint dedicati.
@@ -19,6 +25,7 @@ Modello di default: **Veo 3.1** (top realismo + audio italiano nativo). Video **
 ## Parametri tipici Veo 3.1
 - `prompt`: il prompt di regia lungo (vedi `03-regia-realismo.md`).
 - reference image (URL pubblico della foto di Giulia scelta).
+- modello: **Veo 3.1 qualità piena** (mai fast/economy), risoluzione **1080p**.
 - durata: **puntare a ~15-25s** (se Veo genera clip più corte, valuta 2 segmenti + montaggio, oppure una singola clip alla durata max supportata — conferma con Valerio).
 - aspetto: **9:16**.
 - audio: nativo attivo (italiano).

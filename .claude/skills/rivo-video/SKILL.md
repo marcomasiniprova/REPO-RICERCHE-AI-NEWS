@@ -37,7 +37,7 @@ GET "BASE?digest=1" e guarda nel kv le chiavi `video_*` degli ultimi 3 giorni + 
 - Un video di OGGI gia' esistente (giro doppio): non crearne un secondo, HARD STOP con run_finish "ok" e summary che lo spiega.
 
 ### PASSO 2: saldo Kie
-GET https://api.kie.ai/api/v1/chat/credit (Bearer KIE_API_KEY). Calcola il costo del video del giorno (Veo 3.1, ~15-25s, vedi `references/04-kie-tecnico.md`). Se il saldo non copre costo + eventuale rigenerazione, applica la gestione errori e fermati.
+GET https://api.kie.ai/api/v1/chat/credit (Bearer KIE_API_KEY). Calcola il costo del video del giorno (Veo 3.1 QUALITÀ PIENA 1080p, ~15-25s, mai la variante fast: vedi `references/04-kie-tecnico.md`). Se il saldo non copre costo + eventuale rigenerazione, applica la gestione errori e fermati: mai ripiegare su un modello scadente per risparmiare.
 
 ### PASSO 3: angolo, script, regia (leggi i references 01, 02, 03 e 00)
 - Alterna Educativo e Smonta-miti rispetto a ieri (`video_diario`). Scegli tema e foto reference di Giulia adatta (casa vs aeroporto, da `assets/giulia/`).
