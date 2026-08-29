@@ -23,8 +23,12 @@ In FASE DI TEST non esce NULLA. Puoi CERCARE i tool di pubblicazione, verificare
 
 API dashboard: BASE = https://mission-control-production-b349.up.railway.app/api/ingest con Authorization: Bearer <INGEST_KEY> (valore nel messaggio della routine). Slug "publisher". NON committare e NON pushare MAI nulla sul repo.
 
-## Il layer di pubblicazione: ZERNIO (deciso 29/8)
-La pubblicazione NON passa piu' da Composio pezzo-per-pezzo, ma da un LAYER UNICO: **Zernio**. Perche' Zernio (ricerca del 29/8): un solo collegamento copre TikTok + Instagram Reels + YouTube Shorts (+ Reddit e altri), post ILLIMITATI per account, ha un MCP nativo per Claude (i tool si cercano con ToolSearch, es. "zernio post"), e soprattutto **ha gia' passato loro l'audit TikTok**: Valerio collega TikTok con un semplice login OAuth dentro Zernio, senza creare app developer ne' client id/secret. Il Community potra' usare lo stesso Zernio per commenti e DM (Comments/Messaging API). Chiave: `ZERNIO_API_KEY` dalle variabili d'ambiente (mai stamparla, mai nel repo). Se il tool MCP di Zernio non e' disponibile in sessione, e' uno stato da segnalare ("Zernio non collegato"), non un errore da forzare.
+## I canali di pubblicazione: IBRIDO Composio + Zernio (deciso 29/8)
+La pubblicazione usa DUE strumenti insieme (scelta di Valerio: Zernio nel piano gratis copre 2 account, li ha usati per TikTok e YouTube; Instagram resta su Composio):
+- **Instagram Reels -> COMPOSIO** (l'account @valerio_alieri Business e' gia' collegato in Composio). Tool via `COMPOSIO_SEARCH_TOOLS` / `COMPOSIO_MULTI_EXECUTE_TOOL`.
+- **TikTok -> ZERNIO** (collegato in Zernio con login OAuth: Zernio ha gia' passato l'audit TikTok, niente app developer). MCP di Zernio via ToolSearch ("zernio").
+- **YouTube Shorts -> ZERNIO** (collegato in Zernio).
+Zernio: MCP nativo per Claude, post illimitati, chiave `ZERNIO_API_KEY` nelle variabili d'ambiente (mai stamparla, mai nel repo). Se in futuro Valerio passa al piano a pagamento, Instagram potra' migrare anche lui su Zernio (un solo layer). Se un tool (Composio o Zernio) non risponde: e' uno stato da segnalare per quel canale, non un errore da forzare.
 
 ## Gestione errori
 - PASSO 0 (run_start) e PASSO 1 (digest): CRITICI. Dopo 2 retry falliti, HARD STOP run_finish esito "error".
@@ -38,10 +42,12 @@ POST {"op":"run_start","agent":"publisher","task":"Controllo pubblicazione (test
 ### PASSO 1: cosa c'e' da pubblicare (critico)
 GET "BASE?digest=1". Trova i contenuti APPROVATI non ancora pubblicati: video (kv video_*, stato "approvato") e caroselli (kv carosello_*, stato "approvato"). Questa e' la CODA. Se e' vuota: nessun contenuto pronto, e' normale in fase iniziale, riporti "coda vuota" e passi comunque al controllo canali.
 
-### PASSO 2: verifica i canali via Zernio (senza pubblicare)
-Con l'MCP di Zernio (cercalo con ToolSearch), leggi quali account social sono collegati nell'account Zernio di Valerio, SENZA pubblicare:
-- **Instagram Reels, YouTube Shorts, TikTok:** per ognuno controlla se e' collegato in Zernio. TikTok si collega con login OAuth dentro Zernio (Zernio ha gia' passato l'audit): se manca, stato "da collegare", non e' un errore.
-Per ognuno segna: collegato si/no. Se l'MCP di Zernio non risponde o la chiave manca: stato "Zernio non collegato" e lo riporti, non forzi nulla.
+### PASSO 2: verifica i canali (senza pubblicare) - ibrido
+Controlla i 3 canali, ognuno col suo strumento, SENZA pubblicare:
+- **Instagram Reels (Composio):** con `COMPOSIO_SEARCH_TOOLS` verifica che i tool di pubblicazione reel/media Instagram esistano e che l'account risponda (es. lettura profilo). NON creare/pubblicare media.
+- **TikTok (Zernio):** con l'MCP di Zernio (ToolSearch "zernio") verifica che l'account TikTok risulti collegato in Zernio.
+- **YouTube Shorts (Zernio):** stessa cosa, verifica che YouTube sia collegato in Zernio.
+Per ognuno segna: collegato si/no, con che strumento. Se uno strumento non risponde o manca la chiave: stato "da collegare/non disponibile" per quel canale, lo riporti, non forzi nulla.
 
 ### PASSO 3: prova a secco (dry run) del payload
 Per il primo contenuto in coda (se c'e'), COSTRUISCI il payload che manderesti a ogni canale (file/URL del media, caption del canale, disclosure AI) e VERIFICA che sia completo e valido, senza chiamare l'azione che posta. Cosi' sai che quando si va live funzionera'. Se manca qualcosa (media non scaricabile, caption vuota, disclosure assente): lo segnali come "da sistemare" (destinatario builder o il ruolo che produce), non pubblichi comunque.
