@@ -1,5 +1,29 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 import { cleanEmailBody } from '@/lib/emailClean';
+import agentsSeed from '@/data/agents.json';
+
+/** Auto-registrazione: agent_runs.agent_slug ha una FK su agents(slug), quindi un
+ *  ruolo nuovo deve avere la sua riga in `agents` prima del primo run_start.
+ *  Se manca, la creiamo dai dati del seed (o con un minimo se non e' nel seed),
+ *  cosi' aggiungere un ruolo non richiede piu' una insert manuale nel DB. */
+async function ensureAgent(
+  db: SupabaseClient,
+  slug: string,
+): Promise<void> {
+  const { data: existing } = await db.from('agents').select('slug').eq('slug', slug).maybeSingle();
+  if (existing) return;
+  const seed = (agentsSeed as Array<Record<string, unknown>>).find((a) => a.slug === slug);
+  await db.from('agents').insert({
+    slug,
+    name: (seed?.name as string) ?? slug.toUpperCase(),
+    role: (seed?.role as string) ?? 'RIVO',
+    tagline: (seed?.tagline as string) ?? null,
+    avatar: (seed?.avatar as string) ?? null,
+    schedule_label: (seed?.schedule_label as string) ?? null,
+    cron: (seed?.cron as string) ?? null,
+    color: (seed?.color as string) ?? null,
+  });
+}
 
 /**
  * Endpoint unico con cui gli agenti RIVO aggiornano la Mission Control.
@@ -137,6 +161,7 @@ export async function POST(request: Request) {
     switch (op) {
       case 'run_start': {
         if (!agent) throw new Error('agent mancante');
+        await ensureAgent(db, agent);
         const task = body.task ? String(body.task) : null;
         const { data: run, error } = await db
           .from('agent_runs')
@@ -158,6 +183,7 @@ export async function POST(request: Request) {
 
       case 'run_finish': {
         if (!agent) throw new Error('agent mancante');
+        await ensureAgent(db, agent);
         const esito = body.esito === 'error' ? 'error' : 'ok';
         const summary = body.summary ? String(body.summary) : null;
         const items = Number(body.items ?? 0) || 0;
