@@ -105,7 +105,7 @@ export default function ContenutiPage() {
       {/* Chi produce: Giulia + agente */}
       <div className="card mb-5 flex items-center gap-4 p-4">
         <Image
-          src="/avatars/video.png"
+          src="/giulia.png"
           alt="Giulia"
           width={52}
           height={52}
