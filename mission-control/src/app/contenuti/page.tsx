@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Check, Clapperboard, Lock, Loader2, ShieldCheck, Sparkles, Trash2, Wallet } from 'lucide-react';
+import { Check, Clapperboard, Clock, Lock, ShieldCheck, Sparkles, Trash2, Wallet } from 'lucide-react';
 import { useData } from '@/lib/store';
 import { PageHeader, Badge, EmptyState } from '@/components/ui';
 import LiveBadge from '@/components/LiveBadge';
@@ -305,9 +305,14 @@ export default function ContenutiPage() {
                   </div>
                 )}
                 {isGenerating && (
-                  <div className="mt-4 inline-flex items-center gap-2 rounded-xl bg-brand-50 px-3.5 py-2.5 text-[12.5px] font-semibold text-brand-700">
-                    <Loader2 size={15} className="animate-spin" />
-                    Piano approvato{v.scelta ? ` (${v.scelta.modello}${v.scelta.risoluzione ? ` ${v.scelta.risoluzione}` : ''}, ${v.scelta.durata_s}s)` : ''}: RIVO VIDEO sta generando il video.
+                  <div className="mt-4 flex items-start gap-2 rounded-xl bg-brand-50 px-3.5 py-2.5 text-[12.5px] leading-relaxed text-brand-700">
+                    <Clock size={15} className="mt-0.5 shrink-0" />
+                    <span>
+                      <b>Piano approvato</b>
+                      {v.scelta ? ` (${v.scelta.modello}${v.scelta.risoluzione ? ` ${v.scelta.risoluzione}` : ''}, ${v.scelta.durata_s}s)` : ''}. RIVO VIDEO genera il video al suo prossimo
+                      giro (parte da solo ogni poche ore): il video comparira' qui pronto da approvare. Non serve
+                      che tu resti su questa pagina.
+                    </span>
                   </div>
                 )}
 
