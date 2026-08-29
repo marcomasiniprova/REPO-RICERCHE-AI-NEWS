@@ -44,6 +44,17 @@
     "color": "#D4552F"
   },
   {
+    "slug": "stratega",
+    "name": "STRATEGA",
+    "role": "Il cervello dei contenuti",
+    "tagline": "Legge i numeri veri, decide cosa postare, comanda la macchina contenuti.",
+    "avatar": "/avatars/stratega.png",
+    "status": "idle",
+    "schedule_label": "Piano mattina, review sera",
+    "cron": "0 5,17 * * *",
+    "color": "#6d54d1"
+  },
+  {
     "slug": "video",
     "name": "VIDEO",
     "role": "La macchina dei contenuti",

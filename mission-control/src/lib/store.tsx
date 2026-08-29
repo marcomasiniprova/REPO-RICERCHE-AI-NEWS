@@ -26,6 +26,8 @@ import type {
   MeetLink,
   Meeting,
   DraftSend,
+  EditorialPlan,
+  StrategaStato,
 } from './types';
 import { fmtFollowers } from './utils';
 import agentsSeed from '@/data/agents.json';
@@ -152,6 +154,8 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
   const [meetLink, setMeetLink] = useState<MeetLink | null>(null);
   const [meetings, setMeetings] = useState<Meeting[]>([]);
   const [draftsSend, setDraftsSend] = useState<Record<string, DraftSend>>({});
+  const [editorialPlan, setEditorialPlan] = useState<EditorialPlan | null>(null);
+  const [strategaStato, setStrategaStato] = useState<StrategaStato | null>(null);
   const [loading, setLoading] = useState(true);
   const [live, setLive] = useState(false);
   const supa = useRef<SupabaseClient | null>(null);
@@ -316,6 +320,11 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
           if (mt && Array.isArray(mt.value)) setMeetings(mt.value as Meeting[]);
           const ds = rows?.find((r) => r.key === 'drafts_send');
           if (ds && ds.value && typeof ds.value === 'object') setDraftsSend(ds.value as Record<string, DraftSend>);
+          // Lo STRATEGA scrive il calendario editoriale e il suo cruscotto nel kv.
+          const pe = rows?.find((r) => r.key === 'piano_editoriale');
+          if (pe && pe.value && typeof pe.value === 'object') setEditorialPlan(pe.value as EditorialPlan);
+          const ss = rows?.find((r) => r.key === 'stratega_stato');
+          if (ss && ss.value && typeof ss.value === 'object') setStrategaStato(ss.value as StrategaStato);
         }) as unknown as Promise<void>,
       );
     await Promise.allSettled(jobs);
@@ -367,12 +376,14 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
       meetLink,
       meetings,
       draftsSend,
+      editorialPlan,
+      strategaStato,
       leads: leadsSeed.rows as LeadRow[],
       loading,
       live,
       mode: hasSupabase ? 'supabase' : 'demo',
     };
-  }, [agents, messages, runs, feed, creators, drafts, reddit, redditKarma, scoutStats, videos, loading, live, hasSupabase]);
+  }, [agents, messages, runs, feed, creators, drafts, reddit, redditKarma, scoutStats, videos, guardianoHealth, meetLink, meetings, draftsSend, editorialPlan, strategaStato, loading, live, hasSupabase]);
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
 }

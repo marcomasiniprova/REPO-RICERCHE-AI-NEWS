@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
+  Brain,
   Clapperboard,
   LayoutGrid,
   Users,
@@ -25,6 +26,7 @@ const NAV = [
   { href: '/call', label: 'Call', icon: PhoneCall },
   { href: '/scout', label: 'Scout', icon: Radar },
   { href: '/reddit', label: 'Reddit', icon: MessageCircle },
+  { href: '/strategia', label: 'Strategia', icon: Brain },
   { href: '/contenuti', label: 'Contenuti', icon: Clapperboard },
 ];
 

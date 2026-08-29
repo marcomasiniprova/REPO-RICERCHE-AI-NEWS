@@ -115,6 +115,33 @@ export const AGENT_SPECS: Record<string, AgentSpec> = {
       'Prima menzione di Rivolio solo a karma consolidato e con OK esplicito',
     ],
   },
+  stratega: {
+    missione:
+      'Il cervello della macchina contenuti: legge i numeri veri del profilo, capisce cosa funziona davvero (salvataggi e condivisioni, non i like), scrive il piano editoriale che gli altri ruoli eseguono e propone i cambi di profilo. Decide sui dati, mai sulla fede. Comanda scrivendo il piano, non tocca mai il mondo esterno.',
+    tools: [
+      { name: 'Composio Instagram', detail: 'Insight di @valerio_alieri: follower, reach, engagement, post migliori' },
+      { name: 'Mission Control API', detail: 'Legge cosa ha prodotto la squadra dal digest' },
+      { name: 'Piano editoriale', detail: 'Scrive il calendario che Video, Caroselli, Publisher e Community eseguono' },
+      { name: 'Cruscotto strategia', detail: 'La foto viva della crescita che vedi nella pagina Strategia' },
+    ],
+    skills: [
+      'Skill dedicata rivo-stratega (SKILL.md + reference.md nel repo)',
+      'Strategia di crescita organica dalle ricerche: TikTok-first, micro-educazione, ritmo 4-7/settimana',
+      'Legge le metriche giuste: reach, salvataggi e condivisioni prima dei like',
+      'Numeri veri letti live, mai a memoria: se un dato manca, "da verificare"',
+    ],
+    flusso: [
+      { step: 'Legge i numeri', detail: 'Insight veri del profilo + cosa ha prodotto la squadra' },
+      { step: 'Capisce cosa funziona', detail: 'Formato e angolo che rendono, su cosa raddoppiare' },
+      { step: 'Scrive il piano', detail: 'Il calendario editoriale: chi produce cosa, quando, dove' },
+      { step: 'Propone e aggiorna', detail: 'Cambi di bio/foto come bozze da approvare, cruscotto aggiornato' },
+    ],
+    regole: [
+      'Non tocca mai il mondo esterno: propone, non pubblica e non cambia il profilo da solo',
+      'Comanda gli altri solo scrivendo il piano, mai facendoli girare a mano',
+      'Decide sui dati: pochi contenuti veri, misurati, poi si scala',
+    ],
+  },
   video: {
     missione:
       'La macchina dei contenuti: ogni mattina produce un video UGC ultra-realistico con Giulia, il personaggio AI di Rivolio, e lo porta fino alla pubblicazione su TikTok, Reels e Shorts. Un video al giorno, fatto bene.',

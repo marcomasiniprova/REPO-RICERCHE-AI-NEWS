@@ -207,6 +207,55 @@ export interface DraftSend {
   scade?: string;
 }
 
+/** Un pezzo pianificato dallo STRATEGA (dentro il kv piano_editoriale). */
+export interface EditorialPiece {
+  id: string;
+  data: string; // YYYY-MM-DD
+  formato: 'video' | 'carosello' | string;
+  angolo?: string;
+  tema?: string;
+  hook?: string;
+  canali?: string[];
+  assegnato_a?: 'video' | 'caroselli' | string;
+  stato?: 'pianificato' | 'in_produzione' | 'pronto' | 'pubblicato' | string;
+  nota?: string;
+}
+
+/** Il calendario editoriale scritto dallo STRATEGA (kv piano_editoriale):
+ *  gli ordini che i ruoli contenuti (video, caroselli, publisher, community) eseguono. */
+export interface EditorialPlan {
+  aggiornato_da?: string;
+  updated_at?: string;
+  cadenza?: string;
+  pezzi: EditorialPiece[];
+}
+
+/** Una proposta di cambio profilo dello STRATEGA (in attesa del PIN di Valerio),
+ *  dentro stratega_stato.proposte_profilo. Mai applicata in automatico. */
+export interface ProfileProposal {
+  tipo: 'bio' | 'foto' | 'pinned' | 'strategia' | string;
+  attuale?: string;
+  proposta?: string;
+  perche?: string;
+  stato?: string;
+}
+
+/** Il cruscotto dello STRATEGA (kv stratega_stato): la foto viva della strategia
+ *  che Valerio guarda a colpo d'occhio. Numeri veri letti dagli insight, mai a memoria. */
+export interface StrategaStato {
+  follower?: string | number;
+  follower_delta?: string;
+  reach_7g?: string | number;
+  eng_rate?: string;
+  post_migliore?: string;
+  cosa_funziona?: string[];
+  cosa_taglio?: string[];
+  prossime_mosse?: string[];
+  proposte_profilo?: ProfileProposal[];
+  updated_at?: string;
+  nota?: string;
+}
+
 export interface DashboardData {
   agents: Agent[];
   messages: Message[];
@@ -223,6 +272,8 @@ export interface DashboardData {
   meetLink: MeetLink | null;
   meetings: Meeting[];
   draftsSend: Record<string, DraftSend>;
+  editorialPlan: EditorialPlan | null;
+  strategaStato: StrategaStato | null;
   leads: LeadRow[];
   loading: boolean;
   live: boolean; // realtime collegato
