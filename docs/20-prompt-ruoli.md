@@ -74,3 +74,19 @@ I vecchi trigger sono stati eliminati. Collaudo del 29/8 16:39 (giro di prova si
 
 ## 29/8 — Roadmap fase 2 (decisa con Valerio, da costruire in ordine)
 Il ruolo di Valerio da ora e' SOLO la dashboard (approva/guarda), mai piu' sessioni/log. Il manutentore diventa un ruolo dedicato. Ordine deciso: (1) robustezza dei 4 [FATTO]; poi (2) Guardiano/manutentore (ripara i ruoli fermi, rilancia i giri saltati, sistema n8n; chiama il builder solo per i bug di codice); (3) etichette bozze in dashboard ("manda l'agente" se DM entro 24h o c'e' email; "mandi tu" se DM oltre 24h e senza email; email sempre preferita); (4) promemoria meeting anti no-show (automatici 24h e 3h prima, dalla sezione Call + Airtable, MAI da approvare); (5) link Meet fisso globale (nella dashboard, riusato per tutte le call; l'invio del link alla conferma call e' da approvare, i promemoria no). Serve da Valerio: il link Meet fisso.
+
+## 29/8 sera — La macchina contenuti a 5 ruoli: nasce lo STRATEGA (il cervello)
+Dopo la ricerca sulla crescita organica, la macchina contenuti diventa un vero team a 5 ruoli, non piu' il solo VIDEO. Il primo costruito e' lo STRATEGA, il social media manager che comanda gli altri.
+
+### RIVO - STRATEGA (il cervello, 2 giri/giorno: piano mattino + review sera)
+- Skill: `.claude/skills/rivo-stratega/` (SKILL.md il giro, reference.md il manuale: strategia dalle ricerche, come si leggono le metriche, angoli per il pubblico di Rivolio, errori noti).
+- Cosa fa: legge i numeri VERI del profilo (@valerio_alieri Business, insight via Composio: follower, reach, engagement, post migliori, orari attivi) + il digest della squadra; capisce cosa funziona (salvataggi/condivisioni/reach, non i like); scrive il PIANO EDITORIALE (kv `piano_editoriale`) che gli altri ruoli contenuti eseguono; aggiorna il cruscotto (kv `stratega_stato`); propone i cambi di bio/foto/pinned come bozze in attesa PIN.
+- Comanda gli altri SOLO scrivendo il piano (non fa girare a mano le loro routine). E' il primo a girare al mattino: quando gli altri si svegliano, il piano c'e' gia'.
+- Confini (regola 1): non pubblica, non cambia il profilo davvero, non manda DM/commenti. Osserva, decide, propone. Ogni cambio del mondo esterno passa dal PIN.
+- Slug dashboard "stratega". kv posseduti: `piano_editoriale` (calendario/ordini), `stratega_stato` (cruscotto + proposte_profilo).
+- Da attivare: integrazione dashboard (sezione Strategia + calendario) sul ramo dashboard; sessione "RIVO STRATEGA operative" creata da Valerio; routine agganciata dal builder (cadenza proposta: mattino presto prima del CAPO delle 8:30 + sera).
+
+### Gli altri 3 ruoli contenuti (da costruire dopo, in ordine)
+- **RIVO - CAROSELLI**: produce i post a scorrimento (guide, liste, passi pratici) che generano salvataggi. Legge il piano dello Stratega, prepara il carosello, lo consegna in dashboard per il PIN.
+- **RIVO - PUBLISHER**: pubblica il pezzo approvato su Instagram Reels + TikTok + YouTube Shorts e lo ripubblica/riusa. In fase di test: si verifica che il tool "pubblica" esista e funzioni end-to-end, MA non si pubblica davvero (vincolo Valerio). TikTok collegato da Valerio come ultimo passo.
+- **RIVO - COMMUNITY**: risponde a commenti e DM, presidia i primi 60 minuti dei post (la finestra che decide se un pezzo viene spinto). Tutto passa dalle regole di approvazione (niente risposte non approvate a freddo).
