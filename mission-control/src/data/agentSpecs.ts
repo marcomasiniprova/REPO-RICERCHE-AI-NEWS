@@ -142,4 +142,31 @@ export const AGENT_SPECS: Record<string, AgentSpec> = {
       'Se il video sa di AI non si propone: si riparte dalla regia',
     ],
   },
+  guardiano: {
+    missione:
+      'Il manutentore tecnico della squadra: controlla che tutti i ruoli girino e aggiornino la dashboard, ripara gli intoppi che sa sistemare e chiama il builder solo per i bug di codice. Cosi Valerio guarda solo la dashboard, mai i log.',
+    tools: [
+      { name: 'Mission Control API', detail: 'Legge la salute di tutti i ruoli dal digest' },
+      { name: 'n8n', detail: 'Rilancia i workflow dello Scout se si inceppano' },
+      { name: 'Semaforo di salute', detail: 'Scrive lo stato verde/giallo/rosso che vedi in home' },
+      { name: 'Escalation al builder', detail: 'Segnala nel feed solo cio che serve una fix vera' },
+    ],
+    skills: [
+      'Skill dedicata rivo-guardiano (SKILL.md + reference.md nel repo)',
+      'Ripara infrastruttura e dati in sicurezza, mai il codice',
+      'Non tocca mai il mondo esterno, non disturba mai Valerio',
+      'Distingue il ritardo normale dallo stallo vero: niente falsi allarmi',
+    ],
+    flusso: [
+      { step: 'Controlla la salute', detail: 'Ogni ruolo ha girato in orario? Errori? Dashboard viva?' },
+      { step: 'Verifica i dati', detail: 'Contatori coerenti, niente stati impossibili' },
+      { step: 'Ripara il riparabile', detail: 'Dati sballati, workflow n8n fermi, ruoli da risvegliare' },
+      { step: 'Semaforo + escalation', detail: 'Scrive lo stato salute e chiama il builder solo per i bug' },
+    ],
+    regole: [
+      'Ripara solo cio che e sicuro e reversibile: mai il codice',
+      'Ogni cosa va nella dashboard, mai una notifica a Valerio',
+      'Meglio unescalation in piu che un danno',
+    ],
+  },
 };

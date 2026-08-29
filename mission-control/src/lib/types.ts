@@ -172,6 +172,17 @@ export interface VideoItem {
   piattaforme_pubblicate?: string[];
 }
 
+/** Semaforo di salute scritto dal GUARDIANO nel kv (chiave guardiano_health). */
+export interface GuardianoHealth {
+  stato: 'ok' | 'attenzione' | 'critico';
+  controllati?: string[];
+  problemi?: string[];
+  riparati?: string[];
+  da_builder?: string[];
+  nota?: string;
+  updated_at?: string;
+}
+
 export interface DashboardData {
   agents: Agent[];
   messages: Message[];
@@ -184,6 +195,7 @@ export interface DashboardData {
   leadTotals: { tot: number; pronto: number; da_arricchire: number; scartato: number };
   scoutStats: ScoutStats | null;
   videos: VideoItem[];
+  guardianoHealth: GuardianoHealth | null;
   leads: LeadRow[];
   loading: boolean;
   live: boolean; // realtime collegato

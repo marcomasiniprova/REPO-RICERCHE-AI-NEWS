@@ -3,15 +3,24 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { Users, MessagesSquare, PhoneCall, MailOpen, ArrowRight, Video } from 'lucide-react';
+import { Users, MessagesSquare, PhoneCall, MailOpen, ArrowRight, Video, ShieldCheck } from 'lucide-react';
 import { useData } from '@/lib/store';
 import { PageHeader, StatCard, EmptyState } from '@/components/ui';
 import AgentCard from '@/components/AgentCard';
 import LiveBadge from '@/components/LiveBadge';
+import { timeAgo } from '@/lib/utils';
+
+const HEALTH = {
+  ok: { label: 'Sistema in salute', dot: '#1f9d6b', bg: '#eaf5f0', bd: '#cfe8de', tx: '#0e7c6b' },
+  attenzione: { label: 'Attenzione', dot: '#d9a441', bg: '#fdf6ec', bd: '#f0dcc0', tx: '#8a5a1a' },
+  critico: { label: 'Serve un intervento', dot: '#d4552f', bg: '#fbecea', bd: '#f3cbc4', tx: '#a63d20' },
+} as const;
 
 export default function Home() {
-  const { agents, creators, drafts, loading, leadTotals } = useData();
+  const { agents, creators, drafts, loading, leadTotals, guardianoHealth } = useData();
   const leadTot = leadTotals.tot;
+  const gh = guardianoHealth;
+  const h = gh ? HEALTH[gh.stato] ?? HEALTH.ok : null;
 
   const crm = creators.filter((c) => c.source === 'crm');
   const inTrattativa = crm.filter((c) => c.stage === 'Risposto').length;
@@ -25,6 +34,49 @@ export default function Home() {
         subtitle="La squadra growth di Rivolio, in un colpo d'occhio."
         right={<LiveBadge />}
       />
+
+      {/* Semaforo di salute del Guardiano */}
+      {!loading && (
+        <div
+          className="mb-6 flex items-center gap-3 rounded-2xl border px-4 py-3"
+          style={
+            h
+              ? { background: h.bg, borderColor: h.bd, color: h.tx }
+              : { background: '#f4f4f2', borderColor: '#e5e5e0', color: '#83908a' }
+          }
+        >
+          <span className="relative flex h-3 w-3 shrink-0">
+            <span
+              className={gh?.stato === 'ok' ? 'dot-working absolute inline-flex h-3 w-3 rounded-full' : 'absolute inline-flex h-3 w-3 rounded-full'}
+              style={{ background: h ? h.dot : 'var(--ink-3)' }}
+            />
+          </span>
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-2">
+              <ShieldCheck size={15} />
+              <span className="text-[13.5px] font-bold">
+                {h ? h.label : 'Guardiano in arrivo'}
+              </span>
+              {gh?.updated_at && (
+                <span className="text-[11px] opacity-70">· controllo {timeAgo(gh.updated_at)}</span>
+              )}
+            </div>
+            <div className="mt-0.5 text-[12px] leading-snug opacity-90">
+              {gh?.nota
+                ? gh.nota
+                : gh
+                  ? 'Il Guardiano ha controllato la squadra.'
+                  : 'Il manutentore controllera la salute della squadra e ti terra tutto verde. Tu guardi solo qui.'}
+            </div>
+          </div>
+          {gh && (gh.riparati?.length ?? 0) + (gh.da_builder?.length ?? 0) > 0 && (
+            <div className="hidden shrink-0 text-right text-[11px] font-semibold sm:block">
+              {(gh.riparati?.length ?? 0) > 0 && <div>{gh.riparati!.length} riparati</div>}
+              {(gh.da_builder?.length ?? 0) > 0 && <div>{gh.da_builder!.length} al builder</div>}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* KPI */}
       <div className="mb-7 grid grid-cols-2 gap-3.5 lg:grid-cols-4">

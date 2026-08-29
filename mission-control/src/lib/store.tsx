@@ -22,6 +22,7 @@ import type {
   RedditItem,
   ScoutStats,
   VideoItem,
+  GuardianoHealth,
 } from './types';
 import { fmtFollowers } from './utils';
 import agentsSeed from '@/data/agents.json';
@@ -144,6 +145,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
   const [redditKarma, setRedditKarma] = useState<number>(0);
   const [scoutStats, setScoutStats] = useState<ScoutStats | null>(null);
   const [videos, setVideos] = useState<VideoItem[]>([]);
+  const [guardianoHealth, setGuardianoHealth] = useState<GuardianoHealth | null>(null);
   const [loading, setLoading] = useState(true);
   const [live, setLive] = useState(false);
   const supa = useRef<SupabaseClient | null>(null);
@@ -300,6 +302,8 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
             .map((r) => ({ ...(r.value as Omit<VideoItem, 'key'>), key: r.key }) as VideoItem)
             .sort((a, b) => (a.date < b.date ? 1 : -1));
           setVideos(vids);
+          const gh = rows?.find((r) => r.key === 'guardiano_health');
+          if (gh && gh.value && typeof gh.value === 'object') setGuardianoHealth(gh.value as GuardianoHealth);
         }) as unknown as Promise<void>,
       );
     await Promise.allSettled(jobs);
@@ -347,6 +351,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
       leadTotals,
       scoutStats,
       videos,
+      guardianoHealth,
       leads: leadsSeed.rows as LeadRow[],
       loading,
       live,

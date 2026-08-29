@@ -53,5 +53,16 @@
     "schedule_label": "Ogni mattina alle 7:30",
     "cron": "30 5 * * *",
     "color": "#8b5cf6"
+  },
+  {
+    "slug": "guardiano",
+    "name": "GUARDIANO",
+    "role": "Il manutentore",
+    "tagline": "Sorveglia la squadra, ripara gli intoppi, ti toglie gli errori di dosso.",
+    "avatar": "/avatars/guardiano.png",
+    "status": "idle",
+    "schedule_label": "Controlli durante la giornata",
+    "cron": "0 5-19/2 * * *",
+    "color": "#4f7cac"
   }
 ]
