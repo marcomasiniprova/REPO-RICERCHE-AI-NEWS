@@ -3,33 +3,39 @@
 import { useMemo, useState } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Check, Clapperboard, Lock, ShieldCheck, Sparkles, Trash2 } from 'lucide-react';
+import { Check, Clapperboard, Lock, Loader2, ShieldCheck, Sparkles, Trash2, Wallet } from 'lucide-react';
 import { useData } from '@/lib/store';
 import { PageHeader, Badge, EmptyState } from '@/components/ui';
 import LiveBadge from '@/components/LiveBadge';
 import { cn, fmtDay, fmtTime } from '@/lib/utils';
-import type { VideoItem, VideoStato } from '@/lib/types';
+import type { VideoItem, VideoOption, VideoStato } from '@/lib/types';
 
 const FILTERS: Array<{ id: VideoStato | 'tutti'; label: string }> = [
-  { id: 'in_attesa', label: 'Da approvare' },
-  { id: 'approvato', label: 'Approvati' },
+  { id: 'piano_in_attesa', label: 'Piani da approvare' },
+  { id: 'piano_approvato', label: 'In generazione' },
+  { id: 'in_attesa', label: 'Video da approvare' },
   { id: 'pubblicato', label: 'Pubblicati' },
-  { id: 'scartato', label: 'Scartati' },
   { id: 'tutti', label: 'Tutti' },
 ];
 
 const STATO_TONE: Record<VideoStato, { label: string; cls: string }> = {
-  in_attesa: { label: 'Aspetta il tuo PIN', cls: 'bg-tan text-tan-ink' },
+  piano_in_attesa: { label: 'Piano: aspetta il tuo OK', cls: 'bg-tan text-tan-ink' },
+  piano_approvato: { label: 'Piano approvato · in generazione', cls: 'bg-brand-100 text-brand-700' },
+  in_attesa: { label: 'Video pronto: aspetta il tuo PIN', cls: 'bg-tan text-tan-ink' },
   approvato: { label: 'Approvato · esce al prossimo giro', cls: 'bg-brand-100 text-brand-700' },
   pubblicato: { label: 'Pubblicato', cls: 'bg-deep text-mint' },
   scartato: { label: 'Scartato', cls: 'bg-subtle text-ink-3' },
-  errore: { label: 'Non proposto (QA fallito)', cls: 'bg-[#fbe9e2] text-[#a63d20]' },
+  errore: { label: 'Errore', cls: 'bg-[#fbe9e2] text-[#a63d20]' },
 };
 
-const ANGOLO_LABEL: Record<string, string> = {
-  edu: 'Educativo',
-  mito: 'Smonta-miti',
-};
+const ANGOLO_LABEL: Record<string, string> = { edu: 'Educativo', mito: 'Smonta-miti' };
+
+type PendingAction = { video: VideoItem; action: 'approve' | 'reject' | 'approve_plan'; scelta?: VideoOption };
+
+function costo(o: VideoOption): string {
+  const eur = o.euro ?? o.crediti * 0.0046; // fallback: 1 credito ≈ €0,0046
+  return `${o.crediti} crediti · €${eur.toFixed(2)}`;
+}
 
 function CaptionBlock({ title, text }: { title: string; text?: string }) {
   if (!text) return null;
@@ -44,11 +50,12 @@ function CaptionBlock({ title, text }: { title: string; text?: string }) {
 export default function ContenutiPage() {
   const { videos, agents, loading } = useData();
   const [filter, setFilter] = useState<VideoStato | 'tutti'>('tutti');
-  const [pinAsk, setPinAsk] = useState<{ video: VideoItem; action: 'approve' | 'reject' } | null>(null);
+  const [pinAsk, setPinAsk] = useState<PendingAction | null>(null);
   const [pinValue, setPinValue] = useState('');
   const [pinError, setPinError] = useState<string | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
   const [decided, setDecided] = useState<Record<string, VideoStato>>({});
+  const [chosen, setChosen] = useState<Record<string, string>>({}); // video.key -> option id
   const videoAgent = agents.find((a) => a.slug === 'video');
 
   const withLocal = useMemo(
@@ -59,12 +66,19 @@ export default function ContenutiPage() {
   const count = (s: VideoStato | 'tutti') =>
     s === 'tutti' ? withLocal.length : withLocal.filter((v) => v.stato === s).length;
 
-  async function decide(video: VideoItem, action: 'approve' | 'reject', pin?: string) {
+  function selectedOption(v: VideoItem): VideoOption | undefined {
+    const opts = v.opzioni ?? [];
+    const id = chosen[v.key];
+    return opts.find((o) => o.id === id) ?? opts.find((o) => o.consigliata) ?? opts[0];
+  }
+
+  async function run(action: PendingAction, pin?: string) {
+    const { video, scelta } = action;
     const stored = pin ?? (typeof window !== 'undefined' ? localStorage.getItem('mc_pin') : null);
     if (!stored) {
       setPinValue('');
       setPinError(null);
-      setPinAsk({ video, action });
+      setPinAsk(action);
       return;
     }
     setBusy(video.key);
@@ -72,19 +86,19 @@ export default function ContenutiPage() {
       const res = await fetch('/api/decide', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ video_key: video.key, action, pin: stored }),
+        body: JSON.stringify({ video_key: video.key, action: action.action, scelta, pin: stored }),
       });
       const j = await res.json();
       if (res.status === 401) {
         localStorage.removeItem('mc_pin');
         setPinValue('');
         setPinError('PIN errato, riprova.');
-        setPinAsk({ video, action });
+        setPinAsk(action);
         return;
       }
       if (j.ok) {
         try { localStorage.setItem('mc_pin', stored); } catch {}
-        setDecided((p) => ({ ...p, [video.key]: action === 'approve' ? 'approvato' : 'scartato' }));
+        setDecided((p) => ({ ...p, [video.key]: j.status as VideoStato }));
         setPinAsk(null);
       } else {
         setPinError(j.error ?? 'errore');
@@ -98,27 +112,23 @@ export default function ContenutiPage() {
     <div className="mx-auto max-w-[980px]">
       <PageHeader
         title="Contenuti"
-        subtitle="La macchina dei contenuti: ogni mattina RIVO VIDEO prepara un video di Giulia. Tu lo guardi, approvi col PIN e lui lo pubblica su TikTok, Reels e Shorts."
+        subtitle="La macchina dei contenuti. Prima RIVO VIDEO ti propone un PIANO (modello, secondi, costo): tu scegli e approvi col PIN. Poi genera il video, e col PIN lo pubblichi su TikTok, Reels e Shorts."
         right={<LiveBadge />}
       />
 
-      {/* Chi produce: Giulia + agente */}
+      {/* Chi produce */}
       <div className="card mb-5 flex items-center gap-4 p-4">
-        <Image
-          src="/giulia.png"
-          alt="Giulia"
-          width={52}
-          height={52}
-          className="rounded-2xl border border-line object-cover"
-        />
+        <span className="flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-2xl bg-[#f3effc]">
+          <Image src="/avatars/video.png" alt="RIVO VIDEO" width={40} height={40} />
+        </span>
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
-            <span className="font-display text-[15px] font-bold text-deep">Giulia</span>
-            <Badge tone="brand">avatar AI di Rivolio</Badge>
+            <span className="font-display text-[15px] font-bold text-deep">RIVO VIDEO</span>
+            <Badge tone="brand">Giulia, avatar AI</Badge>
           </div>
           <div className="mt-0.5 text-[12px] leading-relaxed text-ink-2">
-            Un video UGC al giorno sui rimborsi voli, generato con Veo 3.1 dalle sue foto reference.
-            Ogni pubblicazione porta la disclosure &quot;Creato con AI&quot;.
+            Un video UGC al giorno sui rimborsi voli, con Giulia generata su Kie. Non spende mai a cieco:
+            ti porta un piano coi costi veri, tu decidi. Ogni video esce con la disclosure &quot;Creato con AI&quot;.
           </div>
         </div>
         {videoAgent && (
@@ -157,11 +167,11 @@ export default function ContenutiPage() {
 
       {!loading && list.length === 0 && (
         <EmptyState
-          title={withLocal.length === 0 ? 'Nessun video ancora' : 'Niente qui'}
+          title={withLocal.length === 0 ? 'Nessun contenuto ancora' : 'Niente qui'}
           note={
             withLocal.length === 0
-              ? 'Il primo video di Giulia arriva col primo giro mattutino di RIVO VIDEO (servono crediti Kie sul conto). Lo troverai qui, pronto da guardare e approvare.'
-              : 'Cambia filtro per vedere gli altri video.'
+              ? 'Al primo giro RIVO VIDEO ti portera qui un piano col costo reale su Kie. Lo scegli, lo approvi col PIN, e lui genera il video di Giulia.'
+              : 'Cambia filtro per vedere gli altri contenuti.'
           }
         />
       )}
@@ -169,120 +179,205 @@ export default function ContenutiPage() {
       {!loading && list.length > 0 && (
         <div className="space-y-4">
           {list.map((v, i) => {
-            const tone = STATO_TONE[v.stato] ?? STATO_TONE.in_attesa;
+            const tone = STATO_TONE[v.stato] ?? STATO_TONE.piano_in_attesa;
+            const isPlan = v.stato === 'piano_in_attesa';
+            const isGenerating = v.stato === 'piano_approvato';
+            const isVideo = ['in_attesa', 'approvato', 'pubblicato'].includes(v.stato);
+            const sel = selectedOption(v);
             return (
               <motion.div
                 key={v.key}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: i * 0.05 }}
-                className="card overflow-hidden"
+                className="card overflow-hidden p-4"
               >
-                <div className="flex flex-col gap-4 p-4 sm:flex-row">
-                  {/* Anteprima video 9:16 */}
-                  <div className="mx-auto w-[200px] shrink-0 sm:mx-0">
-                    {v.video_url ? (
-                      <video
-                        src={v.video_url}
-                        controls
-                        playsInline
-                        preload="metadata"
-                        className="aspect-[9/16] w-full rounded-xl border border-line bg-deep-2 object-cover"
-                      />
-                    ) : (
-                      <div className="flex aspect-[9/16] w-full flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-line bg-subtle text-ink-3">
-                        <Clapperboard size={22} />
-                        <span className="px-3 text-center text-[11px]">Anteprima non disponibile</span>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Dettagli */}
-                  <div className="min-w-0 flex-1">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="font-display text-[15px] font-bold text-deep">
-                        {v.tema || `Video del ${fmtDay(v.date)}`}
-                      </span>
-                      <span className={cn('rounded-full px-2 py-0.5 text-[10px] font-bold', tone.cls)}>
-                        {tone.label}
-                      </span>
-                    </div>
-                    <div className="mt-1 flex flex-wrap items-center gap-2 text-[11px] text-ink-3">
-                      <span>{fmtDay(v.created_at ?? v.date)}{v.created_at ? ` ${fmtTime(v.created_at)}` : ''}</span>
-                      {v.angolo && (
-                        <>
-                          <span>·</span>
-                          <span className="inline-flex items-center gap-1 font-medium text-brand-600">
-                            <Sparkles size={11} />
-                            {ANGOLO_LABEL[v.angolo] ?? v.angolo}
-                          </span>
-                        </>
-                      )}
-                      {typeof v.duration_s === 'number' && (
-                        <>
-                          <span>·</span>
-                          <span>{v.duration_s}s</span>
-                        </>
-                      )}
-                      {typeof v.crediti_spesi === 'number' && v.crediti_spesi > 0 && (
-                        <>
-                          <span>·</span>
-                          <span>{v.crediti_spesi} crediti Kie</span>
-                        </>
-                      )}
-                    </div>
-
-                    {v.hook && (
-                      <div className="mt-3 rounded-xl bg-brand-50/70 px-3.5 py-2.5 text-[13px] font-semibold leading-snug text-brand-700">
-                        {v.hook}
-                      </div>
-                    )}
-                    {v.script && (
-                      <div className="mt-2.5 whitespace-pre-wrap text-[12.5px] leading-relaxed text-ink">
-                        {v.script}
-                      </div>
-                    )}
-
-                    <div className="mt-3 grid gap-2 sm:grid-cols-3">
-                      <CaptionBlock title="TikTok" text={v.caption_tiktok} />
-                      <CaptionBlock title="Instagram Reels" text={v.caption_ig} />
-                      <CaptionBlock title="YouTube Shorts" text={v.caption_youtube} />
-                    </div>
-
-                    {v.note && (
-                      <div className="mt-2.5 whitespace-pre-wrap text-[11px] leading-relaxed text-ink-3">
-                        {v.note}
-                      </div>
-                    )}
-                    {v.stato === 'pubblicato' && (v.piattaforme_pubblicate?.length ?? 0) > 0 && (
-                      <div className="mt-2 text-[11px] font-medium text-brand-600">
-                        Online su: {v.piattaforme_pubblicate!.join(', ')}
-                        {v.published_at ? ` · ${fmtDay(v.published_at)} ${fmtTime(v.published_at)}` : ''}
-                      </div>
-                    )}
-
-                    {v.stato === 'in_attesa' && (
-                      <div className="mt-4 flex items-center gap-2">
-                        <button
-                          onClick={() => decide(v, 'approve')}
-                          disabled={busy === v.key}
-                          className="inline-flex items-center gap-1.5 rounded-xl bg-brand-600 px-4 py-2.5 text-[13px] font-bold text-white shadow-[0_0_0_1px_rgba(14,124,107,0.45),0_4px_14px_rgba(14,124,107,0.3)] transition-all hover:bg-brand-700 active:scale-[0.97] disabled:opacity-50"
-                        >
-                          <Check size={15} />
-                          Approva e pubblica
-                        </button>
-                        <button
-                          onClick={() => decide(v, 'reject')}
-                          disabled={busy === v.key}
-                          className="inline-flex items-center gap-1.5 rounded-xl border border-line bg-white px-3.5 py-2.5 text-[13px] font-semibold text-ink-2 transition-colors hover:border-[#f5c9c4] hover:text-err disabled:opacity-50"
-                        >
-                          <Trash2 size={14} />
-                          Scarta
-                        </button>
-                      </div>
-                    )}
-                  </div>
+                {/* Testata comune */}
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="font-display text-[15px] font-bold text-deep">
+                    {v.tema || `Video del ${fmtDay(v.date)}`}
+                  </span>
+                  <span className={cn('rounded-full px-2 py-0.5 text-[10px] font-bold', tone.cls)}>{tone.label}</span>
                 </div>
+                <div className="mt-1 flex flex-wrap items-center gap-2 text-[11px] text-ink-3">
+                  <span>{fmtDay(v.created_at ?? v.date)}{v.created_at ? ` ${fmtTime(v.created_at)}` : ''}</span>
+                  {v.angolo && (
+                    <>
+                      <span>·</span>
+                      <span className="inline-flex items-center gap-1 font-medium text-brand-600">
+                        <Sparkles size={11} />
+                        {ANGOLO_LABEL[v.angolo] ?? v.angolo}
+                      </span>
+                    </>
+                  )}
+                  {typeof v.saldo_crediti === 'number' && (
+                    <>
+                      <span>·</span>
+                      <span className="inline-flex items-center gap-1">
+                        <Wallet size={11} /> saldo {v.saldo_crediti} crediti
+                      </span>
+                    </>
+                  )}
+                </div>
+
+                {v.hook && (
+                  <div className="mt-3 rounded-xl bg-brand-50/70 px-3.5 py-2.5 text-[13px] font-semibold leading-snug text-brand-700">
+                    {v.hook}
+                  </div>
+                )}
+                {v.script && (
+                  <div className="mt-2.5 whitespace-pre-wrap text-[12.5px] leading-relaxed text-ink">{v.script}</div>
+                )}
+
+                {/* FASE PIANO: ventaglio combinazioni */}
+                {(isPlan || isGenerating) && (v.opzioni?.length ?? 0) > 0 && (
+                  <div className="mt-4">
+                    <div className="mb-2 text-[11px] font-bold uppercase tracking-[0.12em] text-ink-3">
+                      Combinazioni proposte {isPlan && '· scegli la tua'}
+                    </div>
+                    <div className="grid gap-2 sm:grid-cols-2">
+                      {v.opzioni!.map((o) => {
+                        const overBudget =
+                          typeof v.saldo_crediti === 'number' && o.crediti > v.saldo_crediti;
+                        const active = isPlan && sel?.id === o.id;
+                        const isChosen = isGenerating && v.scelta?.id === o.id;
+                        return (
+                          <button
+                            key={o.id}
+                            disabled={!isPlan || overBudget}
+                            onClick={() => setChosen((p) => ({ ...p, [v.key]: o.id }))}
+                            className={cn(
+                              'rounded-xl border px-3.5 py-2.5 text-left transition-all',
+                              active || isChosen
+                                ? 'border-brand-500 bg-brand-50 shadow-[0_0_0_1px_rgba(14,124,107,0.35)]'
+                                : 'border-line bg-white',
+                              isPlan && !overBudget && 'hover:border-line-strong',
+                              overBudget && 'cursor-not-allowed opacity-45',
+                            )}
+                          >
+                            <div className="flex items-center gap-2">
+                              <span className="text-[13px] font-bold text-deep">{o.modello}</span>
+                              {o.risoluzione && (
+                                <span className="rounded-full bg-subtle px-1.5 py-0.5 text-[10px] font-semibold text-ink-2">
+                                  {o.risoluzione}
+                                </span>
+                              )}
+                              {o.consigliata && (
+                                <span className="rounded-full bg-brand-100 px-1.5 py-0.5 text-[9.5px] font-bold text-brand-700">
+                                  consigliata
+                                </span>
+                              )}
+                            </div>
+                            <div className="mt-1 flex items-center justify-between text-[11px] text-ink-3">
+                              <span>{o.durata_s}s</span>
+                              <span className={cn('font-semibold', overBudget ? 'text-err' : 'text-ink-2')}>
+                                {costo(o)}
+                                {overBudget && ' · fuori budget'}
+                              </span>
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {/* Azioni PIANO */}
+                {isPlan && (
+                  <div className="mt-4 flex flex-wrap items-center gap-2">
+                    <button
+                      onClick={() => sel && run({ video: v, action: 'approve_plan', scelta: sel })}
+                      disabled={busy === v.key || !sel}
+                      className="inline-flex items-center gap-1.5 rounded-xl bg-brand-600 px-4 py-2.5 text-[13px] font-bold text-white shadow-[0_0_0_1px_rgba(14,124,107,0.45),0_4px_14px_rgba(14,124,107,0.3)] transition-all hover:bg-brand-700 active:scale-[0.97] disabled:opacity-50"
+                    >
+                      <Check size={15} />
+                      Approva e genera{sel ? ` · ${costo(sel)}` : ''}
+                    </button>
+                    <button
+                      onClick={() => run({ video: v, action: 'reject' })}
+                      disabled={busy === v.key}
+                      className="inline-flex items-center gap-1.5 rounded-xl border border-line bg-white px-3.5 py-2.5 text-[13px] font-semibold text-ink-2 transition-colors hover:border-[#f5c9c4] hover:text-err disabled:opacity-50"
+                    >
+                      <Trash2 size={14} />
+                      Scarta
+                    </button>
+                    <span className="text-[11px] text-ink-3">Puoi cambiare combinazione: l&apos;agente aspetta.</span>
+                  </div>
+                )}
+                {isGenerating && (
+                  <div className="mt-4 inline-flex items-center gap-2 rounded-xl bg-brand-50 px-3.5 py-2.5 text-[12.5px] font-semibold text-brand-700">
+                    <Loader2 size={15} className="animate-spin" />
+                    Piano approvato{v.scelta ? ` (${v.scelta.modello}${v.scelta.risoluzione ? ` ${v.scelta.risoluzione}` : ''}, ${v.scelta.durata_s}s)` : ''}: RIVO VIDEO sta generando il video.
+                  </div>
+                )}
+
+                {/* FASE OUTPUT: video generato */}
+                {isVideo && (
+                  <div className="mt-4 flex flex-col gap-4 sm:flex-row">
+                    <div className="mx-auto w-[200px] shrink-0 sm:mx-0">
+                      {v.video_url ? (
+                        <video
+                          src={v.video_url}
+                          controls
+                          playsInline
+                          preload="metadata"
+                          className="aspect-[9/16] w-full rounded-xl border border-line bg-deep-2 object-cover"
+                        />
+                      ) : (
+                        <div className="flex aspect-[9/16] w-full flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-line bg-subtle text-ink-3">
+                          <Clapperboard size={22} />
+                          <span className="px-3 text-center text-[11px]">Anteprima non disponibile</span>
+                        </div>
+                      )}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="mb-2 flex flex-wrap items-center gap-2 text-[11px] text-ink-3">
+                        {typeof v.duration_s === 'number' && <span>{v.duration_s}s</span>}
+                        {typeof v.crediti_spesi === 'number' && v.crediti_spesi > 0 && (
+                          <>
+                            <span>·</span>
+                            <span>{v.crediti_spesi} crediti spesi</span>
+                          </>
+                        )}
+                      </div>
+                      <div className="grid gap-2 sm:grid-cols-3">
+                        <CaptionBlock title="TikTok" text={v.caption_tiktok} />
+                        <CaptionBlock title="Instagram Reels" text={v.caption_ig} />
+                        <CaptionBlock title="YouTube Shorts" text={v.caption_youtube} />
+                      </div>
+                      {v.stato === 'pubblicato' && (v.piattaforme_pubblicate?.length ?? 0) > 0 && (
+                        <div className="mt-2 text-[11px] font-medium text-brand-600">
+                          Online su: {v.piattaforme_pubblicate!.join(', ')}
+                          {v.published_at ? ` · ${fmtDay(v.published_at)} ${fmtTime(v.published_at)}` : ''}
+                        </div>
+                      )}
+                      {v.stato === 'in_attesa' && (
+                        <div className="mt-4 flex items-center gap-2">
+                          <button
+                            onClick={() => run({ video: v, action: 'approve' })}
+                            disabled={busy === v.key}
+                            className="inline-flex items-center gap-1.5 rounded-xl bg-brand-600 px-4 py-2.5 text-[13px] font-bold text-white shadow-[0_0_0_1px_rgba(14,124,107,0.45),0_4px_14px_rgba(14,124,107,0.3)] transition-all hover:bg-brand-700 active:scale-[0.97] disabled:opacity-50"
+                          >
+                            <Check size={15} />
+                            Approva e pubblica
+                          </button>
+                          <button
+                            onClick={() => run({ video: v, action: 'reject' })}
+                            disabled={busy === v.key}
+                            className="inline-flex items-center gap-1.5 rounded-xl border border-line bg-white px-3.5 py-2.5 text-[13px] font-semibold text-ink-2 transition-colors hover:border-[#f5c9c4] hover:text-err disabled:opacity-50"
+                          >
+                            <Trash2 size={14} />
+                            Scarta
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {v.note && (
+                  <div className="mt-2.5 whitespace-pre-wrap text-[11px] leading-relaxed text-ink-3">{v.note}</div>
+                )}
               </motion.div>
             );
           })}
@@ -291,9 +386,9 @@ export default function ContenutiPage() {
 
       <div className="mt-8 flex items-start gap-2.5 rounded-xl border border-brand-200 bg-brand-50/60 px-4 py-3 text-[12px] leading-relaxed text-brand-700">
         <ShieldCheck size={15} className="mt-0.5 shrink-0" />
-        Il tuo PIN e&apos; l&apos;OK esplicito (regola 1): solo i video approvati vengono pubblicati, entro 2 ore
-        se il giro e&apos; ancora attivo, altrimenti al giro del mattino dopo. Ogni video esce con la
-        disclosure &quot;Creato con AI&quot;.
+        Il PIN e&apos; il tuo OK esplicito (regola 1). Serve due volte: per approvare il PIANO (che autorizza la
+        spesa dei crediti e la generazione) e per pubblicare il VIDEO finito. Ogni video esce con la disclosure
+        &quot;Creato con AI&quot;.
       </div>
 
       {/* Modal PIN */}
@@ -321,8 +416,13 @@ export default function ContenutiPage() {
                 <div>
                   <div className="font-display text-[15.5px] font-bold text-deep">PIN di approvazione</div>
                   <div className="text-[11px] text-ink-3">
-                    {pinAsk.action === 'approve' ? 'Stai approvando' : 'Stai scartando'} il video del{' '}
-                    <b>{fmtDay(pinAsk.video.date)}</b>
+                    {pinAsk.action === 'approve_plan'
+                      ? 'Approvi il piano e autorizzi la spesa'
+                      : pinAsk.action === 'approve'
+                        ? 'Approvi la pubblicazione'
+                        : 'Scarti'}{' '}
+                    del video del <b>{fmtDay(pinAsk.video.date)}</b>
+                    {pinAsk.action === 'approve_plan' && pinAsk.scelta ? ` · ${costo(pinAsk.scelta)}` : ''}
                   </div>
                 </div>
               </div>
@@ -333,7 +433,7 @@ export default function ContenutiPage() {
                 value={pinValue}
                 onChange={(e) => setPinValue(e.target.value)}
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter' && pinValue) decide(pinAsk.video, pinAsk.action, pinValue);
+                  if (e.key === 'Enter' && pinValue) run(pinAsk, pinValue);
                 }}
                 placeholder="••••••"
                 className="mt-4 w-full rounded-xl border border-line bg-subtle px-4 py-3 text-center font-display text-[22px] font-bold tracking-[0.4em] text-deep outline-none focus:border-brand-400 focus:shadow-[0_0_0_3px_rgba(46,167,141,0.15)]"
@@ -341,7 +441,7 @@ export default function ContenutiPage() {
               {pinError && <div className="mt-2 text-center text-[12px] font-semibold text-err">{pinError}</div>}
               <div className="mt-4 flex gap-2">
                 <button
-                  onClick={() => pinValue && decide(pinAsk.video, pinAsk.action, pinValue)}
+                  onClick={() => pinValue && run(pinAsk, pinValue)}
                   disabled={!pinValue || busy !== null}
                   className="flex-1 rounded-xl bg-brand-600 px-4 py-2.5 text-[13px] font-bold text-white shadow-[0_4px_14px_rgba(14,124,107,0.3)] transition-all hover:bg-brand-700 active:scale-[0.98] disabled:opacity-50"
                 >

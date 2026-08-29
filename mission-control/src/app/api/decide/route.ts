@@ -14,7 +14,14 @@ export async function POST(request: Request) {
     return Response.json({ ok: false, error: 'non configurato' }, { status: 503 });
   }
 
-  let body: { draft_id?: number; video_key?: string; action?: string; note?: string; pin?: string };
+  let body: {
+    draft_id?: number;
+    video_key?: string;
+    action?: string;
+    note?: string;
+    pin?: string;
+    scelta?: Record<string, unknown>; // combinazione scelta quando si approva il piano
+  };
   try {
     body = await request.json();
   } catch {
@@ -38,19 +45,64 @@ export async function POST(request: Request) {
     if (!video || typeof video !== 'object') {
       return Response.json({ ok: false, error: 'video non trovato' }, { status: 404 });
     }
+    const nowIso = new Date().toISOString();
+    const dateLabel = String(video.date ?? keyName.slice(6));
+
+    // FASE PIANO: Valerio approva il piano (col PIN) e sceglie la combinazione -> l'agente generera'.
+    if (body.action === 'approve_plan') {
+      if (video.stato !== 'piano_in_attesa') {
+        return Response.json({ ok: false, error: 'piano gia deciso o non in attesa' }, { status: 409 });
+      }
+      const next = {
+        ...video,
+        stato: 'piano_approvato',
+        scelta: body.scelta ?? video.scelta ?? null,
+        plan_decided_at: nowIso,
+      };
+      const { error: upErr } = await db
+        .from('kv')
+        .update({ value: next, updated_at: nowIso })
+        .eq('key', keyName);
+      if (upErr) return Response.json({ ok: false, error: upErr.message }, { status: 500 });
+      const sc = (body.scelta ?? {}) as Record<string, unknown>;
+      const scLabel = sc.modello
+        ? `${sc.modello}${sc.risoluzione ? ` ${sc.risoluzione}` : ''} ${sc.durata_s ?? ''}s (${sc.crediti ?? '?'} crediti)`
+        : 'la combinazione scelta';
+      await db.from('activity_feed').insert({
+        agent_slug: null,
+        kind: 'success',
+        message: `Valerio ha approvato il piano del video del ${dateLabel}: ${scLabel}. RIVO VIDEO genera al primo giro utile.`,
+      });
+      return Response.json({ ok: true, status: 'piano_approvato' });
+    }
+
+    // Scarto del piano
+    if (body.action === 'reject' && video.stato === 'piano_in_attesa') {
+      const next = { ...video, stato: 'scartato', plan_decided_at: nowIso };
+      const { error: upErr } = await db.from('kv').update({ value: next, updated_at: nowIso }).eq('key', keyName);
+      if (upErr) return Response.json({ ok: false, error: upErr.message }, { status: 500 });
+      await db.from('activity_feed').insert({
+        agent_slug: null,
+        kind: 'info',
+        message: `Valerio ha scartato il piano del video del ${dateLabel}.`,
+      });
+      return Response.json({ ok: true, status: 'scartato' });
+    }
+
+    // FASE OUTPUT: approvazione/scarto del video generato (pubblicazione)
     if (video.stato !== 'in_attesa') {
-      return Response.json({ ok: false, error: 'video gia deciso' }, { status: 409 });
+      return Response.json({ ok: false, error: 'video gia deciso o non pronto' }, { status: 409 });
     }
     const stato = body.action === 'reject' ? 'scartato' : 'approvato';
     const next = {
       ...video,
       stato,
-      decided_at: new Date().toISOString(),
+      decided_at: nowIso,
       note: body.note ? `${video.note ? `${video.note}\n` : ''}Valerio: ${String(body.note)}` : video.note,
     };
     const { error: upErr } = await db
       .from('kv')
-      .update({ value: next, updated_at: new Date().toISOString() })
+      .update({ value: next, updated_at: nowIso })
       .eq('key', keyName);
     if (upErr) return Response.json({ ok: false, error: upErr.message }, { status: 500 });
 
@@ -59,8 +111,8 @@ export async function POST(request: Request) {
       kind: stato === 'approvato' ? 'success' : 'info',
       message:
         stato === 'approvato'
-          ? `Valerio ha approvato il video del ${String(video.date ?? keyName.slice(6))}: RIVO VIDEO lo pubblica su TikTok, Reels e Shorts al primo giro utile.`
-          : `Valerio ha scartato il video del ${String(video.date ?? keyName.slice(6))}.`,
+          ? `Valerio ha approvato il video del ${dateLabel}: RIVO VIDEO lo pubblica su TikTok, Reels e Shorts al primo giro utile.`
+          : `Valerio ha scartato il video del ${dateLabel}.`,
     });
     return Response.json({ ok: true, status: stato });
   }

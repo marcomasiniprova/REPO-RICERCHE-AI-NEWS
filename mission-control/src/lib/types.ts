@@ -122,9 +122,28 @@ export interface ScoutStats {
   fonte?: string;
 }
 
-export type VideoStato = 'in_attesa' | 'approvato' | 'scartato' | 'pubblicato' | 'errore';
+export type VideoStato =
+  | 'piano_in_attesa' // l'agente ha proposto il piano, aspetta il tweak/OK di Valerio
+  | 'piano_approvato' // Valerio ha approvato il piano col PIN, l'agente genera
+  | 'in_attesa' // video generato, aspetta l'OK di pubblicazione
+  | 'approvato'
+  | 'scartato'
+  | 'pubblicato'
+  | 'errore';
 
-/** Video del giorno di RIVO VIDEO: vive nel kv (chiave video_YYYY-MM-DD). */
+/** Una combinazione modello+qualita+durata proposta nel piano, col costo reale letto su Kie. */
+export interface VideoOption {
+  id: string;
+  modello: string; // es. "Veo 3.1 quality" / "Veo 3.1 fast"
+  risoluzione?: string; // es. "1080p" / "720p" / "480p"
+  durata_s: number;
+  crediti: number;
+  euro?: number;
+  consigliata?: boolean;
+}
+
+/** Video del giorno di RIVO VIDEO: vive nel kv (chiave video_YYYY-MM-DD).
+ *  Due fasi: PIANO (l'agente propone, Valerio tweaka col PIN) e OUTPUT (video generato, approvazione+pubblicazione). */
 export interface VideoItem {
   key: string; // chiave kv, es. video_2026-08-29
   date: string;
@@ -133,6 +152,11 @@ export interface VideoItem {
   hook?: string;
   script?: string;
   reference_foto?: string;
+  // Fase PIANO
+  saldo_crediti?: number; // saldo Kie letto quando ha fatto il piano
+  opzioni?: VideoOption[]; // ventaglio di combinazioni proposte
+  scelta?: VideoOption; // la combinazione scelta/approvata da Valerio
+  // Fase OUTPUT
   video_url?: string;
   duration_s?: number;
   crediti_spesi?: number;
@@ -142,6 +166,7 @@ export interface VideoItem {
   stato: VideoStato;
   note?: string;
   created_at?: string;
+  plan_decided_at?: string | null;
   decided_at?: string | null;
   published_at?: string | null;
   piattaforme_pubblicate?: string[];
