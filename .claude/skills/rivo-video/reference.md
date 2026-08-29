@@ -14,23 +14,34 @@ Ogni video e' UNA chiave kv: `video_YYYY-MM-DD` (data italiana del giorno di pro
   "hook": "il testo dell'hook scelto",
   "script": "lo script completo parlato",
   "reference_foto": "giulia_4",
-  "video_url": "https://... (URL del risultato Kie, campo output)",
-  "duration_s": 18,
+  "saldo_crediti": 80,          // saldo Kie letto quando hai fatto il piano
+  "opzioni": [                  // il ventaglio proposto (fase PIANO)
+    {"id":"q1080-8","modello":"Veo 3.1 quality","risoluzione":"1080p","durata_s":8,"crediti":400,"euro":2.0,"consigliata":true},
+    {"id":"q720-8","modello":"Veo 3.1 quality","risoluzione":"720p","durata_s":8,"crediti":300,"euro":1.5},
+    {"id":"fast-8","modello":"Veo 3.1 fast","risoluzione":"720p","durata_s":8,"crediti":80,"euro":0.4}
+  ],
+  "scelta": null,               // la combinazione approvata da Valerio (la scrive la dashboard)
+  "video_url": null,            // (fase OUTPUT) URL del risultato Kie, campo output
+  "duration_s": null,
   "crediti_spesi": 0,
   "caption_tiktok": "...",
   "caption_ig": "...",
   "caption_youtube": "titolo + descrizione breve",
-  "stato": "in_attesa",         // in_attesa | approvato | scartato | pubblicato | errore
-  "note": "hook alternativi: 1) ... 2) ... (+ eventuali note di Valerio o difetti QA)",
+  "stato": "piano_in_attesa",   // piano_in_attesa | piano_approvato | in_attesa | approvato | scartato | pubblicato | errore
+  "note": "hook alternativi: 1) ... 2) ... (+ note di Valerio o difetti QA)",
   "created_at": "ISO",
-  "decided_at": null,            // lo scrive la dashboard al PIN
+  "plan_decided_at": null,      // lo scrive la dashboard al PIN sul piano
+  "decided_at": null,           // lo scrive la dashboard al PIN di pubblicazione
   "published_at": null,
   "piattaforme_pubblicate": []
 }
 ```
 
+Il ciclo di vita degli stati: **piano_in_attesa** (tu proponi il ventaglio) → **piano_approvato** (Valerio sceglie e da' il PIN, ora puoi generare) → **in_attesa** (video generato, aspetta il PIN di pubblicazione) → **approvato** → **pubblicato**. Rami: **scartato** (Valerio scarta piano o video), **errore** (QA fallito).
+
 Regole:
-- Lo stato lo cambiano SOLO: tu (in_attesa, errore, pubblicato) e la dashboard col PIN (approvato, scartato). Mai auto-approvarti un video.
+- Lo stato lo cambiano SOLO: tu (piano_in_attesa, in_attesa, errore, pubblicato) e la dashboard col PIN (piano_approvato + `scelta`, approvato, scartato). Mai saltare il piano, mai auto-approvarti niente.
+- MAI generare (spendere crediti) prima di vedere stato "piano_approvato": il PIN sul piano e' l'OK a spendere.
 - Quando aggiorni un video esistente, rileggi prima il valore dal digest e riscrivi il JSON COMPLETO (kv_set sovrascrive tutto): non perdere i campi scritti dalla dashboard (decided_at, note di Valerio).
 - ATTENZIONE agli URL Kie: alcuni scadono. Se un video "approvato" da pubblicare ha l'URL morto, dillo nel feed (kind error) invece di pubblicare un link rotto.
 

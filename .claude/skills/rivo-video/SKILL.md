@@ -32,29 +32,39 @@ POST {"op":"run_start","agent":"video","task":"Video del giorno"}. Critico.
 
 ### PASSO 1: stato e arretrati (critico)
 GET "BASE?digest=1" e guarda nel kv le chiavi `video_*` degli ultimi 3 giorni + `video_diario`.
-- Un video con stato "approvato" e non ancora pubblicato: PUBBLICALO ORA (il PIN e' gia' l'OK di Valerio): segui `references/05-pubblicazione.md` via Composio (TikTok + Reels + Shorts, caption per piattaforma, disclosure AI), poi kv_set dello stesso video con stato "pubblicato", published_at e piattaforme_pubblicate, e una entry feed kind "success" ("Video del <data> pubblicato su TikTok, Reels e Shorts"). Se un account non e' connesso in Composio: pubblica dove puoi, dichiara nel feed cosa manca, non forzare.
-- Un video con stato "scartato": leggi le note di Valerio (campo note) e tienine conto oggi. Non riproporre lo stesso tema.
-- Un video di OGGI gia' esistente (giro doppio): non crearne un secondo, HARD STOP con run_finish "ok" e summary che lo spiega.
+- Un video con stato **"approvato"** e non ancora pubblicato: PUBBLICALO ORA (il PIN e' gia' l'OK di Valerio): segui `references/05-pubblicazione.md` via Composio (TikTok + Reels + Shorts, caption per piattaforma, disclosure AI), poi kv_set dello stesso video con stato "pubblicato", published_at e piattaforme_pubblicate, e una entry feed kind "success". Se un account non e' connesso in Composio: pubblica dove puoi, dichiara nel feed cosa manca, non forzare.
+- Un video con stato **"piano_approvato"** (Valerio ha scelto la combinazione e dato il PIN in un giro precedente): NON rifare il piano. Leggi `scelta` (modello, risoluzione, durata_s) e vai dritto al PASSO 4 (generazione) con quei parametri.
+- Un video con stato **"scartato"**: leggi le note di Valerio e non riproporre lo stesso tema.
+- Un video di OGGI gia' in "piano_in_attesa" o "in_attesa" (giro doppio): non crearne un secondo, HARD STOP con run_finish "ok" che lo spiega.
 
-### PASSO 2: saldo Kie e CALCOLO DEL BUDGET (mai a cieco)
-GET https://api.kie.ai/api/v1/chat/credit (Bearer KIE_API_KEY) per il saldo reale, poi verifica sui docs Kie il prezzo di Veo 3.1 QUALITÀ PIENA 1080p per durata, e CALCOLA la durata più lunga sostenibile dentro il budget: mai sotto 8s, ideale 12-15s, tetto 25s (con ~80 crediti si sta su 8-10s). Segui alla lettera la sezione "Calcolo del budget" di `references/04-kie-tecnico.md` e dichiara i conti (saldo, prezzo, durata scelta, crediti spesi e residui). Se nemmeno 8s a qualità piena ci stanno: gestione errori e stop, mai ripiegare su durata < 8s o su un modello scadente.
+### PASSO 2: saldo Kie e VENTAGLIO di combinazioni (mai fermarsi: sempre un piano)
+GET https://api.kie.ai/api/v1/chat/credit (Bearer KIE_API_KEY) per il saldo reale, poi verifica sui docs Kie i prezzi VERI per durata di: Veo 3.1 QUALITÀ piena (e, se Kie le espone, le risoluzioni 1080p/720p/480p) e Veo 3.1 FAST. Costruisci un **ventaglio di 3-5 combinazioni** (modello × risoluzione × durata) ognuna con crediti ed euro reali. Regole: mai durata < 8s; punta a 12-15s dove il budget lo consente. Marca `consigliata: true` sulla MIGLIORE combinazione a qualità piena che sta nel saldo; se nessuna qualità piena ci sta, consiglia comunque la qualità piena più economica (anche se sopra budget) e segnala che serve ricarica, NON auto-scegliere il fast. **Non fermarti mai per budget**: qualunque sia il saldo, il tuo output di questo passo e' il ventaglio, che finirà nel piano in dashboard. Vedi `references/04-kie-tecnico.md` sezione "Calcolo del budget".
 
 ### PASSO 3: angolo, script, regia (leggi i references 01, 02, 03 e 00)
 - Alterna Educativo e Smonta-miti rispetto a ieri (`video_diario`). Scegli tema e foto reference di Giulia adatta (casa vs aeroporto, da `assets/giulia/`).
-- Scrivi 3 hook con formule DIVERSE, scegli il migliore tu (gli altri 2 finiscono nel campo note del video: Valerio li vede in dashboard). Script 15-25s (40-65 parole), italiano umano, mai il trattino lungo.
-- Costruisci il prompt di regia Veo 3.1 LUNGO con tutti i blocchi del template (micro-espressioni, gesti coerenti col discorso, feel handheld, micro-imperfezioni, continuita'). Niente telefono in mano: e' POV.
+- Scrivi 3 hook con formule DIVERSE, scegli il migliore tu (gli altri 2 nel campo note). Script 15-25s (40-65 parole), italiano umano, mai il trattino lungo. Prepara le 3 caption (TikTok/Reels/Shorts) con disclosure.
+- Costruisci il prompt di regia Veo 3.1 LUNGO con tutti i blocchi del template (micro-espressioni, gesti coerenti, feel handheld, micro-imperfezioni, continuita'). Niente telefono in mano: e' POV. (Il prompt di regia lo usi al PASSO 4; nel piano mostri tema, hook, script.)
 
-### PASSO 4: generazione
+### PASSO 3.5: PUBBLICA IL PIANO e aspetta il tweak di Valerio
+kv_set `video_YYYY-MM-DD` con stato **"piano_in_attesa"** e schema completo del piano (vedi reference.md): `saldo_crediti`, `opzioni` (il ventaglio, con la consigliata), `tema`, `angolo`, `hook`, `script`, `reference_foto`, le 3 caption, `created_at`. Poi feed kind "draft" ("Piano del video pronto: <tema>. Scegli la combinazione e approva col PIN nella pagina Contenuti").
+**ATTESA APPROVAZIONE PIANO**: per max 2 ore ricontrolla il digest ogni 10-15 minuti.
+- Se lo stato diventa **"piano_approvato"**: leggi `scelta` (modello, risoluzione, durata_s) e vai al PASSO 4.
+- Se **"scartato"**: chiudi il giro (PASSO 7), non generare.
+- Se dopo 2 ore e' ancora **"piano_in_attesa"**: chiudi il giro; il piano resta lì e un giro successivo (o un fire) lo riprende quando Valerio lo approva.
+Mai generare (spendere crediti) prima che lo stato sia "piano_approvato": il PIN sul piano E' l'autorizzazione a spendere.
+
+### PASSO 4: generazione (con la combinazione approvata)
+- Usa ESATTAMENTE i parametri di `scelta`: modello (qualità piena o, solo se Valerio l'ha scelto, fast), risoluzione, durata_s. Non cambiarli di tua iniziativa.
 - Ricarica la foto reference su URL pubblico fresco (upload Kie, scade in 24h: mai riusare link vecchi).
-- Genera (Veo 3.1 image-to-video), poll fino al risultato, prendi l'URL DAL CAMPO OUTPUT (non il primo URL che vedi), scarica e guarda il video.
+- Genera (Veo 3.1 image-to-video col prompt di regia del PASSO 3), poll fino al risultato, prendi l'URL DAL CAMPO OUTPUT (non il primo URL che vedi), scarica e guarda il video. Aggiorna il kv con `video_url`, `duration_s`, `crediti_spesi`.
 
 ### PASSO 5: QA
 Checklist completa di `references/05-pubblicazione.md` (hook nei primi 3s, coerenza Giulia, no telefono/morphing, gesti sensati, audio pulito, 9:16, messaggio Rivolio corretto). Se boccia: UNA rigenerazione (correggi il prompt sul difetto). Se boccia ancora: kv_set del video con stato "errore" e note sul difetto + feed kind "error" ("Video di oggi sotto lo standard, non lo propongo: <motivo>") e vai al PASSO 7. Mai proporre a Valerio un video che sa di AI.
 
-### PASSO 6: consegna in dashboard
-Prepara le 3 caption (TikTok, Reels, Shorts) con CTA soft e disclosure. Poi kv_set `video_YYYY-MM-DD` con lo schema completo (stato "in_attesa", video_url, script, caption, crediti spesi: vedi reference.md) + aggiorna `video_diario` + feed kind "draft" ("Video del giorno pronto: <tema>. Aspetta il PIN nella pagina Contenuti").
+### PASSO 6: consegna del video e attesa PIN di pubblicazione
+kv_set `video_YYYY-MM-DD` con stato **"in_attesa"** (video_url, duration_s, crediti_spesi, caption gia' pronte) + aggiorna `video_diario` + feed kind "draft" ("Video del giorno pronto: <tema>. Aspetta il PIN nella pagina Contenuti").
 ATTESA PIN: per max 2 ore ricontrolla il digest ogni 10-15 minuti. Se lo stato diventa "approvato": pubblica subito (come al PASSO 1) e aggiorna a "pubblicato". Se "scartato" o ancora "in_attesa" dopo 2 ore: chiudi il giro, se ne occupa il giro di domani.
 
 ### PASSO 7: chiusura
 POST run_finish, agent "video", esito "ok" (o "error" nei casi detti), items = video pubblicati oggi, e un summary che INIZIA con la checklist:
-"CHK saldo_kie= crediti_spesi= generato= rigenerazioni= qa= stato= pubblicato_arretrato= piattaforme= attesa_pin_min=" seguita da 2 frasi umane su cosa hai fatto e cosa aspetta Valerio. Una sola entry nel feed oltre a quelle previste: niente doppioni.
+"CHK saldo_kie= opzioni= consigliata= piano_stato= scelta= crediti_spesi= generato= rigenerazioni= qa= stato= pubblicato_arretrato= piattaforme= attesa_min=" seguita da 2 frasi umane su cosa hai fatto e cosa aspetta Valerio (approvare il piano? approvare il video? ricaricare Kie?). Una sola entry nel feed oltre a quelle previste: niente doppioni.
