@@ -1,16 +1,5 @@
 [
   {
-    "slug": "capo",
-    "name": "CAPO",
-    "role": "Direttore operativo",
-    "tagline": "Orchestra la squadra, aggrega i numeri, decide sui dati.",
-    "avatar": "/avatars/capo.png",
-    "status": "idle",
-    "schedule_label": "Report mattina e sera",
-    "cron": null,
-    "color": "#0E7C6B"
-  },
-  {
     "slug": "scout",
     "name": "RIVO - SCOUT",
     "role": "Talent scout creator",

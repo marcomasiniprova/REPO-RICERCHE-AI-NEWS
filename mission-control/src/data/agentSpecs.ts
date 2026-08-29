@@ -200,9 +200,9 @@ export const AGENT_SPECS: Record<string, AgentSpec> = {
     missione:
       'La mano che porta i contenuti approvati sul mondo: video e caroselli su Instagram Reels, TikTok e YouTube Shorts, con la caption giusta per canale e la disclosure AI, e li ripubblica nel tempo. FASE DI TEST: per ora verifica che tutta la catena funzioni end-to-end ma NON pubblica davvero. TikTok lo colleghi tu come ultimo passo.',
     tools: [
-      { name: 'Composio Instagram', detail: 'Reels di @valerio_alieri: verifica tool e collegamento' },
-      { name: 'Composio YouTube', detail: 'Shorts: verifica canale e tool di upload' },
-      { name: 'Composio TikTok', detail: 'Da collegare (ultimo passo di Valerio)' },
+      { name: 'Zernio (layer unico)', detail: 'Un collegamento per TikTok + Reels + Shorts, post illimitati, MCP per Claude' },
+      { name: 'TikTok via Zernio', detail: 'Login OAuth: audit gia passato da Zernio, niente app developer' },
+      { name: 'Instagram + YouTube', detail: 'Reels e Shorts dallo stesso account Zernio' },
       { name: 'Mission Control API', detail: 'Legge la coda degli approvati, scrive lo stato canali' },
     ],
     skills: [

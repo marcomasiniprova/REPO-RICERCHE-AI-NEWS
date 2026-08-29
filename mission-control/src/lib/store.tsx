@@ -377,7 +377,8 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     // mantenuti dagli agenti), altrimenti lo snapshot impacchettato nel build.
     const leadTotals = scoutStats ?? (leadsSeed.totals as DashboardData['leadTotals']);
     return {
-      agents,
+      // RIVO CAPO ritirato (29/8): non compare piu' nella squadra. Lo storico dei suoi giri resta nel feed.
+      agents: agents.filter((a) => a.slug !== 'capo'),
       messages,
       runs,
       feed,

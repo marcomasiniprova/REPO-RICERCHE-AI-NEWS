@@ -29,8 +29,9 @@ const CH_META: Record<string, { label: string; icon: React.ReactNode }> = {
 };
 
 // Default finche' il PUBLISHER non ha ancora scritto il suo stato: fatti noti.
+// Finche' il PUBLISHER non scrive il suo stato: tutti da collegare dentro Zernio.
 const DEFAULT_CHANNELS: PublisherChannel[] = [
-  { nome: 'instagram', stato: 'collegato', tool: 'trovato', test: 'na' },
+  { nome: 'instagram', stato: 'da_collegare', tool: 'assente', test: 'na' },
   { nome: 'tiktok', stato: 'da_collegare', tool: 'assente', test: 'na' },
   { nome: 'youtube', stato: 'da_collegare', tool: 'assente', test: 'na' },
 ];
@@ -164,7 +165,7 @@ export default function PubblicazionePage() {
       <p className="mb-6 px-1 text-[10.5px] text-ink-3">
         {publisherStato
           ? publisherStato.nota ?? 'Stato scritto dal Publisher al suo ultimo giro.'
-          : 'In attesa del primo giro del Publisher. Instagram e gia collegato per gli altri ruoli; TikTok e YouTube li verifica lui e li segnala qui. TikTok lo colleghi tu come ultimo passo.'}
+          : 'Pubblicazione via Zernio: un solo collegamento per TikTok, Reels e Shorts, con post illimitati. TikTok si collega con un semplice login (Zernio ha gia passato l\'audit). In attesa del primo giro del Publisher, che verifica i canali e li segnala qui.'}
       </p>
 
       {/* Coda di pubblicazione */}
