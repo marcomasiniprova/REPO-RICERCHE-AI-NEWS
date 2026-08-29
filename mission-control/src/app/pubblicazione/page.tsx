@@ -22,10 +22,10 @@ import LiveBadge from '@/components/LiveBadge';
 import { nextRunLabel, fmtDay } from '@/lib/utils';
 import type { PublisherChannel } from '@/lib/types';
 
-const CH_META: Record<string, { label: string; icon: React.ReactNode }> = {
-  instagram: { label: 'Instagram Reels', icon: <Camera size={18} /> },
-  tiktok: { label: 'TikTok', icon: <Music2 size={18} /> },
-  youtube: { label: 'YouTube Shorts', icon: <PlayCircle size={18} /> },
+const CH_META: Record<string, { label: string; icon: React.ReactNode; via: string }> = {
+  instagram: { label: 'Instagram Reels', icon: <Camera size={18} />, via: 'via Composio' },
+  tiktok: { label: 'TikTok', icon: <Music2 size={18} />, via: 'via Zernio' },
+  youtube: { label: 'YouTube Shorts', icon: <PlayCircle size={18} />, via: 'via Zernio' },
 };
 
 // Default finche' il PUBLISHER non ha ancora scritto il suo stato: fatti noti.
@@ -37,7 +37,7 @@ const DEFAULT_CHANNELS: PublisherChannel[] = [
 ];
 
 function ChannelCard({ c }: { c: PublisherChannel }) {
-  const meta = CH_META[c.nome] ?? { label: c.nome, icon: <Send size={18} /> };
+  const meta = CH_META[c.nome] ?? { label: c.nome, icon: <Send size={18} />, via: '' };
   const collegato = c.stato === 'collegato';
   return (
     <div className="card p-4">
@@ -49,6 +49,7 @@ function ChannelCard({ c }: { c: PublisherChannel }) {
         </span>
         <div className="min-w-0">
           <div className="text-[13.5px] font-bold text-deep">{meta.label}</div>
+          {meta.via && <div className="text-[10px] font-semibold uppercase tracking-wide text-ink-3">{meta.via}</div>}
           <div className="mt-0.5">
             {collegato ? (
               <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-brand-600">
@@ -165,7 +166,7 @@ export default function PubblicazionePage() {
       <p className="mb-6 px-1 text-[10.5px] text-ink-3">
         {publisherStato
           ? publisherStato.nota ?? 'Stato scritto dal Publisher al suo ultimo giro.'
-          : 'Pubblicazione via Zernio: un solo collegamento per TikTok, Reels e Shorts, con post illimitati. TikTok si collega con un semplice login (Zernio ha gia passato l\'audit). In attesa del primo giro del Publisher, che verifica i canali e li segnala qui.'}
+          : 'Setup ibrido: Instagram via Composio (gia collegato), TikTok e YouTube via Zernio (login semplice, audit TikTok gia passato da Zernio). In attesa del primo giro del Publisher, che verifica i canali e li segnala qui.'}
       </p>
 
       {/* Coda di pubblicazione */}
