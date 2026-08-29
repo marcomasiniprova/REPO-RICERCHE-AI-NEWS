@@ -2,8 +2,18 @@
 
 Obiettivo: uno script **parlato di 15-25 secondi**, in **italiano umano** (come parla una ragazza vera, non un comunicato). Se disponibile, usa la skill `anthropic-skills:copywriting-italiano-umano-2026`.
 
+## Il timing comanda (requisito fondamentale)
+Lo script DEVE finire dentro la durata del video scelta nel piano, senza troncarsi. Ritmo italiano parlato naturale: **~2,5-3 parole/secondo**. Tabella di riferimento:
+- **8s → 18-22 parole** (hook + una battuta + CTA cortissima)
+- **10s → ~25 parole**
+- **12s → ~30 parole**
+- **15s → 38-42 parole**
+- **20s → ~50 parole**
+- **25s → 60-65 parole**
+Se il video sara' corto (es. 8s per budget), NON scrivere lo script da 20s: scrivilo gia' della lunghezza giusta, o accorcialo al PASSO 4 quando sai la durata. Meglio secco e completo che pieno e tagliato. Lascia sempre ~0,5s di margine.
+
 ## Struttura (Hook → Problema → Soluzione → CTA)
-15-25s = circa **40-65 parole**. Non di più, o Giulia parla di fretta.
+Adatta la struttura alla durata: a 8-10s spesso ci sta solo Hook + un fatto forte + CTA lampo; il modello pieno Hook→Problema→Soluzione→CTA e' per 15-25s.
 
 1. **Hook (0-3s, ~8-12 parole):** una frase che aggancia (vedi `01-angoli-hook.md`). Deve contenere il beneficio o la tensione. Nessun preambolo.
 2. **Problema/tensione (3-8s):** perché ti riguarda. Concreto, personale ("Ti è mai successo che...").

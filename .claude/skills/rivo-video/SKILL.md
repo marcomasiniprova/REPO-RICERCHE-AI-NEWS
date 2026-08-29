@@ -55,6 +55,7 @@ Mai generare (spendere crediti) prima che lo stato sia "piano_approvato": il PIN
 
 ### PASSO 4: generazione (con la combinazione approvata)
 - Usa ESATTAMENTE i parametri di `scelta`: modello (qualità piena o, solo se Valerio l'ha scelto, fast), risoluzione, durata_s. Non cambiarli di tua iniziativa.
+- TIMING DELLO SCRIPT (requisito fondamentale, deciso da Valerio): lo script parlato DEVE stare COMODO nella durata scelta, senza tagliarsi a metà frase. Budget: italiano parlato naturale ~2,5-3 parole/secondo. Quindi 8s = 18-22 parole (hook + una battuta + mezza CTA), 10s ≈ 25 parole, 15s ≈ 38-42, 20s ≈ 50. PRIMA di generare, ricalcola le parole dello script sulla durata_s scelta: se e' troppo lungo, RISCRIVILO piu' corto perche' finisca la frase e la CTA entro il tempo, con un margine di sicurezza (~0,5s). Meglio un messaggio piu' secco che si chiude, che uno pieno che viene troncato. Aggiorna lo `script` nel kv con la versione adattata alla durata.
 - Ricarica la foto reference su URL pubblico fresco (upload Kie, scade in 24h: mai riusare link vecchi).
 - Genera (Veo 3.1 image-to-video col prompt di regia del PASSO 3), poll fino al risultato, prendi l'URL DAL CAMPO OUTPUT (non il primo URL che vedi), scarica e guarda il video. Aggiorna il kv con `video_url`, `duration_s`, `crediti_spesi`.
 
