@@ -90,3 +90,10 @@ Dopo la ricerca sulla crescita organica, la macchina contenuti diventa un vero t
 - **RIVO - CAROSELLI**: produce i post a scorrimento (guide, liste, passi pratici) che generano salvataggi. Legge il piano dello Stratega, prepara il carosello, lo consegna in dashboard per il PIN.
 - **RIVO - PUBLISHER**: pubblica il pezzo approvato su Instagram Reels + TikTok + YouTube Shorts e lo ripubblica/riusa. In fase di test: si verifica che il tool "pubblica" esista e funzioni end-to-end, MA non si pubblica davvero (vincolo Valerio). TikTok collegato da Valerio come ultimo passo.
 - **RIVO - COMMUNITY**: risponde a commenti e DM, presidia i primi 60 minuti dei post (la finestra che decide se un pezzo viene spinto). Tutto passa dalle regole di approvazione (niente risposte non approvate a freddo).
+
+## 29/8 sera — Terzo pezzo della macchina contenuti: RIVO CAROSELLI
+### RIVO - CAROSELLI (il creatore dei post a scorrimento)
+- Skill: `.claude/skills/rivo-caroselli/` (SKILL.md + reference.md). Slug dashboard "caroselli".
+- Cosa fa: legge il piano dello Stratega (kv piano_editoriale, pezzi assegnato_a=caroselli), progetta il carosello slide per slide (copertina che ferma il pollice, contenuto numerato, CTA soft), scrive la caption con hashtag, consegna nel kv `carosello_YYYY-MM-DD` in stato in_attesa. 5-8 slide, una idea per slide.
+- Confini: non pubblica (PUBLISHER col PIN), non decide i temi (Stratega), non risponde ai commenti (Community), non inventa numeri. Consegna il contenuto perfetto delle slide + la direzione visiva; la resa in immagini vere e' del render del Publisher.
+- Da attivare: integrazione dashboard (anteprima slide in Contenuti + PIN); sessione "RIVO CAROSELLI operative" creata da Valerio; routine agganciata dal builder (cadenza proposta: mattina, dopo lo Stratega). Attivazione insieme agli altri ruoli contenuti.
