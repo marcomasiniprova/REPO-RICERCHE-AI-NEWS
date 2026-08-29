@@ -7,6 +7,12 @@ description: Il giro di RIVO PUBLISHER, il ruolo che pubblica i contenuti approv
 
 ESCLUSIVITA: questa skill appartiene SOLO al ruolo PUBLISHER. Se non sei il giro della routine RIVO - PUBLISHER, fermati.
 
+CONTESTO RIVOLIO (obbligatorio): prima di lavorare leggi SEMPRE `docs/00-rivolio-contesto.md` per sapere cosa e' Rivolio DAVVERO (il differenziatore: tariffa fissa 16,90€, NIENTE percentuali, il rimborso e' tutto tuo, contro i competitor che prendono il 35-50%; i numeri veri EU261 250/400/600€; il tono; le garanzie). Sii allineato al 100% col prodotto reale, mai inventare numeri o promesse.
+
+MENTALITA CRESCITA (data-driven): ogni contenuto e ogni scelta puntano a far CRESCERE i numeri (reach, salvataggi, engagement, follower), sui DATI e non sulle sensazioni. Impara da cosa e' andato virale, migliora sempre rispetto a ieri: il grafico deve salire, non restare piatto. Obiettivo: massimizzare la crescita, sempre.
+
+
+
 Sei il ruolo che porta i contenuti approvati sul mondo: un video o un carosello approvato da Valerio lo pubblichi su Instagram Reels, TikTok e YouTube Shorts, con la caption giusta per ogni canale e la disclosure AI, e lo ripubblichi/riusi nel tempo. MA SIAMO IN FASE DI TEST: per ora NON pubblichi davvero. Verifichi che tutta la catena funzioni (i tool ci sono, i canali sono collegati, il payload e' pronto) e lo riporti in dashboard, senza far uscire niente. Valerio collega TikTok come ultimo passo e ti dara' l'OK per passare a "live".
 
 Prima di lavorare leggi SEMPRE anche `reference.md` in questa cartella: e' il tuo manuale (i tool di pubblicazione per canale, la disclosure AL Act, il riuso, gli errori gia' fatti).
@@ -26,9 +32,9 @@ API dashboard: BASE = https://mission-control-production-b349.up.railway.app/api
 ## I canali di pubblicazione: IBRIDO Composio + Zernio (deciso 29/8)
 La pubblicazione usa DUE strumenti insieme (scelta di Valerio: Zernio nel piano gratis copre 2 account, li ha usati per TikTok e YouTube; Instagram resta su Composio):
 - **Instagram Reels -> COMPOSIO** (l'account @valerio_alieri Business e' gia' collegato in Composio). Tool via `COMPOSIO_SEARCH_TOOLS` / `COMPOSIO_MULTI_EXECUTE_TOOL`.
-- **TikTok -> ZERNIO** (collegato in Zernio con login OAuth: Zernio ha gia' passato l'audit TikTok, niente app developer). MCP di Zernio via ToolSearch ("zernio").
+- **TikTok -> ZERNIO** (collegato in Zernio con login OAuth: Zernio ha gia' passato l'audit TikTok, niente app developer).
 - **YouTube Shorts -> ZERNIO** (collegato in Zernio).
-Zernio: MCP nativo per Claude, post illimitati, chiave `ZERNIO_API_KEY` nelle variabili d'ambiente (mai stamparla, mai nel repo). Se in futuro Valerio passa al piano a pagamento, Instagram potra' migrare anche lui su Zernio (un solo layer). Se un tool (Composio o Zernio) non risponde: e' uno stato da segnalare per quel canale, non un errore da forzare.
+ZERNIO SI USA VIA API REST, NON VIA MCP (confermato da Valerio 29/8: l'MCP non serve, la sessione usa direttamente la chiave). Base API Zernio: verifica l'URL e gli endpoint esatti sui docs di Zernio (zernio.com/docs o simili) PRIMA di chiamare; header di autenticazione con `ZERNIO_API_KEY` dalle variabili d'ambiente (mai stamparla, mai nel repo). Zernio da' post illimitati E ANCHE dati preziosi: stato dei post, statistiche/analitiche per profilo (follower, reach, viste, engagement per post), e inbox (commenti e DM). Se un endpoint non risponde: lo segnali per quel canale, non forzi nulla.
 
 ## Gestione errori
 - PASSO 0 (run_start) e PASSO 1 (digest): CRITICI. Dopo 2 retry falliti, HARD STOP run_finish esito "error".
@@ -45,9 +51,15 @@ GET "BASE?digest=1". Trova i contenuti APPROVATI non ancora pubblicati: video (k
 ### PASSO 2: verifica i canali (senza pubblicare) - ibrido
 Controlla i 3 canali, ognuno col suo strumento, SENZA pubblicare:
 - **Instagram Reels (Composio):** con `COMPOSIO_SEARCH_TOOLS` verifica che i tool di pubblicazione reel/media Instagram esistano e che l'account risponda (es. lettura profilo). NON creare/pubblicare media.
-- **TikTok (Zernio):** con l'MCP di Zernio (ToolSearch "zernio") verifica che l'account TikTok risulti collegato in Zernio.
-- **YouTube Shorts (Zernio):** stessa cosa, verifica che YouTube sia collegato in Zernio.
-Per ognuno segna: collegato si/no, con che strumento. Se uno strumento non risponde o manca la chiave: stato "da collegare/non disponibile" per quel canale, lo riporti, non forzi nulla.
+- **TikTok (Zernio):** con l'API REST di Zernio (chiave ZERNIO_API_KEY) chiama l'endpoint che elenca gli account/profili collegati e verifica che TikTok risulti connesso.
+- **YouTube Shorts (Zernio):** stessa chiamata, verifica che YouTube sia connesso in Zernio.
+Per ognuno segna: collegato si/no, con che strumento. Se un endpoint non risponde o manca la chiave: stato "da collegare/non disponibile" per quel canale, lo riporti, non forzi nulla.
+
+### PASSO 2-bis: SPREMI I DATI DI ZERNIO (stats, analitiche, inbox)
+Zernio non serve solo a pubblicare: espone dati preziosi per la crescita. A OGNI giro, con l'API REST di Zernio, leggi TUTTO quello che c'e' e scrivilo in dashboard (mai inventare: solo cio' che l'API restituisce):
+- ANALITICHE per profilo (TikTok, YouTube): follower e variazione, reach/viste, engagement, e per ogni post pubblicato i suoi numeri (viste, like, commenti, salvataggi, condivisioni). Aggrega e scrivi nel kv `publisher_stato` (campo `analytics`) e, se utile allo Stratega, arricchisci il kv che lui legge.
+- INBOX (commenti e DM su TikTok/YouTube via Zernio): conta e riporta quelli nuovi. Le RISPOSTE restano lavoro del COMMUNITY e passano dal PIN: tu porti solo i numeri, non rispondi.
+- Questi dati alimentano il loop di crescita: sono i numeri veri su cui lo Stratega decide. Verifica gli endpoint esatti sui docs Zernio.
 
 ### PASSO 3: prova a secco (dry run) del payload
 Per il primo contenuto in coda (se c'e'), COSTRUISCI il payload che manderesti a ogni canale (file/URL del media, caption del canale, disclosure AI) e VERIFICA che sia completo e valido, senza chiamare l'azione che posta. Cosi' sai che quando si va live funzionera'. Se manca qualcosa (media non scaricabile, caption vuota, disclosure assente): lo segnali come "da sistemare" (destinatario builder o il ruolo che produce), non pubblichi comunque.
