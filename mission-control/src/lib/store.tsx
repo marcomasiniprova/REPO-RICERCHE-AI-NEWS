@@ -28,6 +28,7 @@ import type {
   DraftSend,
   EditorialPlan,
   StrategaStato,
+  CarouselItem,
 } from './types';
 import { fmtFollowers } from './utils';
 import agentsSeed from '@/data/agents.json';
@@ -150,6 +151,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
   const [redditKarma, setRedditKarma] = useState<number>(0);
   const [scoutStats, setScoutStats] = useState<ScoutStats | null>(null);
   const [videos, setVideos] = useState<VideoItem[]>([]);
+  const [carousels, setCarousels] = useState<CarouselItem[]>([]);
   const [guardianoHealth, setGuardianoHealth] = useState<GuardianoHealth | null>(null);
   const [meetLink, setMeetLink] = useState<MeetLink | null>(null);
   const [meetings, setMeetings] = useState<Meeting[]>([]);
@@ -312,6 +314,12 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
             .map((r) => ({ ...(r.value as Omit<VideoItem, 'key'>), key: r.key }) as VideoItem)
             .sort((a, b) => (a.date < b.date ? 1 : -1));
           setVideos(vids);
+          // I caroselli di RIVO CAROSELLI vivono nel kv: una chiave carosello_YYYY-MM-DD per giorno.
+          const cars = (rows ?? [])
+            .filter((r) => /^carosello_\d{4}-\d{2}-\d{2}$/.test(r.key) && r.value && typeof r.value === 'object')
+            .map((r) => ({ ...(r.value as Omit<CarouselItem, 'key'>), key: r.key }) as CarouselItem)
+            .sort((a, b) => (a.date < b.date ? 1 : -1));
+          setCarousels(cars);
           const gh = rows?.find((r) => r.key === 'guardiano_health');
           if (gh && gh.value && typeof gh.value === 'object') setGuardianoHealth(gh.value as GuardianoHealth);
           const ml = rows?.find((r) => r.key === 'meet_link');
@@ -372,6 +380,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
       leadTotals,
       scoutStats,
       videos,
+      carousels,
       guardianoHealth,
       meetLink,
       meetings,
@@ -383,7 +392,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
       live,
       mode: hasSupabase ? 'supabase' : 'demo',
     };
-  }, [agents, messages, runs, feed, creators, drafts, reddit, redditKarma, scoutStats, videos, guardianoHealth, meetLink, meetings, draftsSend, editorialPlan, strategaStato, loading, live, hasSupabase]);
+  }, [agents, messages, runs, feed, creators, drafts, reddit, redditKarma, scoutStats, videos, carousels, guardianoHealth, meetLink, meetings, draftsSend, editorialPlan, strategaStato, loading, live, hasSupabase]);
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
 }

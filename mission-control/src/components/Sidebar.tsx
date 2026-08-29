@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import {
   Brain,
   Clapperboard,
+  GalleryHorizontalEnd,
   LayoutGrid,
   Users,
   MailOpen,
@@ -28,13 +29,15 @@ const NAV = [
   { href: '/reddit', label: 'Reddit', icon: MessageCircle },
   { href: '/strategia', label: 'Strategia', icon: Brain },
   { href: '/contenuti', label: 'Contenuti', icon: Clapperboard },
+  { href: '/caroselli', label: 'Caroselli', icon: GalleryHorizontalEnd },
 ];
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const { drafts, videos, live, mode } = useData();
+  const { drafts, videos, carousels, live, mode } = useData();
   const pending = drafts.filter((d) => d.status === 'bozza').length;
   const pendingVideos = videos.filter((v) => v.stato === 'in_attesa').length;
+  const pendingCarousels = carousels.filter((c) => c.stato === 'in_attesa').length;
 
   return (
     <aside className="glass sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-[var(--color-line)] px-4 py-5 md:flex">
@@ -78,6 +81,11 @@ export default function Sidebar() {
               {href === '/contenuti' && pendingVideos > 0 && (
                 <span className="ml-auto rounded-full bg-tan px-2 py-0.5 text-[11px] font-bold text-tan-ink">
                   {pendingVideos}
+                </span>
+              )}
+              {href === '/caroselli' && pendingCarousels > 0 && (
+                <span className="ml-auto rounded-full bg-tan px-2 py-0.5 text-[11px] font-bold text-tan-ink">
+                  {pendingCarousels}
                 </span>
               )}
             </Link>

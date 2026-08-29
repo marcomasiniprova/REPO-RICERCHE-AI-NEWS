@@ -66,6 +66,17 @@
     "color": "#8b5cf6"
   },
   {
+    "slug": "caroselli",
+    "name": "CAROSELLI",
+    "role": "I post che fanno salvataggi",
+    "tagline": "Trasforma il piano in caroselli-guida: slide chiare, utili, da salvare.",
+    "avatar": "/avatars/caroselli.png",
+    "status": "idle",
+    "schedule_label": "Ogni mattina, dopo lo Stratega",
+    "cron": "30 5 * * *",
+    "color": "#2596be"
+  },
+  {
     "slug": "guardiano",
     "name": "GUARDIANO",
     "role": "Il manutentore",

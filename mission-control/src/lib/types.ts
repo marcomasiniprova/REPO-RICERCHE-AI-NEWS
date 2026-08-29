@@ -172,6 +172,35 @@ export interface VideoItem {
   piattaforme_pubblicate?: string[];
 }
 
+export type CarouselStato = 'in_attesa' | 'approvato' | 'scartato' | 'pubblicato' | 'errore';
+
+/** Una slide del carosello scritta da RIVO CAROSELLI. */
+export interface CarouselSlide {
+  n: number;
+  tipo: 'copertina' | 'contenuto' | 'cta' | string;
+  titolo?: string;
+  testo?: string;
+  visual?: string; // direzione visiva (cosa si vede, colori, icone)
+}
+
+/** Il carosello del giorno di RIVO CAROSELLI: vive nel kv (chiave carosello_YYYY-MM-DD).
+ *  L'agente consegna le slide + caption; il PIN di Valerio approva, il PUBLISHER pubblica. */
+export interface CarouselItem {
+  key: string; // es. carosello_2026-08-29
+  date: string;
+  tema?: string;
+  angolo?: string;
+  slides: CarouselSlide[];
+  caption?: string;
+  canali?: string[];
+  stato: CarouselStato;
+  note?: string;
+  created_at?: string;
+  decided_at?: string | null;
+  published_at?: string | null;
+  piattaforme_pubblicate?: string[];
+}
+
 /** Semaforo di salute scritto dal GUARDIANO nel kv (chiave guardiano_health). */
 export interface GuardianoHealth {
   stato: 'ok' | 'attenzione' | 'critico';
@@ -268,6 +297,7 @@ export interface DashboardData {
   leadTotals: { tot: number; pronto: number; da_arricchire: number; scartato: number };
   scoutStats: ScoutStats | null;
   videos: VideoItem[];
+  carousels: CarouselItem[];
   guardianoHealth: GuardianoHealth | null;
   meetLink: MeetLink | null;
   meetings: Meeting[];

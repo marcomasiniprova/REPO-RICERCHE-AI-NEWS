@@ -17,6 +17,7 @@ export async function POST(request: Request) {
   let body: {
     draft_id?: number;
     video_key?: string;
+    carosello_key?: string;
     action?: string;
     note?: string;
     pin?: string;
@@ -113,6 +114,39 @@ export async function POST(request: Request) {
         stato === 'approvato'
           ? `Valerio ha approvato il video del ${dateLabel}: RIVO VIDEO lo pubblica su TikTok, Reels e Shorts al primo giro utile.`
           : `Valerio ha scartato il video del ${dateLabel}.`,
+    });
+    return Response.json({ ok: true, status: stato });
+  }
+
+  // Caroselli di RIVO CAROSELLI: vivono nel kv (chiave carosello_YYYY-MM-DD).
+  // Una sola fase: in_attesa -> approvato/scartato col PIN; pubblica poi il PUBLISHER.
+  if (body.carosello_key) {
+    const keyName = String(body.carosello_key);
+    if (!/^carosello_\d{4}-\d{2}-\d{2}$/.test(keyName)) {
+      return Response.json({ ok: false, error: 'chiave carosello non valida' }, { status: 400 });
+    }
+    const db = createClient(url, key, { auth: { persistSession: false } });
+    const { data: row } = await db.from('kv').select('value').eq('key', keyName).single();
+    const car = row?.value as Record<string, unknown> | null;
+    if (!car || typeof car !== 'object') {
+      return Response.json({ ok: false, error: 'carosello non trovato' }, { status: 404 });
+    }
+    if (car.stato !== 'in_attesa') {
+      return Response.json({ ok: false, error: 'carosello gia deciso o non pronto' }, { status: 409 });
+    }
+    const nowIso = new Date().toISOString();
+    const dateLabel = String(car.date ?? keyName.slice(10));
+    const stato = body.action === 'reject' ? 'scartato' : 'approvato';
+    const next = { ...car, stato, decided_at: nowIso };
+    const { error: upErr } = await db.from('kv').update({ value: next, updated_at: nowIso }).eq('key', keyName);
+    if (upErr) return Response.json({ ok: false, error: upErr.message }, { status: 500 });
+    await db.from('activity_feed').insert({
+      agent_slug: null,
+      kind: stato === 'approvato' ? 'success' : 'info',
+      message:
+        stato === 'approvato'
+          ? `Valerio ha approvato il carosello del ${dateLabel}: il PUBLISHER lo pubblichera' al primo giro utile (col PIN).`
+          : `Valerio ha scartato il carosello del ${dateLabel}.`,
     });
     return Response.json({ ok: true, status: stato });
   }

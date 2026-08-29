@@ -169,6 +169,33 @@ export const AGENT_SPECS: Record<string, AgentSpec> = {
       'Se il video sa di AI non si propone: si riparte dalla regia',
     ],
   },
+  caroselli: {
+    missione:
+      'Il creatore dei post a scorrimento: prende il tema dal piano dello Stratega e lo trasforma in un carosello-guida fatto bene, slide per slide (copertina che ferma il pollice, contenuto numerato, CTA soft). Sono i post che la gente salva e condivide. Non pubblica: consegna e aspetta il PIN.',
+    tools: [
+      { name: 'Piano dello Stratega', detail: 'Prende il tema assegnato dal kv piano_editoriale' },
+      { name: 'Mission Control API', detail: 'Consegna il carosello nel kv, aspetta il PIN' },
+      { name: 'Composio Instagram', detail: 'Controlla il profilo quando serve, senza pubblicare' },
+      { name: 'Griglia di brand', detail: 'Colori, font e tono visivo Rivolio per ogni slide' },
+    ],
+    skills: [
+      'Skill dedicata rivo-caroselli (SKILL.md + reference.md nel repo)',
+      'Anatomia del carosello che converte: copertina forte, una idea per slide, CTA soft',
+      'Copy italiano umano, numeri veri, niente gergo legale',
+      'Il formato dei salvataggi: utile prima di tutto, 5-8 slide',
+    ],
+    flusso: [
+      { step: 'Prende il tema', detail: 'Dal piano dello Stratega, il carosello assegnato a lui' },
+      { step: 'Progetta le slide', detail: 'Copertina, contenuto numerato, CTA: una idea per slide' },
+      { step: 'Scrive la caption', detail: 'Aggancio, valore, invito soft, hashtag pertinenti' },
+      { step: 'Consegna e aspetta', detail: 'Il carosello resta in attesa del tuo PIN nella dashboard' },
+    ],
+    regole: [
+      'Non pubblica e non manda: consegna, poi il Publisher pubblica col PIN',
+      'Segue il piano dello Stratega, non inventa temi a caso',
+      'Numeri veri o niente, mai il trattino lungo',
+    ],
+  },
   guardiano: {
     missione:
       'Il manutentore tecnico della squadra: controlla che tutti i ruoli girino e aggiornino la dashboard, ripara gli intoppi che sa sistemare e chiama il builder solo per i bug di codice. Cosi Valerio guarda solo la dashboard, mai i log.',
