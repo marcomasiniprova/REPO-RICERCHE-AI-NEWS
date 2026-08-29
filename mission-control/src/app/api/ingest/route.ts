@@ -69,6 +69,14 @@ export async function GET(request: Request) {
   }
   const params = new URL(request.url).searchParams;
 
+  // Lettura di una singola chiave kv (per gli agenti e la manutenzione).
+  const kvKey = params.get('kv');
+  if (kvKey) {
+    const { data, error } = await db.from('kv').select('key, value, updated_at').eq('key', kvKey).maybeSingle();
+    if (error) return Response.json({ ok: false, error: error.message }, { status: 500 });
+    return Response.json({ ok: true, key: kvKey, value: data?.value ?? null, updated_at: data?.updated_at ?? null });
+  }
+
   const status = params.get('drafts');
   if (status) {
     const { data, error } = await db
