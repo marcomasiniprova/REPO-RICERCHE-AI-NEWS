@@ -38,6 +38,7 @@ async function ensureAgent(
  *  - draft_upsert  { id?, creator, channel, subject?, body, status?, agent? }
  *  - reddit_add    { date, subreddit, kind?, title, body_summary?, permalink_id?, status? }
  *  - kv_set        { key, value }
+ *  - persist_asset { url, path, content_type? }  -> salva l'asset in Storage e ritorna { url } permanente
  */
 
 function admin() {
@@ -331,6 +332,42 @@ export async function POST(request: Request) {
         if (!key) throw new Error('key mancante');
         await db.from('kv').upsert({ key, value: body.value, updated_at: nowIso });
         return Response.json({ ok: true });
+      }
+
+      // Salva in modo PERMANENTE un asset generato (video/immagine) che vive
+      // solo su un link temporaneo di Kie (scade in ~24h). Lo scarica e lo mette
+      // nel bucket "content" di Supabase Storage, e restituisce l'URL pubblico
+      // stabile. Idempotente: stesso `path` -> stesso URL (upsert).
+      //  body: { url, path, content_type? }  ->  { ok, url }
+      case 'persist_asset': {
+        const srcUrl = String(body.url ?? '').trim();
+        const path = String(body.path ?? '').trim().replace(/^\/+/, '');
+        if (!srcUrl) throw new Error('url mancante');
+        if (!path) throw new Error('path mancante');
+        const BUCKET = 'content';
+
+        // il bucket deve esistere ed essere pubblico (creazione idempotente)
+        await db.storage.createBucket(BUCKET, { public: true }).catch(() => {});
+
+        // se e' gia' un nostro URL permanente, non riscaricare: e' gia' a posto
+        const { data: pub0 } = db.storage.from(BUCKET).getPublicUrl(path);
+        if (srcUrl.startsWith(pub0.publicUrl.split('?')[0].replace('/' + path, ''))) {
+          return Response.json({ ok: true, url: pub0.publicUrl, already: true });
+        }
+
+        const res = await fetch(srcUrl);
+        if (!res.ok) throw new Error(`download fallito: HTTP ${res.status}`);
+        const ct = String(body.content_type ?? res.headers.get('content-type') ?? 'application/octet-stream');
+        const buf = new Uint8Array(await res.arrayBuffer());
+        if (buf.byteLength === 0) throw new Error('asset vuoto');
+
+        const { error: upErr } = await db.storage
+          .from(BUCKET)
+          .upload(path, buf, { contentType: ct, upsert: true });
+        if (upErr) throw upErr;
+
+        const { data: pub } = db.storage.from(BUCKET).getPublicUrl(path);
+        return Response.json({ ok: true, url: pub.publicUrl, bytes: buf.byteLength });
       }
 
       default:
