@@ -2,7 +2,6 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 import {
   Brain,
   ArrowRight,
@@ -16,18 +15,18 @@ import {
   Clapperboard,
   LayoutList,
   UserCog,
-  CalendarDays,
+  Clock,
+  History,
 } from 'lucide-react';
 import { useData } from '@/lib/store';
 import { PageHeader, EmptyState, Badge } from '@/components/ui';
 import LiveBadge from '@/components/LiveBadge';
 import { nextRunLabel } from '@/lib/utils';
-import type { EditorialPiece } from '@/lib/types';
 
 const PILLARS = [
   { step: 'Legge i numeri', detail: 'Insight veri del profilo + cosa ha prodotto la squadra' },
   { step: 'Capisce cosa rende', detail: 'Formato e angolo che funzionano, su cosa raddoppiare' },
-  { step: 'Scrive il piano', detail: 'Il calendario che Video e Caroselli eseguono' },
+  { step: 'Detta la linea', detail: 'Angolo e priorita che Video e Caroselli eseguono ogni giorno' },
   { step: 'Propone e misura', detail: 'Cambi di profilo da approvare, crescita monitorata' },
 ];
 
@@ -65,56 +64,60 @@ const FMT_META: Record<string, { label: string; icon: React.ReactNode; cls: stri
   carosello: { label: 'Carosello', icon: <LayoutList size={12} />, cls: 'bg-brand-100 text-brand-700' },
 };
 
-const STATO_TONE: Record<string, 'neutral' | 'tan' | 'brand'> = {
-  pianificato: 'neutral',
-  in_produzione: 'tan',
-  pronto: 'brand',
-  pubblicato: 'brand',
-};
-
-function PieceCard({ p, i }: { p: EditorialPiece; i: number }) {
-  const fmt = FMT_META[p.formato] ?? { label: p.formato, icon: <Clapperboard size={12} />, cls: 'bg-subtle text-ink-2' };
-  const dateLabel = p.data
-    ? new Date(p.data + 'T00:00:00').toLocaleDateString('it-IT', { weekday: 'short', day: 'numeric', month: 'short' })
-    : null;
+/* Riga compatta per un contenuto (video o carosello) nello storico o in coda di oggi. */
+function ContentRow({
+  formato,
+  tema,
+  href,
+  when,
+  right,
+}: {
+  formato: 'video' | 'carosello';
+  tema?: string;
+  href: string;
+  when?: string;
+  right?: React.ReactNode;
+}) {
+  const fmt = FMT_META[formato];
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.25, delay: Math.min(i * 0.03, 0.4) }}
-      className="card card-hover p-4"
-    >
-      <div className="flex items-center gap-2">
-        <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10.5px] font-semibold ${fmt.cls}`}>
-          {fmt.icon}
-          {fmt.label}
-        </span>
-        {p.stato && <Badge tone={STATO_TONE[p.stato] ?? 'neutral'}>{p.stato.replace('_', ' ')}</Badge>}
-        {dateLabel && <span className="ml-auto text-[11px] font-semibold text-ink-2">{dateLabel}</span>}
-      </div>
-      {p.tema && <div className="mt-2 text-[13.5px] font-semibold leading-snug text-deep">{p.tema}</div>}
-      {p.hook && <div className="mt-1 text-[12px] italic leading-snug text-ink-2">&laquo;{p.hook}&raquo;</div>}
-      <div className="mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[10.5px] text-ink-3">
-        {p.angolo && <span className="font-semibold uppercase tracking-wide text-brand-600">{p.angolo}</span>}
-        {p.assegnato_a && (
-          <span className="inline-flex items-center gap-1">
-            <UserCog size={11} /> {p.assegnato_a}
-          </span>
-        )}
-        {p.canali && p.canali.length > 0 && <span>{p.canali.join(' · ')}</span>}
-      </div>
-      {p.nota && <div className="mt-2 border-t border-line pt-2 text-[11px] leading-snug text-ink-3">{p.nota}</div>}
-    </motion.div>
+    <Link href={href} className="card card-hover flex items-center gap-3 p-3">
+      <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10.5px] font-semibold ${fmt.cls}`}>
+        {fmt.icon}
+        {fmt.label}
+      </span>
+      <span className="min-w-0 flex-1 truncate text-[12.5px] font-semibold text-deep">
+        {tema || 'Contenuto senza tema'}
+      </span>
+      {when && <span className="shrink-0 text-[10.5px] text-ink-3">{when}</span>}
+      {right}
+      <ArrowRight size={13} className="shrink-0 text-ink-3" />
+    </Link>
   );
 }
 
+const dayLabel = (iso?: string | null) =>
+  iso ? new Date(iso).toLocaleDateString('it-IT', { day: 'numeric', month: 'short' }) : '';
+
 export default function StrategiaPage() {
-  const { agents, strategaStato: s, editorialPlan, loading } = useData();
+  const { agents, strategaStato: s, videos, carousels, loading } = useData();
   const agent = agents.find((a) => a.slug === 'stratega');
-  const pezzi = (editorialPlan?.pezzi ?? [])
-    .slice()
-    .sort((a, b) => (a.data < b.data ? -1 : a.data > b.data ? 1 : 0));
   const proposte = s?.proposte_profilo ?? [];
+
+  // Pezzi di oggi ancora da approvare (video in attesa dell'OK di pubblicazione o del piano, caroselli in attesa).
+  const oggiVideo = videos.filter((v) => v.stato === 'in_attesa' || v.stato === 'piano_in_attesa');
+  const oggiCaroselli = carousels.filter((c) => c.stato === 'in_attesa');
+  const daApprovare = oggiVideo.length + oggiCaroselli.length;
+
+  // Storico: tutto cio che e stato pubblicato, dal piu recente.
+  const storicoVideo = videos
+    .filter((v) => v.stato === 'pubblicato')
+    .map((v) => ({ formato: 'video' as const, tema: v.tema, href: '/contenuti', when: v.published_at, key: v.key }));
+  const storicoCaroselli = carousels
+    .filter((c) => c.stato === 'pubblicato')
+    .map((c) => ({ formato: 'carosello' as const, tema: c.tema, href: '/caroselli', when: c.published_at, key: c.key }));
+  const storico = [...storicoVideo, ...storicoCaroselli].sort((a, b) =>
+    (b.when ?? '') < (a.when ?? '') ? -1 : (b.when ?? '') > (a.when ?? '') ? 1 : 0,
+  );
 
   const fmtNum = (v: string | number | undefined) => (v === undefined || v === null || v === '' ? 'da verificare' : String(v));
 
@@ -257,32 +260,74 @@ export default function StrategiaPage() {
         </div>
       )}
 
-      {/* Calendario editoriale */}
-      <div className="mb-3 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <CalendarDays size={16} className="text-brand-600" />
-          <h2 className="font-display text-[17px] font-bold tracking-tight text-deep">Calendario editoriale</h2>
-        </div>
-        <span className="text-[11.5px] text-ink-3">
-          {editorialPlan?.cadenza ? editorialPlan.cadenza : pezzi.length > 0 ? `${pezzi.length} pezzi pianificati` : ''}
-        </span>
+      {/* Pezzi di oggi da approvare */}
+      <div className="mb-3 flex items-center gap-2">
+        <Clock size={16} className="text-brand-600" />
+        <h2 className="font-display text-[17px] font-bold tracking-tight text-deep">Pezzi di oggi da approvare</h2>
+        {daApprovare > 0 && <Badge tone="tan">{daApprovare} aspettano il tuo OK</Badge>}
       </div>
 
       {loading ? (
-        <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
-          {Array.from({ length: 3 }).map((_, i) => (
-            <div key={i} className="skeleton h-[132px]" />
+        <div className="grid gap-2.5 md:grid-cols-2">
+          {Array.from({ length: 2 }).map((_, i) => (
+            <div key={i} className="skeleton h-[52px]" />
           ))}
         </div>
-      ) : pezzi.length === 0 ? (
+      ) : daApprovare === 0 ? (
         <EmptyState
-          title="Il piano non e ancora scritto"
-          note="Lo Stratega gira la mattina presto: legge i numeri, decide i pezzi della settimana e li assegna a Video e Caroselli. Compaiono qui da soli, in tempo reale, appena scrive il piano."
+          title="Niente in coda adesso"
+          note="Ogni mattina Video e Caroselli producono il pezzo del giorno seguendo la linea dello Stratega. Appena e pronto compare qui, e lo approvi col PIN prima che il Publisher lo pubblichi."
         />
       ) : (
-        <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
-          {pezzi.map((p, i) => (
-            <PieceCard key={p.id ?? i} p={p} i={i} />
+        <div className="grid gap-2.5 md:grid-cols-2">
+          {oggiVideo.map((v) => (
+            <ContentRow
+              key={v.key}
+              formato="video"
+              tema={v.tema}
+              href="/contenuti"
+              when={dayLabel(v.created_at)}
+              right={
+                <Badge tone="tan">{v.stato === 'piano_in_attesa' ? 'piano da approvare' : 'da approvare'}</Badge>
+              }
+            />
+          ))}
+          {oggiCaroselli.map((c) => (
+            <ContentRow
+              key={c.key}
+              formato="carosello"
+              tema={c.tema}
+              href="/caroselli"
+              when={dayLabel(c.created_at)}
+              right={<Badge tone="tan">da approvare</Badge>}
+            />
+          ))}
+        </div>
+      )}
+
+      {/* Storico contenuti pubblicati */}
+      <div className="mb-3 mt-8 flex items-center gap-2">
+        <History size={16} className="text-brand-600" />
+        <h2 className="font-display text-[17px] font-bold tracking-tight text-deep">Storico contenuti pubblicati</h2>
+        {storico.length > 0 && <span className="text-[11.5px] text-ink-3">{storico.length} pezzi online</span>}
+      </div>
+
+      {!loading && storico.length === 0 ? (
+        <EmptyState
+          title="Ancora nessun contenuto online"
+          note="Qui si accumula tutto cio che e stato pubblicato: video e caroselli, dal piu recente. E la storia della macchina, il grafico che cresce giorno dopo giorno."
+        />
+      ) : (
+        <div className="grid gap-2.5 md:grid-cols-2">
+          {storico.map((item) => (
+            <ContentRow
+              key={item.key}
+              formato={item.formato}
+              tema={item.tema}
+              href={item.href}
+              when={dayLabel(item.when)}
+              right={<Badge tone="brand">online</Badge>}
+            />
           ))}
         </div>
       )}
@@ -290,7 +335,7 @@ export default function StrategiaPage() {
       <div className="mt-8 flex items-start gap-2 text-[10.5px] leading-relaxed text-ink-3">
         <Brain size={13} className="mt-0.5 shrink-0 text-ink-3" />
         <span>
-          Tutto qui e deciso dallo Stratega sui numeri veri del profilo. Il piano che scrive diventa gli ordini
+          Tutto qui e deciso dallo Stratega sui numeri veri del profilo. La linea che detta diventa gli ordini
           per Video e Caroselli. La pubblicazione e le risposte passano sempre dal tuo OK.
         </span>
       </div>

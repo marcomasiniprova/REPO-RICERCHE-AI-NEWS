@@ -3,12 +3,13 @@
 import { useMemo, useState } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Check, Lock, ShieldCheck, Trash2, Sparkles, Layers, ImageIcon } from 'lucide-react';
+import { Check, Lock, ShieldCheck, Trash2, Sparkles, Layers } from 'lucide-react';
 import { useData } from '@/lib/store';
 import { PageHeader, Badge, EmptyState } from '@/components/ui';
 import LiveBadge from '@/components/LiveBadge';
+import { IgCarouselMockup } from '@/components/PostMockup';
 import { cn, fmtDay, fmtTime } from '@/lib/utils';
-import type { CarouselItem, CarouselStato, CarouselSlide } from '@/lib/types';
+import type { CarouselItem, CarouselStato } from '@/lib/types';
 
 const FILTERS: Array<{ id: CarouselStato | 'tutti'; label: string }> = [
   { id: 'in_attesa', label: 'Da approvare' },
@@ -27,76 +28,6 @@ const STATO_TONE: Record<CarouselStato, { label: string; cls: string }> = {
 
 type PendingAction = { carousel: CarouselItem; action: 'approve' | 'reject' };
 
-function SlideCard({ s, total }: { s: CarouselSlide; total: number }) {
-  const isCover = s.tipo === 'copertina';
-  const isCta = s.tipo === 'cta';
-  return (
-    <div className="w-[170px] shrink-0">
-      {s.img ? (
-        <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl border border-line bg-deep-2">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={s.img} alt={s.titolo ?? `slide ${s.n}`} className="h-full w-full object-cover" />
-          <span className="absolute left-2 top-2 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-black/45 px-1.5 text-[10px] font-bold text-white">
-            {s.n}/{total}
-          </span>
-        </div>
-      ) : (
-        <div
-          className={cn(
-            'flex aspect-[4/5] w-full flex-col rounded-2xl border p-3.5',
-            isCover
-              ? 'border-transparent bg-deep text-white shadow-[0_6px_20px_rgba(10,59,49,0.28)]'
-              : isCta
-                ? 'border-brand-200 bg-brand-50'
-                : 'border-line bg-white',
-          )}
-        >
-          <div className="flex items-center justify-between">
-            <span
-              className={cn(
-                'inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] font-bold',
-                isCover ? 'bg-mint/25 text-mint' : 'bg-subtle text-ink-3',
-              )}
-            >
-              {s.n}/{total}
-            </span>
-            <span className={cn('text-[9px] font-bold uppercase tracking-[0.12em]', isCover ? 'text-mint' : 'text-ink-3')}>
-              {s.tipo}
-            </span>
-          </div>
-          <div className="mt-2 flex flex-1 flex-col justify-center">
-            {s.titolo && (
-              <div
-                className={cn(
-                  'font-display font-bold leading-tight',
-                  isCover ? 'text-[17px] text-white' : 'text-[13.5px] text-deep',
-                )}
-              >
-                {s.titolo}
-              </div>
-            )}
-            {s.testo && (
-              <div
-                className={cn(
-                  'mt-1.5 leading-snug',
-                  isCover ? 'text-[11.5px] text-white/85' : 'text-[11px] text-ink-2',
-                )}
-              >
-                {s.testo}
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-      {!s.img && s.visual && (
-        <div className="mt-1.5 flex items-start gap-1 px-0.5 text-[9.5px] leading-snug text-ink-3">
-          <ImageIcon size={10} className="mt-0.5 shrink-0" />
-          <span className="line-clamp-2">{s.visual}</span>
-        </div>
-      )}
-    </div>
-  );
-}
 
 export default function CaroselliPage() {
   const { carousels, agents, loading } = useData();
@@ -253,12 +184,10 @@ export default function CaroselliPage() {
                   )}
                 </div>
 
-                {/* Anteprima slide a scorrimento */}
+                {/* Anteprima come post Instagram, sfogliabile */}
                 {slides.length > 0 ? (
-                  <div className="mt-3.5 -mx-1 flex gap-3 overflow-x-auto px-1 pb-2">
-                    {slides.map((s) => (
-                      <SlideCard key={s.n} s={s} total={slides.length} />
-                    ))}
+                  <div className="mt-4">
+                    <IgCarouselMockup slides={slides} caption={c.caption} />
                   </div>
                 ) : (
                   <div className="mt-3 rounded-xl border border-dashed border-line bg-subtle px-4 py-6 text-center text-[12px] text-ink-3">

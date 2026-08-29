@@ -7,6 +7,7 @@ import { Check, Clapperboard, Clock, Lock, ShieldCheck, Sparkles, Trash2, Wallet
 import { useData } from '@/lib/store';
 import { PageHeader, Badge, EmptyState } from '@/components/ui';
 import LiveBadge from '@/components/LiveBadge';
+import { ReelMockup } from '@/components/PostMockup';
 import { cn, fmtDay, fmtTime } from '@/lib/utils';
 import type { VideoItem, VideoOption, VideoStato } from '@/lib/types';
 
@@ -319,21 +320,8 @@ export default function ContenutiPage() {
                 {/* FASE OUTPUT: video generato */}
                 {isVideo && (
                   <div className="mt-4 flex flex-col gap-4 sm:flex-row">
-                    <div className="mx-auto w-[200px] shrink-0 sm:mx-0">
-                      {v.video_url ? (
-                        <video
-                          src={v.video_url}
-                          controls
-                          playsInline
-                          preload="metadata"
-                          className="aspect-[9/16] w-full rounded-xl border border-line bg-deep-2 object-cover"
-                        />
-                      ) : (
-                        <div className="flex aspect-[9/16] w-full flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-line bg-subtle text-ink-3">
-                          <Clapperboard size={22} />
-                          <span className="px-3 text-center text-[11px]">Anteprima non disponibile</span>
-                        </div>
-                      )}
+                    <div className="mx-auto w-[240px] shrink-0 sm:mx-0">
+                      <ReelMockup videoUrl={v.video_url} caption={v.caption_tiktok || v.caption_ig} />
                     </div>
                     <div className="min-w-0 flex-1">
                       <div className="mb-2 flex flex-wrap items-center gap-2 text-[11px] text-ink-3">
