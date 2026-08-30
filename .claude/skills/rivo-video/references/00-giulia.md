@@ -31,3 +31,21 @@ In `assets/giulia/` (alla root del repo). Il master 2K (`rivolio_influencer_2k.p
 - Cambia **una variabile per volta** (posa O luce O ambiente), mai tutto insieme, o il volto deriva.
 - **Niente telefono in mano / niente "phone selfie" come oggetto.** È POV: la camera È il telefono, non si vede. Descriverlo → glitch, telefoni che spariscono, frame a caso.
 - Voce: **audio nativo Veo 3.1** (miglior italiano). Se una parola viene storpiata (coniugazioni rare tipo "doverti"), riscrivila semplice ("ti spettano", "hai diritto a").
+
+## La voce e il parlato (coerenza sonora)
+Giulia e' il volto del brand: la sua voce deve suonare sempre uguale e riconoscibile.
+- **Registro:** italiano parlato vero, da amica sveglia, non da spot. Tu/informale sempre. Ritmo ~2,5-3 parole/secondo, energia che sale sulle parole chiave.
+- **Lessico Rivolio (usa questo, sempre):** "sono soldi TUOI", "riprenditi quello che ti devono", "loro contano sul fatto che non lo farai", "il rimborso e' tutto tuo", "l'analisi costa meno di un cappuccino". Diretto e un filo provocatorio verso le compagnie, empatico con chi ha subito il disservizio.
+- **Mai:** gergo legale freddo, tono da telegiornale, promesse gonfiate, cifre inventate. Sempre "fino a 250-600€", "se hai diritto".
+
+## Il mondo di Giulia (perche' ci tiene)
+Giulia non e' una che legge un copione: e' una che a un volo cancellato ci e' passata. La sua storia (coerente, sullo sfondo di tutti i video): una volta le hanno cancellato un volo, le hanno rifilato un voucher da due soldi, e poi ha scoperto che le spettavano centinaia di euro. Da li' la sua "missione": far sapere alla gente i propri diritti, senza che nessuno si prenda una fetta. E' dalla parte del passeggero, contro chi lo frega (le compagnie che sperano che tu lasci perdere, e i servizi che si tengono il 35%). Rivolio e' lo strumento che consiglia perche' fa la cosa giusta: tariffa fissa, il rimborso resta tuo.
+
+## La firma riconoscibile (il format Hub)
+Per costruire il personaggio, Giulia ha una serie fissa ricorrente: **"I diritti che le compagnie non ti dicono"** (o simile deciso dallo Stratega). Stesso taglio, stessa apertura energica, un diritto/mito a puntata. E' cio' che rende Giulia memorabile (come Duo per Duolingo): la gente torna per LEI, non per un logo.
+
+## Disclosure AI (obbligatoria, EU AI Act)
+Giulia e' un personaggio generato con AI. Ogni video con lei porta la disclosure "Creato con AI" (in caption + flag AI della piattaforma). Non e' un problema, e' trasparenza: la si comunica con leggerezza, e le PROVE vere (screenshot di rimborsi, recensioni, storie di clienti) affiancano sempre Giulia per dare fiducia (l'UGC umano reale converte piu' dell'AI: Giulia porta volume e coerenza, le prove portano fiducia).
+
+## Coerenza per lo scaling (regola d'oro)
+Giulia e' un ASSET del brand Rivolio: stessa faccia, stessa voce, stesso nome, stesso mondo in OGNI video, su TikTok, Reels e Shorts. La coerenza e' cio' che la fa diventare un personaggio riconoscibile e non "l'ennesimo avatar AI". Nel dubbio, mantieni; non "sperimentare" il look o il tono a caso.

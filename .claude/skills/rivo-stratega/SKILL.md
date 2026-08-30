@@ -50,7 +50,8 @@ POST {"op":"run_start","agent":"stratega","task":"Brief del giorno"} (o "Brief +
 ### PASSO 1: leggi i numeri veri (critico)
 a) DIGEST: GET "BASE?digest=1". Guarda: cosa ha prodotto la squadra contenuti (video_* e i loro stati, caroselli, cosa ha pubblicato PUBLISHER, cosa ha fatto COMMUNITY), il piano_editoriale attuale, gli ultimi giri degli altri ruoli.
 b) INSIGHT INSTAGRAM (via Composio): leggi il TUO profilo @valerio_alieri Business. Prendi, se disponibili: follower e variazione, reach/impression ultimi 7 giorni, engagement (like+commenti+salvataggi+condivisioni / reach), i post che hanno reso di piu' e quelli morti, orari in cui il pubblico e' attivo. Sono i numeri VERI su cui decidi. Contali ora, mai a memoria.
-c) Se un numero non e' recuperabile: "da verificare", e vai avanti senza inventarlo.
+c) IL RADAR DEL TREND-SCOUT: GET "BASE?kv=trend_scout". E' cio' che il Trend-scout ha trovato oggi (audio, format, hook, news da cavalcare, con la finestra e l'idea di aggancio). Trattalo come munizioni: un trend caldo e rilevante e' un ottimo motivo per l'angolo del giorno. Se il radar e' vuoto o vecchio, pazienza, decidi sui pilastri e sui numeri.
+d) Se un numero non e' recuperabile: "da verificare", e vai avanti senza inventarlo.
 
 ### PASSO 2: capisci cosa funziona (il tuo vero lavoro)
 Confronta i numeri di oggi con quelli della TUA review precedente (nel digest, tra gli ultimi giri dello stratega). Cerca il segnale, non il rumore:

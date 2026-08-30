@@ -45,7 +45,7 @@ POST {"op":"run_start","agent":"caroselli","task":"Carosello del giorno"}. Criti
 GET "BASE?digest=1". Nel kv `piano_editoriale` cerca il pezzo di oggi con `assegnato_a`="caroselli" (o il primo carosello pianificato non ancora prodotto): tema, angolo, hook, canali. Se manca: pilastro guida dal reference, dichiaralo. Non rifare un carosello gia' fatto e non pubblicato (guarda le chiavi carosello_* recenti).
 
 ### PASSO 2: progetta le slide (copy + prompt immagine)
-Struttura che fa salvataggi (dettaglio nel reference): copertina (hook 5-9 parole), 2-6 slide di contenuto (una idea per slide, passi numerati nei how-to), CTA finale soft. 4-8 slide totali.
+Struttura che fa salvataggi (dettaglio nel reference): copertina (hook 5-9 parole), 2-6 slide di contenuto (una idea per slide, passi numerati nei how-to), CTA finale soft. 4-8 slide totali. COPERTINA (obbligatorio): e' l'80% del lavoro, se non ferma il pollice il resto non viene letto. Leggi `docs/32-hook-formule.md` e usa una delle formule da copertina (promessa numerata / tensione / errore da evitare), 5-9 parole, contrasto forte, on-brand.
 Per OGNI slide prepara: `n`, `tipo` (copertina|contenuto|cta), `titolo`, `testo`, e soprattutto `prompt` = il prompt di generazione immagine, che DEVE:
 - Contenere il TESTO ESATTO da scrivere nella slide (titolo + eventuale sottotesto), tra virgolette, cosi' il modello lo rende leggibile.
 - Descrivere la GRIGLIA DI BRAND Rivolio (dal reference): fondo verde profondo, accenti menta, testo grande bianco ad alto contrasto, icone semplici (aereo, orologio, euro, spunta), stessa griglia e margini su tutte le slide per coerenza. Numeri in evidenza.

@@ -435,3 +435,9 @@ Ogni decisione importante va aggiunta qui, con data e motivazione. Dal più rece
 - PUBLISHER upgrade: aggiunta la procedura LIVE seria (pubblica su TikTok+Reels+Shorts, VERIFICA rileggendo il post che sia davvero online, retry sulle transitorie, idempotenza, conferma a Valerio in dashboard solo quando verificato). Resta in TEST finche' Valerio non dice go-live.
 - RUOLI: decisi 3 nuovi da aggiungere (Conversione sito/CRO, SEO/Blog, Trend-scout contenuti). Team 8 -> 11 ruoli.
 - TECH STACK: si tiene Composio per IG+Gmail (layer semplice che funziona; TikTok/YouTube su Zernio). API dirette solo se Composio dovesse dare problemi.
+
+## 29/8 notte — Round 6: raffinamenti (hook, Giulia, trend->stratega) + attivazione 3 ruoli
+- HOOK (docs/32-hook-formule.md): cheat-sheet operativo (regola dei 3 strati + retention + 7 formule + copertina carosello). Agganciato a VIDEO (PASSO 3 script) e CAROSELLI (PASSO 2 copertina): i primi 3 secondi decisi a regola d'arte.
+- GIULIA (references/00-giulia.md potenziata): aggiunti voce/parlato (lessico Rivolio), il mondo/backstory (le hanno cancellato un volo, ora e' dalla parte del passeggero), la firma riconoscibile (format Hub "I diritti che le compagnie non ti dicono"), disclosure AI, regola d'oro di coerenza per lo scaling. Giulia = asset del brand, sempre uguale.
+- TREND-SCOUT -> STRATEGA: lo Stratega ora legge il kv trend_scout nel PASSO 1 e lo usa come munizione per l'angolo del giorno. Il radar entra davvero nel piano.
+- ATTIVAZIONE: Valerio crea le 3 sessioni (Trend-scout, SEO, CRO), poi si cablano le routine. Pagine dashboard dei 3 ruoli in costruzione. Ricollaudo dei ruoli aggiornati (quelli che non serve Kie) lanciato.
