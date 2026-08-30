@@ -28,12 +28,14 @@ export interface CostVoce {
  * quanti crediti, si mette il valore esatto qui e la stima diventa precisa.
  * Finche' e' this default, l'euro Kie resta etichettato "stima".
  */
-export const KIE_EUR_PER_CREDIT = 0.10; // stima prudenziale, da confermare
-export const KIE_TASSO_CONFERMATO = false;
+export const EUR_PER_USD = 0.86; // 30/8/2026: 1$ = 0,8624€, arrotondato prudente
+export const KIE_USD_PER_CREDIT = 0.005; // pricing ufficiale Kie: $5 / 1000 crediti
+export const KIE_EUR_PER_CREDIT = KIE_USD_PER_CREDIT * EUR_PER_USD; // ~0,0043€, confermato
+export const KIE_TASSO_CONFERMATO = true;
 
 /**
- * Costi fissi mensili (ricorrenti). Le cifre certe sono quelle che Valerio ha
- * dichiarato; le altre restano "da verificare" (euro: null) finche' non le sappiamo.
+ * Costi fissi mensili (ricorrenti), cifre reali (30/8/2026, ricerca sui tool + dati
+ * di Valerio). Le voci gratis sono 0 certo; niente cifre finte.
  */
 export const COSTI_FISSI_MENSILI: CostVoce[] = [
   {
@@ -43,28 +45,28 @@ export const COSTI_FISSI_MENSILI: CostVoce[] = [
     nota: 'Il team gira sulla tua subscription Claude. Dichiarato da te: ~200€/mese.',
   },
   {
+    nome: 'Railway (hosting dashboard)',
+    euro: 5 * EUR_PER_USD,
+    certezza: 'certo',
+    nota: 'Piano Hobby 5$/mese.',
+  },
+  {
     nome: 'Zernio (pubblicazione TikTok/YouTube)',
     euro: 0,
     certezza: 'certo',
-    nota: 'Piano gratuito attuale: 2 account, post illimitati. 0€ finche restiamo nel free.',
-  },
-  {
-    nome: 'Railway (hosting dashboard)',
-    euro: null,
-    certezza: 'da_verificare',
-    nota: 'Dipende dal piano/uso reale. Da confermare la cifra vera.',
+    nota: '2 account gratis (TikTok + YouTube). Oltre i 2: 6$/account/mese quando aggiungerai canali.',
   },
   {
     nome: 'Supabase (database dashboard)',
-    euro: null,
-    certezza: 'da_verificare',
-    nota: 'Free tier o a consumo. Da confermare la cifra vera.',
+    euro: 0,
+    certezza: 'certo',
+    nota: 'Piano Free: 0€. Il Pro sarebbe 25$/mese, per ora non serve.',
   },
   {
     nome: 'Composio (Gmail + Instagram)',
-    euro: null,
-    certezza: 'da_verificare',
-    nota: 'Da confermare il piano attuale.',
+    euro: 0,
+    certezza: 'certo',
+    nota: 'Piano Free attuale: 0€.',
   },
 ];
 

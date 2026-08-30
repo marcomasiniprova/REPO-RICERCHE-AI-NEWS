@@ -56,7 +56,7 @@ export default function CostiTeam() {
           </div>
           <div className="bg-white px-5 py-4">
             <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-3">
-              <TrendingUp size={13} /> Kie in euro (stima)
+              <TrendingUp size={13} /> Kie in euro
             </div>
             <div className="mt-1.5 font-display text-[30px] font-bold leading-none tracking-tight text-deep">
               {eur(c.kieEuroMese)}
@@ -98,9 +98,9 @@ export default function CostiTeam() {
         {/* Onesta + ROI */}
         <div className="border-t border-line bg-subtle/60 px-5 py-3 text-[11px] leading-snug text-ink-3">
           <span className="font-semibold text-ink-2">Onesto:</span> i crediti Kie sono il dato vero (li scrivono
-          Video e Caroselli a ogni generazione). L&apos;euro Kie e il ritorno sull&apos;investimento (pratiche
-          avviate, ricavi) restano da calibrare: appena mi dai il costo reale di una ricarica Kie e i primi numeri
-          di vendite, questa vista diventa precisa al centesimo.
+          Video e Caroselli a ogni generazione) e il costo in euro ora e calibrato sul pricing ufficiale
+          (0,005$/credito, cambio 0,86). Resta da aggiungere solo il ritorno sull&apos;investimento (pratiche
+          avviate, ricavi): appena arrivano i primi numeri veri di vendite, qui vedrai anche il ROI.
         </div>
       </div>
     </motion.section>

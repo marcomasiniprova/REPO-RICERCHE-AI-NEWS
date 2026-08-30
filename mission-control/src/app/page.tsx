@@ -154,13 +154,27 @@ export default function Home() {
       <CostiTeam />
 
       {/* Squadra, raggruppata per reparto come un vero team */}
-      <div className="mb-3 flex items-center justify-between">
-        <h2 className="font-display text-[17px] font-bold tracking-tight text-deep">Il team Rivolio</h2>
-        <span className="text-[11.5px] text-ink-3">
-          {agents.filter((a) => a.status === 'working').length > 0
-            ? `${agents.filter((a) => a.status === 'working').length} al lavoro adesso`
-            : `${agents.length} membri, tutti in attesa del prossimo giro`}
-        </span>
+      <div className="mb-4 rounded-2xl border border-line bg-gradient-to-br from-white to-subtle px-5 py-4">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <h2 className="font-display text-[17px] font-bold tracking-tight text-deep">Il team Rivolio</h2>
+          <span className="text-[11.5px] font-semibold text-brand-600">
+            {agents.filter((a) => a.status === 'working').length > 0
+              ? `${agents.filter((a) => a.status === 'working').length} al lavoro adesso`
+              : 'Tutti in attesa del prossimo giro'}
+          </span>
+        </div>
+        <p className="mt-1 max-w-[640px] text-[12px] leading-snug text-ink-3">
+          Una squadra vera che lavora ogni giorno per un obiettivo solo: rendere Rivolio il numero 1 in Italia
+          sui rimborsi voli. Ognuno ha il suo mestiere, insieme fanno la crescita.
+        </p>
+        {!loading && (
+          <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-[11.5px] text-ink-2">
+            <span><b className="text-deep">{agents.length}</b> membri</span>
+            <span><b className="text-deep">{REPARTI.filter((r) => r.slugs.some((s) => agents.some((a) => a.slug === s))).length}</b> reparti</span>
+            <span><b className="text-deep">{agents.reduce((s, a) => s + (a.today_count ?? 0), 0)}</b> giri oggi</span>
+            <span><b className="text-deep">{pendingDrafts}</b> in attesa del tuo OK</span>
+          </div>
+        )}
       </div>
       {loading ? (
         <div className="mb-8 grid gap-3.5 lg:grid-cols-2">
