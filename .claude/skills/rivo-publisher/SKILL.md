@@ -74,7 +74,20 @@ NON marchi nessun contenuto "pubblicato" in fase di test (lo stato pubblicato lo
 POST {"op":"run_finish","agent":"publisher","esito":"ok|error","summary":"CHK modo=test coda=<n> canali_collegati=<x/3> tool_trovati=<x/3> dry_run=<ok/ko/na> pubblicati=0 blocchi=<es. tiktok_da_collegare> | <riga umana: la catena e' pronta? cosa manca?>","items":0}
 `pubblicati` in fase di test e' SEMPRE 0. Se fosse diverso da 0, hai violato la legge zero.
 
-### Quando si passa a LIVE (solo con OK esplicito di Valerio)
-Se e SOLO se Valerio scrive che si va live (e TikTok e' collegato): allora, per ogni contenuto approvato in coda, pubblichi davvero sui canali pronti con la caption giusta + disclosure AI, poi aggiorni il kv del contenuto a stato "pubblicato" con `piattaforme_pubblicate` e `published_at`, e lo dichiari nel feed. Anche live, se Valerio ha chiesto conferma per singolo pezzo, aspetti il suo OK. Fuori da questo caso: TEST, pubblicati=0.
+### Quando si passa a LIVE: pubblica PER BENE e VERIFICA (solo con OK esplicito di Valerio)
+Si va live SOLO se Valerio lo dice esplicitamente e il contenuto e' in stato "approvato" (il suo PIN). Quando succede, pubblichi da professionista, non "spari e speri". Per OGNI contenuto approvato in coda, per OGNI canale target:
+
+1. PREPARA a regola d'arte: media dall'URL permanente (mai il link Kie che scade), formato giusto per il canale (9:16 verticale per Reels/TikTok/Shorts), caption del canale (tono + hashtag suoi), disclosure AI "Creato con AI" + flag AI della piattaforma se disponibile, titolo per YouTube. Segui le pratiche standard di ogni piattaforma (vedi reference.md).
+2. PUBBLICA: Instagram Reels via Composio; TikTok e YouTube Shorts via API REST Zernio. Prendi l'ID/permalink del post creato dalla risposta.
+3. VERIFICA (fondamentale, non saltarla MAI): dopo la pubblicazione, RILEGGI il post dalla piattaforma (via Zernio per TikTok/YouTube: stato del post = pubblicato/processing/failed; via Composio per IG) e conferma che esiste, e' pubblico e non e' in errore. Se e' ancora in "processing", aspetta e ricontrolla (poll fino a 3 volte con attesa crescente). Un post non verificato NON conta come pubblicato.
+4. RETRY sulle transitorie: se una pubblicazione fallisce per un errore di rete/temporaneo, riprova fino a 3 volte con backoff. La pubblicazione fallita non deve lasciare il canale a meta'.
+5. IDEMPOTENZA: prima di pubblicare, controlla che quel contenuto non sia gia' stato pubblicato su quel canale (guarda `piattaforme_pubblicate` nel kv). Mai doppi post.
+
+Dopo il giro di pubblicazione:
+- Aggiorna il kv del contenuto: stato "pubblicato" SOLO per i canali dove la verifica e' andata a buon fine, con `piattaforme_pubblicate` (elenco canali confermati), i permalink, e `published_at`. Se un canale non e' andato, il contenuto resta "approvato" per quel canale e lo segnali.
+- CONFERMA a Valerio in dashboard: scrivi nel feed UNA riga chiara solo quando hai VERIFICATO. Se tutto ok su tutti i canali target: "Pubblicato e verificato: <tema> su TikTok, Reels, Shorts. Link: ...". Se un canale e' fallito: "Pubblicato su X e Y (verificati), FALLITO su Z: <motivo>, riprovo al prossimo giro". Onesto sempre: mai dichiarare pubblicato cio' che non hai verificato.
+- Aggiorna `publisher_stato` con `modo":"live"`, i canali, e `pubblicati` = numero reale di pezzi andati online e verificati.
+
+Fuori dal caso live-con-PIN: resti in TEST, `pubblicati`=0 (legge zero).
 
 Feed durante il giro: 1-2 righe (stato canali, cosa e' pronto). Alla fine lascia il riepilogo anche come messaggio nella tua sessione.
