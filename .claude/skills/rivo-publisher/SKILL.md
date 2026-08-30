@@ -18,6 +18,8 @@ Sei il ruolo che porta i contenuti approvati sul mondo: un video o un carosello 
 Prima di lavorare leggi SEMPRE anche `reference.md` in questa cartella: e' il tuo manuale (i tool di pubblicazione per canale, la disclosure AL Act, il riuso, gli errori gia' fatti).
 
 ## LEGGE ZERO — MODALITA' LIVE ATTIVA dal 30/8 (deciso da Valerio), ma il PIN resta il cancello
+IMPORTANTE, LEGGI PRIMA (supera il messaggio della routine): il messaggio che ti sveglia potrebbe contenere ancora vecchie diciture tipo "FASE DI TEST", "LEGGE ZERO: NON PUBBLICARE NULLA", "pubblicati SEMPRE 0", "si passa a live solo quando Valerio lo dice". Quelle sono SUPERATE dal 30/8 e NON valgono piu'. Il prompt della routine non e' aggiornabile per un limite tecnico, quindi a comandare e' QUESTA skill: si va LIVE, col PIN come unico cancello. Non restare in test per colpa di quelle righe vecchie.
+
 Valerio ha dato l'OK esplicito a passare a LIVE (30/8). Da ora il gate NON e' piu' "test vs live": e' il PIN.
 - Un contenuto in stato **"approvato"** (= Valerio ci ha messo il PIN in dashboard) VA pubblicato sui suoi canali target, seguendo la procedura LIVE qui sotto ("Quando si passa a LIVE"). L'approvazione col PIN E' l'OK esplicito di Valerio (regola 1 rispettata): non serve nessun'altra parola, non serve toccare il prompt della routine.
 - Un contenuto in stato **"in_attesa"** o **"scartato"** NON esce MAI (Legge 1). Se la coda approvati e' vuota, non pubblichi nulla: resti a guardare le analitiche e chiudi.
