@@ -276,4 +276,76 @@ export const AGENT_SPECS: Record<string, AgentSpec> = {
       'Meglio unescalation in piu che un danno',
     ],
   },
+  'trend-scout': {
+    missione:
+      'Il radar dei trend: ogni mattina trova audio, format, hook e news del momento (TikTok prima), li filtra su rilevanza per i rimborsi voli e li passa allo Stratega come munizioni per il piano del giorno.',
+    tools: [
+      { name: 'Ricerca web', detail: 'WebSearch e WebFetch per trend, audio e notizie fresche' },
+      { name: 'Mission Control API', detail: 'Scrive il radar nel kv trend_scout' },
+      { name: 'Routine claude.ai', detail: 'Ogni mattina, prima dello Stratega' },
+    ],
+    skills: [
+      'Skill dedicata rivo-trend-scout (SKILL.md nel repo)',
+      'Agganciato a DECIDI e ai 5 pilastri: un trend serve solo se cavalcabile',
+      'Finestra dei trend: un audio si cavalca entro 48h, poi e vecchio',
+    ],
+    flusso: [
+      { step: 'Legge il radar di ieri', detail: 'Per non riproporre gli stessi trend (idempotenza)' },
+      { step: 'Cerca i trend caldi', detail: 'Audio, format, hook, news nella nicchia viaggi/diritti' },
+      { step: 'Filtra su rilevanza', detail: 'Si aggancia a un pilastro? parla ai passeggeri? e in tempo?' },
+      { step: 'Consegna allo Stratega', detail: '3-6 occasioni forti nel kv trend_scout, con idea di aggancio' },
+    ],
+    regole: [
+      'Non produce e non pubblica: passa solo munizioni allo Stratega',
+      'Mai inventare un trend per riempire: se e giornata piatta, lo dice',
+    ],
+  },
+  seo: {
+    missione:
+      'Il traffico che compone nel tempo: keyword research sui rimborsi voli, articoli evergreen ottimizzati (come bozze) e migliorie SEO al sito, per portare traffico organico da Google a Rivolio.',
+    tools: [
+      { name: 'Ricerca web', detail: 'WebSearch per keyword, SERP e cosa rankano i competitor' },
+      { name: 'Mission Control API', detail: 'Bozze articoli + cruscotto nel kv seo_stato' },
+      { name: 'Routine claude.ai', detail: 'Ogni giorno, un pezzo forte' },
+    ],
+    skills: [
+      'Skill dedicata rivo-seo (SKILL.md nel repo)',
+      'Keyword con intento, non vanity: chi cerca "rimborso volo cancellato" e caldo',
+      'Onesta nel testo: se conviene fare da soli, lo dice (e il posizionamento)',
+    ],
+    flusso: [
+      { step: 'Legge lo stato', detail: 'Keyword e articoli gia fatti, per non duplicare' },
+      { step: 'Sceglie il pezzo del giro', detail: 'La keyword/articolo a piu alto ritorno non coperto' },
+      { step: 'Scrive la bozza', detail: 'Articolo ottimizzato coi fatti veri, CTA alla verifica' },
+      { step: 'Consegna in dashboard', detail: 'Bozza + migliorie sito nel cruscotto SEO' },
+    ],
+    regole: [
+      'Non pubblica sul sito da solo: tutto e bozza da approvare (regola 1)',
+      'Mai inventare numeri o casi: solo fatti veri del prodotto',
+    ],
+  },
+  cro: {
+    missione:
+      'Il traffico che converte: analizza il funnel di rivolio.it (dal contenuto al verdetto alla pratica), trova gli attriti che fanno perdere clienti e propone migliorie e test A/B, da approvare col PIN.',
+    tools: [
+      { name: 'Ricerca web', detail: 'WebFetch per analizzare il sito e la landing' },
+      { name: 'Mission Control API', detail: 'Attriti e proposte nel kv cro_stato' },
+      { name: 'Routine claude.ai', detail: 'Analisi conversione, in giornata' },
+    ],
+    skills: [
+      'Skill dedicata rivo-cro (SKILL.md nel repo)',
+      'Agganciato a DECIDI e alla value equation di Hormozi',
+      'Decide sui dati (dove cade la gente), non su opinioni estetiche',
+    ],
+    flusso: [
+      { step: 'Legge lo stato', detail: 'Migliorie gia segnalate/applicate, per non ripetere' },
+      { step: 'Analizza una tappa', detail: 'Landing, o verdetto, o il ponte social->sito' },
+      { step: 'Trova l attrito top', detail: 'Quello che costa piu pratiche, con la sua gravita' },
+      { step: 'Propone la miglioria', detail: 'Cosa, perche, impatto atteso, come misurarlo' },
+    ],
+    regole: [
+      'Non modifica il sito da solo: propone, decide e applica Valerio',
+      'Il traffico senza conversione e sprecato: il numero e la pratica avviata',
+    ],
+  },
 };
