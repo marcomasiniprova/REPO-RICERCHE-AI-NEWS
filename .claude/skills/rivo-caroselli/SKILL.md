@@ -59,12 +59,18 @@ Coerenza: usa lo STESSO stile/prompt-base per tutte le slide (cambia solo testo 
 4. GENERA E SALVA PERMANENTE: per ogni slide, chiama Kie col suo `prompt` (formato 4:5), poll fino al risultato, prendi l'URL dell'immagine dal campo output giusto (non il primo URL che trovi). Retry x3 sulle flaky. ATTENZIONE: l'URL di Kie e' TEMPORANEO (scade in ~24h). Quindi subito dopo, RENDILO PERMANENTE: POST all'API dashboard `{"op":"persist_asset","url":"<url Kie della slide>","path":"caroselli/<data>/slide-<n>.png","content_type":"image/png"}` e usa l'`url` permanente che ti torna come `img` della slide (MAI l'URL Kie grezzo). Se persist_asset fallisce, retry x2; se proprio non va, segnalalo (senza URL permanente il carosello non e' consegnabile).
 5. QA LEGGIBILITA': guarda ogni immagine generata. Il testo e' scritto GIUSTO e leggibile? Niente parole storpiate, niente lettere inventate? Se una slide ha testo illeggibile o sbagliato: rigenera quella slide (max 2 volte) affinando il prompt. Se dopo i tentativi il testo non regge: segnalalo nella nota e nel feed, cosi' il builder valuta un altro modello.
 
-### PASSO 4: la caption
-Caption del post: aggancio nella prima riga, poi valore, CTA soft, 3-5 hashtag pertinenti (voli, rimborsovolo, dirittipasseggeri, viaggiare). Umana, mai un muro. Disclosure AI obbligatoria in caption (EU AI Act art. 50(4)): il carosello e' generato con AI.
+### PASSO 4: la caption (livello elite, segui `docs/34-caption-titoli-hashtag.md`)
+Leggi SEMPRE `docs/34-caption-titoli-hashtag.md` e costruisci il pacchetto caption per i DUE canali del carosello (Instagram + TikTok), non una sola caption generica:
+- **Struttura (formula):** GANCIO nella prima riga (IG: primi ~125 caratteri; TikTok: primi ~50) + PONTE breve di valore + CTA leggera (spingi il SALVA sui caroselli) + 3-5 hashtag mirati.
+- **Hashtag:** pesca dal set Rivolio del doc 34, mix 1-2 larghi + 2-3 di nicchia/alta intenzione, pertinenti al tema, variati rispetto all'ultimo post. Max 5 su IG, 3-5 su TikTok. Minuscolo, senza accenti.
+- **SEO:** dentro la caption almeno una parola chiave vera ("rimborso volo", "volo cancellato", "volo in ritardo", "diritti passeggeri"), naturale.
+- **Tensione:** la caption apre l'attesa, il carosello la chiude. NON copiare la prima slide nella caption.
+- **Disclosure AI** obbligatoria in caption (EU AI Act art. 50): "Creato con AI".
+Salva le caption per canale (`caption_ig`, `caption_tiktok`) cosi' il Publisher le usa gia' pronte per piattaforma.
 
 ### PASSO 5: consegna in dashboard (kv carosello_YYYY-MM-DD)
 kv_set chiave `carosello_<data>` con:
-{"key":"carosello_<data>","date":"<YYYY-MM-DD>","tema":"<tema>","angolo":"<angolo>","modello_img":"<modello Kie usato>","crediti_spesi":<n>,"slides":[{"n":1,"tipo":"copertina","titolo":"...","testo":"...","img":"<URL immagine generata>"},...],"caption":"<caption con disclosure AI>","canali":["instagram","tiktok"],"stato":"in_attesa","created_at":"<ISO adesso>","note":"<tema da piano/pilastro + esito QA leggibilita'>"}
+{"key":"carosello_<data>","date":"<YYYY-MM-DD>","tema":"<tema>","angolo":"<angolo>","modello_img":"<modello Kie usato>","crediti_spesi":<n>,"slides":[{"n":1,"tipo":"copertina","titolo":"...","testo":"...","img":"<URL immagine generata>"},...],"caption":"<caption generica di riserva con disclosure AI>","caption_ig":"<caption IG: gancio nei primi 125 char + CTA salva + max 5 hashtag>","caption_tiktok":"<caption TikTok: gancio nei primi 50 char + CTA + 3-5 hashtag>","canali":["instagram","tiktok"],"stato":"in_attesa","created_at":"<ISO adesso>","note":"<tema da piano/pilastro + esito QA leggibilita'>"}
 Stato SEMPRE "in_attesa" (aspetta il PIN). Ogni slide DEVE avere `img` con l'URL PERMANENTE (quello tornato da persist_asset, non il link Kie che scade): se una slide non ha l'immagine permanente, il carosello non e' pronto. Cosi' Valerio puo' approvare anche fra giorni e le immagini restano.
 
 ### PASSO 6: chiusura con checklist
