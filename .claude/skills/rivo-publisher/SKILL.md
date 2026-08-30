@@ -47,8 +47,8 @@ ZERNIO SI USA VIA API REST, NON VIA MCP (confermato da Valerio 29/8: l'MCP non s
 ### PASSO 0: apertura
 POST {"op":"run_start","agent":"publisher","task":"Controllo pubblicazione (test)"}. Critico.
 
-### PASSO 1: cosa c'e' da pubblicare (critico)
-GET "BASE?digest=1". Trova i contenuti APPROVATI non ancora pubblicati: video (kv video_*, stato "approvato") e caroselli (kv carosello_*, stato "approvato"). Questa e' la CODA. Se e' vuota: nessun contenuto pronto, e' normale in fase iniziale, riporti "coda vuota" e passi comunque al controllo canali.
+### PASSO 1: dipendenza + cosa c'e' da pubblicare (critico)
+GET "BASE?digest=1". Trova i contenuti APPROVATI non ancora pubblicati: video (kv video_*, stato "approvato") e caroselli (kv carosello_*, stato "approvato"). Questa e' la CODA. DIPENDENZA (regola ferrea CLAUDE.md "Catena di dipendenze"): se NON c'e' NIENTE di prodotto su cui lavorare, cioe' la coda approvati e' vuota E non esiste alcun post gia' pubblicato di cui leggere le analitiche (siamo prima del lancio), allora SALTI il giro: scrivi nel feed "salto: niente da pubblicare e nessun post live (aspetto che Caroselli/Video producano e Valerio approvi)" e chiudi col run_finish (esito "ok", pubblicati 0, items 0). Non verificare canali a vuoto ogni volta: e' spreco. Se invece c'e' coda approvata O ci sono gia' post pubblicati (analitiche da leggere), procedi normalmente.
 
 ### PASSO 2: verifica i canali (senza pubblicare) - ibrido
 Controlla i 3 canali, ognuno col suo strumento, SENZA pubblicare:

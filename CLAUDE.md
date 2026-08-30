@@ -31,6 +31,16 @@ Ci sono due tipi di sessione, e si comportano in modo diverso:
 
 Unica cosa che resta bloccante e passa da Valerio: **la Regola 1** (mai pubblicare/inviare verso l'esterno senza il suo OK/PIN). Ma anche lì il ruolo non "aspetta col popup": prepara la bozza, la lascia in dashboard in attesa del PIN, e va avanti col resto. L'OK arriva dalla dashboard (PIN), mai da una domanda nella sessione.
 
+## Catena di dipendenze dei contenuti — REGOLA FERREA (decisa 30/8)
+
+I ruoli contenuti sono una CATENA: uno non lavora se prima non ha lavorato quello a monte, altrimenti lavora sul niente e spreca token (= costa a Valerio). Ogni ruolo, all'inizio del giro, VERIFICA la sua dipendenza; se manca, NON fa il lavoro: scrive una riga nel feed ("salto: manca <a monte>") e chiude subito col run_finish (esito "ok", items 0). Le dipendenze:
+
+- **CAROSELLI e VIDEO**: NON partono se lo STRATEGA non ha scritto il piano di OGGI (kv `piano_editoriale` con un pezzo per oggi assegnato a te). Niente piano = niente pezzo. Salti e chiudi.
+- **PUBLISHER**: NON pubblica/verifica se non c'e' contenuto prodotto (un video o un carosello del giorno consegnato in dashboard). Coda vuota di contenuti reali = salti e chiudi (niente giro a vuoto).
+- **COMMUNITY**: NON gira se non c'e' almeno un post PUBBLICATO da presidiare. Nessun post live = niente commenti/DM del pubblico = salti e chiudi. (Riparte quando pubblichiamo davvero.)
+
+Cosi' la catena e' pulita: Trend-scout -> Stratega -> Video/Caroselli -> (PIN di Valerio) -> Publisher -> Community. Nessuno lavora sul vuoto.
+
 ## La base del marketing (la leggono i ruoli contenuti)
 
 Il marketing di Rivolio poggia su due documenti, da leggere e rispettare:
