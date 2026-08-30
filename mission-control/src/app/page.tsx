@@ -8,7 +8,36 @@ import { useData } from '@/lib/store';
 import { PageHeader, StatCard, EmptyState } from '@/components/ui';
 import AgentCard from '@/components/AgentCard';
 import LiveBadge from '@/components/LiveBadge';
+import CostiTeam from '@/components/CostiTeam';
 import { timeAgo } from '@/lib/utils';
+
+/** I reparti del team: il team raggruppato come una vera squadra di persone. */
+const REPARTI: Array<{ id: string; nome: string; desc: string; slugs: string[] }> = [
+  {
+    id: 'contenuti',
+    nome: 'Reparto Contenuti',
+    desc: 'Ideano, producono e pubblicano i post del brand',
+    slugs: ['stratega', 'trend-scout', 'caroselli', 'video', 'publisher', 'community'],
+  },
+  {
+    id: 'traffico',
+    nome: 'Reparto Traffico',
+    desc: 'Portano visite al sito e le fanno convertire',
+    slugs: ['seo', 'cro'],
+  },
+  {
+    id: 'acquisizione',
+    nome: 'Reparto Acquisizione',
+    desc: 'Trovano e ingaggiano i creator per l’affiliate',
+    slugs: ['scout', 'ig_email'],
+  },
+  {
+    id: 'autorevolezza',
+    nome: 'Autorevolezza & Tecnica',
+    desc: 'Presenza sui forum e salute del sistema',
+    slugs: ['reddit', 'guardiano'],
+  },
+];
 
 const HEALTH = {
   ok: { label: 'Sistema in salute', dot: '#1f9d6b', bg: '#eaf5f0', bd: '#cfe8de', tx: '#0e7c6b' },
@@ -121,20 +150,69 @@ export default function Home() {
         )}
       </div>
 
-      {/* Squadra */}
+      {/* Costi del team */}
+      <CostiTeam />
+
+      {/* Squadra, raggruppata per reparto come un vero team */}
       <div className="mb-3 flex items-center justify-between">
-        <h2 className="font-display text-[17px] font-bold tracking-tight text-deep">La squadra</h2>
+        <h2 className="font-display text-[17px] font-bold tracking-tight text-deep">Il team Rivolio</h2>
         <span className="text-[11.5px] text-ink-3">
           {agents.filter((a) => a.status === 'working').length > 0
             ? `${agents.filter((a) => a.status === 'working').length} al lavoro adesso`
-            : 'Tutti in attesa del prossimo giro'}
+            : `${agents.length} membri, tutti in attesa del prossimo giro`}
         </span>
       </div>
-      <div className="mb-8 grid gap-3.5 lg:grid-cols-2">
-        {loading
-          ? Array.from({ length: 4 }).map((_, i) => <div key={i} className="skeleton h-[168px]" />)
-          : agents.map((a, i) => <AgentCard key={a.slug} agent={a} index={i} />)}
-      </div>
+      {loading ? (
+        <div className="mb-8 grid gap-3.5 lg:grid-cols-2">
+          {Array.from({ length: 4 }).map((_, i) => <div key={i} className="skeleton h-[168px]" />)}
+        </div>
+      ) : (
+        (() => {
+          const shown = new Set<string>();
+          let idx = 0;
+          const blocks = REPARTI.map((rep) => {
+            const membri = rep.slugs
+              .map((s) => agents.find((a) => a.slug === s))
+              .filter((a): a is NonNullable<typeof a> => Boolean(a));
+            membri.forEach((m) => shown.add(m.slug));
+            if (membri.length === 0) return null;
+            const attivi = membri.filter((m) => m.status === 'working').length;
+            return (
+              <div key={rep.id} className="mb-6">
+                <div className="mb-2.5 flex items-end justify-between border-b border-line pb-1.5">
+                  <div>
+                    <h3 className="font-display text-[13.5px] font-bold tracking-tight text-deep">{rep.nome}</h3>
+                    <p className="text-[11px] text-ink-3">{rep.desc}</p>
+                  </div>
+                  <span className="shrink-0 text-[10.5px] font-semibold text-ink-3">
+                    {membri.length} {membri.length === 1 ? 'membro' : 'membri'}
+                    {attivi > 0 && <span className="text-brand-600"> · {attivi} ora</span>}
+                  </span>
+                </div>
+                <div className="grid gap-3.5 lg:grid-cols-2">
+                  {membri.map((a) => <AgentCard key={a.slug} agent={a} index={idx++} />)}
+                </div>
+              </div>
+            );
+          });
+          const altri = agents.filter((a) => !shown.has(a.slug));
+          return (
+            <div className="mb-8">
+              {blocks}
+              {altri.length > 0 && (
+                <div className="mb-6">
+                  <div className="mb-2.5 border-b border-line pb-1.5">
+                    <h3 className="font-display text-[13.5px] font-bold tracking-tight text-deep">Altri</h3>
+                  </div>
+                  <div className="grid gap-3.5 lg:grid-cols-2">
+                    {altri.map((a) => <AgentCard key={a.slug} agent={a} index={idx++} />)}
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })()
+      )}
 
       {/* Call di oggi */}
       {callFissate.length > 0 && (
