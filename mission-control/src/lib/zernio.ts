@@ -66,6 +66,7 @@ export async function publishTiktokCarousel(opts: {
   content: string;
   description: string;
   aiGenerated?: boolean;
+  draft?: boolean; // true = consegna alla Creator Inbox di TikTok (l'utente finalizza nell'app)
 }): Promise<PublishResult> {
   const body = {
     content: opts.content.slice(0, 90),
@@ -81,6 +82,7 @@ export async function publishTiktokCarousel(opts: {
       video_made_with_ai: opts.aiGenerated ?? true,
       content_preview_confirmed: true,
       express_consent_given: true,
+      ...(opts.draft ? { draft: true } : {}),
     },
     publishNow: true,
   };
@@ -109,4 +111,27 @@ export async function getPost(postId: string): Promise<Record<string, unknown> |
   if (!res.ok) return null;
   const data = (await res.json()) as Record<string, unknown>;
   return (data.post as Record<string, unknown>) ?? data;
+}
+
+export interface TiktokPostStatus {
+  status: string; // top-level: failed / published / processing / scheduled ...
+  platformStatus?: string; // stato del canale tiktok
+  error?: string; // messaggio d'errore se fallito
+  permalink?: string; // link al post quando e' online
+}
+
+/** Legge lo stato REALE del post su TikTok (non basta l'accettazione della POST). */
+export async function getTiktokPostStatus(postId: string): Promise<TiktokPostStatus | null> {
+  const p = await getPost(postId);
+  if (!p) return null;
+  const platforms = (p.platforms as Array<Record<string, unknown>>) ?? [];
+  const tk = platforms.find((x) => x.platform === 'tiktok') ?? platforms[0];
+  return {
+    status: String(p.status ?? ''),
+    platformStatus: tk ? String(tk.status ?? '') : undefined,
+    error: tk ? (tk.errorMessage as string) : undefined,
+    permalink: tk
+      ? ((tk.permalink as string) ?? (tk.publishedUrl as string) ?? (tk.postUrl as string) ?? undefined)
+      : undefined,
+  };
 }

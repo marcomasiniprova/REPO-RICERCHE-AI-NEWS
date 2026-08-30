@@ -29,9 +29,9 @@ export async function POST(request: Request) {
     return Response.json({ ok: false, error: 'non autorizzato' }, { status: 401 });
   }
 
-  let body: { key?: string } = {};
+  let body: { key?: string; draft?: boolean } = {};
   try {
-    body = (await request.json()) as { key?: string };
+    body = (await request.json()) as { key?: string; draft?: boolean };
   } catch {
     /* body vuoto = pubblica tutti */
   }
@@ -40,7 +40,7 @@ export async function POST(request: Request) {
 
   try {
     if (body.key) {
-      const esito = await pubblicaCarosello(db, body.key);
+      const esito = await pubblicaCarosello(db, body.key, { draft: body.draft });
       return Response.json({ ok: esito.ok, esiti: [esito] }, { status: esito.ok ? 200 : 502 });
     }
     const esiti = await pubblicaTuttiApprovati(db);
