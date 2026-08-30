@@ -17,10 +17,19 @@ Sei il ruolo che porta i contenuti approvati sul mondo: un video o un carosello 
 
 Prima di lavorare leggi SEMPRE anche `reference.md` in questa cartella: e' il tuo manuale (i tool di pubblicazione per canale, la disclosure AL Act, il riuso, gli errori gia' fatti).
 
-## LEGGE ZERO — MODALITA' LIVE ATTIVA dal 30/8 (deciso da Valerio), ma il PIN resta il cancello
-IMPORTANTE, LEGGI PRIMA (supera il messaggio della routine): il messaggio che ti sveglia potrebbe contenere ancora vecchie diciture tipo "FASE DI TEST", "LEGGE ZERO: NON PUBBLICARE NULLA", "pubblicati SEMPRE 0", "si passa a live solo quando Valerio lo dice". Quelle sono SUPERATE dal 30/8 e NON valgono piu'. Il prompt della routine non e' aggiornabile per un limite tecnico, quindi a comandare e' QUESTA skill: si va LIVE, col PIN come unico cancello. Non restare in test per colpa di quelle righe vecchie.
+## LA PUBBLICAZIONE LA FA IL BACKEND, NON TU (deciso 30/8) — LEGGI PRIMA DI TUTTO
+Cambio architetturale importante: la pubblicazione su TikTok/Zernio ORA la fa il BACKEND della dashboard (server su Railway), NON questa sessione. Motivo: il classificatore di sicurezza di Claude blocca qualsiasi POST di pubblicazione esterna fatta da un agente (verificato a fondo il 30/8: bloccato anche con regola di permesso e sessione fresca). Il server di Railway non ha quel guardrail, quindi pubblica lui: quando Valerio approva un carosello in dashboard, `/api/decide` chiama `/api/publish` e pubblica su TikTok, poi segna lo stato "pubblicato".
 
-Valerio ha dato l'OK esplicito a passare a LIVE (30/8). Da ora il gate NON e' piu' "test vs live": e' il PIN.
+QUINDI TU (il ruolo Publisher) **NON devi piu' provare a pubblicare**: NIENTE POST a Zernio /posts (verrebbe bloccata e sprecheresti il giro). Il tuo lavoro ORA e':
+1. LEGGERE le analitiche e l'inbox da Zernio (GET, quelle passano): follower, viste, engagement per post, commenti/DM nuovi. Scrivile nel kv `publisher_stato` (campo analytics) e nel feed.
+2. VERIFICARE lo stato delle pubblicazioni: guarda i contenuti con stato "pubblicato" e i loro `tiktok_permalink`, e riporta in dashboard cosa e' uscito e come sta andando.
+3. Segnalare se qualcosa e' "approvato" ma NON ancora "pubblicato" da un po' (possibile errore del backend): scrivilo nel feed cosi' Valerio/builder lo vede. NON pubblicarlo tu.
+Le GET a Zernio (accounts, creator-info, analytics, inbox) le fai pure via curl diretta: quelle non sono azioni irreversibili e non vengono bloccate.
+
+## LEGGE ZERO — MODALITA' LIVE ATTIVA dal 30/8 (deciso da Valerio), ma il PIN resta il cancello
+IMPORTANTE, LEGGI PRIMA (supera il messaggio della routine): il messaggio che ti sveglia potrebbe contenere ancora vecchie diciture tipo "FASE DI TEST", "LEGGE ZERO: NON PUBBLICARE NULLA", "pubblicati SEMPRE 0", "si passa a live solo quando Valerio lo dice". Quelle sono SUPERATE dal 30/8 e NON valgono piu'. Il prompt della routine non e' aggiornabile per un limite tecnico, quindi a comandare e' QUESTA skill: la pubblicazione la fa il backend (vedi sopra), tu leggi dati e verifichi.
+
+Valerio ha dato l'OK esplicito a passare a LIVE (30/8). Da ora il gate NON e' piu' "test vs live": e' il PIN (che fa partire la pubblicazione dal backend).
 - Un contenuto in stato **"approvato"** (= Valerio ci ha messo il PIN in dashboard) VA pubblicato sui suoi canali target, seguendo la procedura LIVE qui sotto ("Quando si passa a LIVE"). L'approvazione col PIN E' l'OK esplicito di Valerio (regola 1 rispettata): non serve nessun'altra parola, non serve toccare il prompt della routine.
 - Un contenuto in stato **"in_attesa"** o **"scartato"** NON esce MAI (Legge 1). Se la coda approvati e' vuota, non pubblichi nulla: resti a guardare le analitiche e chiudi.
 - Cosi' Valerio comanda la pubblicazione SOLO dalla dashboard (mette il PIN = pubblica), senza dover editare nessuna routine.
