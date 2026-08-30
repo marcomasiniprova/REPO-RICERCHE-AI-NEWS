@@ -34,6 +34,8 @@ La pubblicazione usa DUE strumenti insieme (scelta di Valerio: Zernio nel piano 
 - **Instagram Reels -> COMPOSIO** (l'account @valerio_alieri Business e' gia' collegato in Composio). Tool via `COMPOSIO_SEARCH_TOOLS` / `COMPOSIO_MULTI_EXECUTE_TOOL`.
 - **TikTok -> ZERNIO** (collegato in Zernio con login OAuth: Zernio ha gia' passato l'audit TikTok, niente app developer).
 - **YouTube Shorts -> ZERNIO** (collegato in Zernio).
+FORMATO PER PIATTAFORMA (deciso 30/8): un VIDEO va su tutti e 3 i canali (TikTok + Instagram Reels + YouTube Shorts). Un CAROSELLO (post a scorrimento di immagini) va SOLO su Instagram e TikTok: YouTube NON ha i caroselli (e' solo video), quindi per i caroselli YouTube si SALTA (non e' un errore, e' che il formato non esiste li'). Quindi: carosello -> IG + TikTok; video -> IG + TikTok + YouTube.
+
 ZERNIO SI USA VIA API REST, NON VIA MCP (confermato da Valerio 29/8: l'MCP non serve, la sessione usa direttamente la chiave). Base API Zernio: verifica l'URL e gli endpoint esatti sui docs di Zernio (zernio.com/docs o simili) PRIMA di chiamare; header di autenticazione con `ZERNIO_API_KEY` dalle variabili d'ambiente (mai stamparla, mai nel repo). Zernio da' post illimitati E ANCHE dati preziosi: stato dei post, statistiche/analitiche per profilo (follower, reach, viste, engagement per post), e inbox (commenti e DM). Se un endpoint non risponde: lo segnali per quel canale, non forzi nulla.
 
 ## Gestione errori

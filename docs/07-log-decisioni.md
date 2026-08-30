@@ -446,3 +446,10 @@ Ogni decisione importante va aggiunta qui, con data e motivazione. Dal più rece
 - DASHBOARD: aggiunte le pagine /trend, /seo, /cro (tipi, store, nav) sul branch dashboard. Leggono i kv trend_scout / seo_stato / cro_stato.
 - RICOLLAUDO (skill nuove): Stratega OK (legge strategia+DECIDI, assegna il video con l'angolo differenziatore, scrive gli avvisi in dashboard, ZERO blocchi popup) + Publisher OK (catena reale 3/3, 331 follower TikTok, pubblicati 0). Fix popup verificato sul campo.
 - DA FARE (Valerio): creare le 3 sessioni operative (Trend-scout, SEO, CRO), poi si cablano le routine. Guida in docs/33.
+
+## 30/8 — Round 7: 3 ruoli cablati, Video in pausa, IG-DM per tutti, Publisher formato-per-piattaforma
+- 3 ROUTINE nuove create e cablate alle sessioni di Valerio (Trend-scout trig_014QZQQ..., SEO trig_01Aacz..., CRO trig_01WWu8...), orari IT Trend 6:30 / SEO 10:00 / CRO 11:00. Giro di prova lanciato.
+- VIDEO in PAUSA (routine disabilitata) su richiesta di Valerio: riparte solo quando avra' ~1000 crediti Kie. Il video 29/8 e' salvato in permanente, non scade.
+- IG-EMAIL (PASSO 5): ora prepara la bozza per TUTTI i nuovi Pronto, non solo quelli con email. Con email -> bozza email, la manda l'agente col PIN. Senza email (solo IG) -> bozza DM di primo contatto etichettata by:valerio in drafts_send: la manda Valerio a mano (l'agente non puo' il primo DM a freddo), pronta da copiare, niente PIN d'invio.
+- PUBLISHER: formato-per-piattaforma. Video -> IG + TikTok + YouTube. Carosello -> SOLO IG + TikTok (YouTube non ha i caroselli). Collaudo pubblicazione carosello previsto su IG+TikTok.
+- KIE: la mia sessione builder legge la chiave vecchia (10 crediti). Valerio ha aggiornato l'ambiente con la chiave nuova (80): i container freschi degli agenti la prendono. Verificato lanciando il Caroselli.
