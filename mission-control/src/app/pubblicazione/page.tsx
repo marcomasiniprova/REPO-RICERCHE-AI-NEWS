@@ -12,7 +12,6 @@ import {
   CheckCircle2,
   PlugZap,
   Clock,
-  FlaskConical,
   Clapperboard,
   GalleryHorizontalEnd,
 } from 'lucide-react';
@@ -91,17 +90,18 @@ export default function PubblicazionePage() {
     <div className="mx-auto max-w-[1000px]">
       <PageHeader
         title="Pubblicazione"
-        subtitle="RIVO PUBLISHER porta i contenuti approvati su Reels, TikTok e Shorts. Per ora e' in fase di test: verifica che tutto funzioni, ma non pubblica ancora."
+        subtitle="RIVO PUBLISHER porta i contenuti approvati su TikTok, Reels e Shorts. Ora e' LIVE: quando approvi un contenuto, lo pubblica sul serio e verifica che sia online."
         right={<LiveBadge />}
       />
 
-      {/* Banner fase di test */}
-      <div className="mb-5 flex items-start gap-2.5 rounded-xl border border-[#ecd3b4] bg-[#f7e8d6]/70 px-4 py-3 text-[12.5px] leading-relaxed text-tan-ink">
-        <FlaskConical size={16} className="mt-0.5 shrink-0" />
+      {/* Banner modalita live */}
+      <div className="mb-5 flex items-start gap-2.5 rounded-xl border border-[#cfe8de] bg-[#eaf5f0]/80 px-4 py-3 text-[12.5px] leading-relaxed text-[#0e7c6b]">
+        <CheckCircle2 size={16} className="mt-0.5 shrink-0" />
         <span>
-          <b>Fase di test: non esce niente.</b> Il Publisher controlla che i canali siano collegati e che il tool
-          di pubblicazione funzioni, poi te lo riporta qui. Si pubblica per davvero solo quando lo dici tu e dopo
-          aver collegato TikTok, e comunque sempre col tuo PIN.
+          <b>Modalita LIVE: pubblica per davvero col tuo OK.</b> Quando approvi un contenuto, il Publisher lo
+          pubblica sui canali giusti (i caroselli su TikTok; Instagram appena c&apos;e&apos; l&apos;account brand @rivolio),
+          con caption e hashtag su misura e la disclosure &quot;Creato con AI&quot;, poi rilegge il post per verificare che
+          sia davvero online. Quello che non approvi non esce mai.
         </span>
       </div>
 
@@ -186,7 +186,7 @@ export default function PubblicazionePage() {
       ) : queueTotal === 0 ? (
         <EmptyState
           title="Niente in coda"
-          note="Qui arrivano i video e i caroselli che approvi col PIN. Il Publisher li prende, verifica che siano pronti per ogni canale, e (quando saremo live) li pubblica."
+          note="Qui arrivano i video e i caroselli che approvi. Il Publisher li prende, li prepara per ogni canale e li pubblica sul serio, poi verifica che siano online."
         />
       ) : (
         <div className="grid gap-3 md:grid-cols-2">
@@ -220,9 +220,10 @@ export default function PubblicazionePage() {
       <div className="mt-8 flex items-start gap-2 text-[10.5px] leading-relaxed text-ink-3">
         <Clock size={13} className="mt-0.5 shrink-0" />
         <span>
-          L&apos;ordine e&apos;: TikTok lo colleghi tu (ultimo passo), poi mi dai l&apos;OK per passare a live. Da li&apos; in poi
-          il Publisher pubblica gli approvati sui canali pronti, con la disclosure &quot;Creato con AI&quot; e la caption
-          giusta per ognuno, sempre col tuo PIN.
+          Come funziona: tu approvi un contenuto (il tuo OK), e al primo giro utile il Publisher lo pubblica sui
+          canali pronti, con la disclosure &quot;Creato con AI&quot; e la caption giusta per ognuno, poi verifica che sia
+          online e te lo conferma qui. I caroselli per ora vanno solo su TikTok; Instagram si sblocca con
+          l&apos;account brand @rivolio.
         </span>
       </div>
     </div>
