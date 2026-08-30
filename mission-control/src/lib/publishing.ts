@@ -35,7 +35,7 @@ type ContentValue = {
   date?: string;
   tema?: string;
   stato?: string;
-  slides?: Array<{ img?: string }>;
+  slides?: Array<{ img?: string; img_ig?: string; img_tiktok?: string }>;
   video_url?: string;
   caption?: string;
   caption_tiktok?: string;
@@ -58,12 +58,15 @@ function isVideoKey(key: string): boolean {
 function channelsFor(key: string): Platform[] {
   return isVideoKey(key) ? ['tiktok', 'youtube', 'instagram'] : ['tiktok', 'instagram'];
 }
-function mediaFor(key: string, v: ContentValue): Array<{ kind: MediaKind; url: string }> {
+function mediaFor(key: string, v: ContentValue, platform: Platform): Array<{ kind: MediaKind; url: string }> {
   if (isVideoKey(key)) {
     return v.video_url && v.video_url.startsWith('http') ? [{ kind: 'video', url: v.video_url }] : [];
   }
+  // Carosello: TikTok vuole 9:16 (img_tiktok), Instagram 4:5 (img_ig). Fallback su img.
+  const pick = (s: { img?: string; img_ig?: string; img_tiktok?: string }): string | undefined =>
+    platform === 'tiktok' ? (s.img_tiktok ?? s.img) : (s.img_ig ?? s.img);
   return (v.slides ?? [])
-    .map((s) => s?.img)
+    .map(pick)
     .filter((u): u is string => typeof u === 'string' && u.startsWith('http'))
     .map((url) => ({ kind: 'image' as MediaKind, url }));
 }
@@ -114,8 +117,8 @@ export async function pubblicaContenuto(
   if (!v) return { key: keyName, ok: false, skipped: 'contenuto non trovato' };
 
   const dateLabel = String(v.date ?? keyName.replace(/^[a-z]+_/, ''));
-  const media = mediaFor(keyName, v);
-  if (media.length === 0) return { key: keyName, ok: false, skipped: 'nessun media pubblicabile' };
+  const haMedia = isVideoKey(keyName) ? !!v.video_url : (v.slides ?? []).length > 0;
+  if (!haMedia) return { key: keyName, ok: false, skipped: 'nessun media pubblicabile' };
 
   const gia = new Set(Array.isArray(v.piattaforme_pubblicate) ? v.piattaforme_pubblicate : []);
   const permalinks: Record<string, string> = { ...(v.permalinks ?? {}) };
@@ -143,6 +146,11 @@ export async function pubblicaContenuto(
     // Se ho gia' un post id per questo canale, ricontrollo (niente ri-post).
     let postId = pubIds[ch];
     if (!postId) {
+      const media = mediaFor(keyName, v, ch);
+      if (media.length === 0) {
+        canali.push({ canale: ch, ok: false, stato: 'fallito', error: 'nessun media nel formato per questo canale' });
+        continue;
+      }
       const t = textFor(ch, v);
       const res = await publishToPlatform({
         platform: ch,
