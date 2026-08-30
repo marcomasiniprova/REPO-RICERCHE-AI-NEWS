@@ -67,13 +67,13 @@
   },
   {
     "slug": "publisher",
-    "name": "PUBLISHER",
-    "role": "Pubblica ovunque",
-    "tagline": "Porta i contenuti approvati su Reels, TikTok e Shorts. In test: verifica, non pubblica.",
+    "name": "DISTRIBUZIONE & DATI",
+    "role": "Regia pubblicazioni + analitiche",
+    "tagline": "Si assicura che ogni contenuto approvato esca su tutti i canali e riporta i numeri veri (viste, engagement, follower) che fanno crescere il brand.",
     "avatar": "/avatars/publisher.png",
     "status": "idle",
-    "schedule_label": "Dopo le approvazioni",
-    "cron": "0 6-18/3 * * *",
+    "schedule_label": "Ogni ora, 8-20",
+    "cron": "0 6-18 * * *",
     "color": "#e0a52f"
   },
   {

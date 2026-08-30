@@ -141,7 +141,7 @@ export default function PubblicazionePage() {
           </span>
           <div className="min-w-0 flex-1">
             <Link href="/agenti/publisher" className="font-display text-[15px] font-bold text-deep hover:text-brand-700">
-              RIVO - PUBLISHER
+              RIVO - DISTRIBUZIONE & DATI
             </Link>
             <div className="mt-0.5 text-[11.5px] text-ink-3">
               {agent ? `Prossimo giro: ${nextRunLabel(agent.cron)} · ${agent.schedule_label}` : 'In collegamento'}
@@ -194,7 +194,7 @@ export default function PubblicazionePage() {
       <p className="mb-6 px-1 text-[10.5px] text-ink-3">
         {publisherStato
           ? publisherStato.nota ?? 'Stato scritto dal Publisher al suo ultimo giro.'
-          : 'Setup ibrido: Instagram via Composio (gia collegato), TikTok e YouTube via Zernio (login semplice, audit TikTok gia passato da Zernio). In attesa del primo giro del Publisher, che verifica i canali e li segnala qui.'}
+          : 'Tutte e 3 le piattaforme via Zernio dal backend: TikTok e YouTube gia collegati, Instagram si accende quando colleghi @rivolio. La pubblicazione parte dal server (Railway), non dagli agenti.'}
       </p>
 
       {/* Coda di pubblicazione */}

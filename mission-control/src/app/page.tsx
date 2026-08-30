@@ -49,7 +49,7 @@ const PERSONA: Record<string, string> = {
   'trend-scout': 'Il radar dei trend',
   caroselli: 'La mano che fa salvare',
   video: 'Il regista di Giulia',
-  publisher: 'Quello che pubblica ovunque',
+  publisher: 'Il direttore di volo',
   community: 'La voce che risponde a tutti',
   seo: 'Il motore di Google',
   cro: 'Il cacciatore di conversioni',
