@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
@@ -81,10 +82,37 @@ export default function PubblicazionePage() {
   const modo = publisherStato?.modo ?? 'test';
 
   // Coda live: contenuti approvati non ancora pubblicati (dai kv veri).
-  const queueVideos = videos.filter((v) => v.stato === 'approvato');
-  const queueCarousels = carousels.filter((c) => c.stato === 'approvato');
+  const queueVideos = videos.filter((v) => v.stato === 'approvato' || v.stato === 'in_pubblicazione');
+  const queueCarousels = carousels.filter((c) => c.stato === 'approvato' || c.stato === 'in_pubblicazione');
   const queueTotal = queueVideos.length + queueCarousels.length;
   const collegati = channels.filter((c) => c.stato === 'collegato').length;
+
+  const [pubBusy, setPubBusy] = useState(false);
+  const [pubMsg, setPubMsg] = useState<string | null>(null);
+  async function pubblicaOra() {
+    const pin = typeof window !== 'undefined' ? localStorage.getItem('mc_pin') : null;
+    if (!pin) {
+      setPubMsg('Serve il PIN: approva un contenuto una volta per impostarlo.');
+      return;
+    }
+    setPubBusy(true);
+    setPubMsg(null);
+    try {
+      const res = await fetch('/api/publish', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pin }),
+      });
+      const data = await res.json();
+      if (res.status === 401) setPubMsg('PIN errato.');
+      else if (data.ok) setPubMsg(`Fatto: ${data.pubblicati ?? 0} contenuti spinti. Il feed mostra i dettagli.`);
+      else setPubMsg('Provato, ma qualcosa non e uscito: guarda il feed per il motivo.');
+    } catch {
+      setPubMsg('Errore di rete, riprova.');
+    } finally {
+      setPubBusy(false);
+    }
+  }
 
   return (
     <div className="mx-auto max-w-[1000px]">
@@ -170,12 +198,23 @@ export default function PubblicazionePage() {
       </p>
 
       {/* Coda di pubblicazione */}
-      <div className="mb-3 flex items-center justify-between">
+      <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
         <h2 className="font-display text-[17px] font-bold tracking-tight text-deep">Coda di pubblicazione</h2>
-        <span className="text-[11.5px] text-ink-3">
-          {queueTotal > 0 ? `${queueTotal} approvati, pronti da pubblicare` : 'niente in coda'}
-        </span>
+        <div className="flex items-center gap-3">
+          <span className="text-[11.5px] text-ink-3">
+            {queueTotal > 0 ? `${queueTotal} pronti da pubblicare` : 'niente in coda'}
+          </span>
+          <button
+            onClick={pubblicaOra}
+            disabled={pubBusy || queueTotal === 0}
+            className="inline-flex items-center gap-1.5 rounded-full bg-deep px-3.5 py-1.5 text-[12px] font-semibold text-mint shadow-sm transition hover:opacity-90 disabled:opacity-40"
+          >
+            <Send size={13} />
+            {pubBusy ? 'Pubblico...' : 'Pubblica ora'}
+          </button>
+        </div>
       </div>
+      {pubMsg && <p className="mb-3 text-[11.5px] font-medium text-brand-700">{pubMsg}</p>}
 
       {loading ? (
         <div className="grid gap-3 md:grid-cols-2">

@@ -114,9 +114,19 @@ export async function POST(request: Request) {
       kind: stato === 'approvato' ? 'success' : 'info',
       message:
         stato === 'approvato'
-          ? `Valerio ha approvato il video del ${dateLabel}: RIVO VIDEO lo pubblica su TikTok, Reels e Shorts al primo giro utile.`
+          ? `Valerio ha approvato il video del ${dateLabel}: lo pubblico su TikTok, YouTube e Instagram...`
           : `Valerio ha scartato il video del ${dateLabel}.`,
     });
+
+    // Approvato = pubblica SUBITO dal server su tutte le piattaforme collegate.
+    if (stato === 'approvato' && process.env.ZERNIO_API_KEY) {
+      try {
+        const pub = await pubblicaCarosello(db, keyName);
+        return Response.json({ ok: true, status: stato, pubblicazione: pub });
+      } catch (e) {
+        return Response.json({ ok: true, status: stato, pubblicazione: { ok: false, error: (e as Error).message } });
+      }
+    }
     return Response.json({ ok: true, status: stato });
   }
 

@@ -23,17 +23,19 @@ export async function POST(request: Request) {
     return Response.json({ ok: false, error: 'ZERNIO_API_KEY mancante su Railway' }, { status: 503 });
   }
 
-  const auth = request.headers.get('authorization') ?? '';
-  const expected = process.env.INGEST_KEY;
-  if (!expected || auth !== `Bearer ${expected}`) {
-    return Response.json({ ok: false, error: 'non autorizzato' }, { status: 401 });
-  }
-
-  let body: { key?: string; draft?: boolean } = {};
+  let body: { key?: string; draft?: boolean; pin?: string } = {};
   try {
-    body = (await request.json()) as { key?: string; draft?: boolean };
+    body = (await request.json()) as { key?: string; draft?: boolean; pin?: string };
   } catch {
     /* body vuoto = pubblica tutti */
+  }
+
+  // Auth: Bearer INGEST_KEY (agenti/cron) OPPURE pin=APPROVE_PIN (bottone dal browser).
+  const auth = request.headers.get('authorization') ?? '';
+  const okBearer = !!process.env.INGEST_KEY && auth === `Bearer ${process.env.INGEST_KEY}`;
+  const okPin = !!process.env.APPROVE_PIN && body.pin === process.env.APPROVE_PIN;
+  if (!okBearer && !okPin) {
+    return Response.json({ ok: false, error: 'non autorizzato' }, { status: 401 });
   }
 
   const db = createClient(url, skey, { auth: { persistSession: false } });

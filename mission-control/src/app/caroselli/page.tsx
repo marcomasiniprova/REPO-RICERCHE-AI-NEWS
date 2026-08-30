@@ -20,7 +20,9 @@ const FILTERS: Array<{ id: CarouselStato | 'tutti'; label: string }> = [
 
 const STATO_TONE: Record<CarouselStato, { label: string; cls: string }> = {
   in_attesa: { label: 'Aspetta il tuo PIN', cls: 'bg-tan text-tan-ink' },
-  approvato: { label: 'Approvato · esce al prossimo giro', cls: 'bg-brand-100 text-brand-700' },
+  approvato: { label: 'Approvato · lo pubblico', cls: 'bg-brand-100 text-brand-700' },
+  in_pubblicazione: { label: 'In pubblicazione...', cls: 'bg-brand-50 text-brand-700' },
+  bozza_tiktok: { label: 'In bozza su TikTok', cls: 'bg-tan text-tan-ink' },
   pubblicato: { label: 'Pubblicato', cls: 'bg-deep text-mint' },
   scartato: { label: 'Scartato', cls: 'bg-subtle text-ink-3' },
   errore: { label: 'Errore', cls: 'bg-[#fbe9e2] text-[#a63d20]' },

@@ -127,6 +127,8 @@ export type VideoStato =
   | 'piano_approvato' // Valerio ha approvato il piano col PIN, l'agente genera
   | 'in_attesa' // video generato, aspetta l'OK di pubblicazione
   | 'approvato'
+  | 'in_pubblicazione' // approvato, uscito su alcuni canali, altri in corso/da ritentare
+  | 'bozza_tiktok' // consegnato alla Creator Inbox di TikTok
   | 'scartato'
   | 'pubblicato'
   | 'errore';
@@ -199,7 +201,14 @@ export interface PublisherStato {
   nota?: string;
 }
 
-export type CarouselStato = 'in_attesa' | 'approvato' | 'scartato' | 'pubblicato' | 'errore';
+export type CarouselStato =
+  | 'in_attesa'
+  | 'approvato'
+  | 'in_pubblicazione'
+  | 'bozza_tiktok'
+  | 'scartato'
+  | 'pubblicato'
+  | 'errore';
 
 /** Una slide del carosello scritta da RIVO CAROSELLI. */
 export interface CarouselSlide {
