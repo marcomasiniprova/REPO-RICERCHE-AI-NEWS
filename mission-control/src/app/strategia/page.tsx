@@ -30,6 +30,26 @@ const PILLARS = [
   { step: 'Propone e misura', detail: 'Cambi di profilo da approvare, crescita monitorata' },
 ];
 
+// La strategia lunga (da docs/31): stabile, la si rivede il lunedi sui dati.
+const STRATEGIA = {
+  obiettivo: 'Rivolio numero 1 in Italia sui rimborsi voli, virale in organico. KPI-nord: pratiche avviate da organico, non le views.',
+  identita: 'Brand Rivolio con Giulia volto fisso (modello Duolingo). TikTok prima, poi Reels e Shorts. Sempre affiancata a proof reali + UGC di clienti veri.',
+  posizionamento: 'Lo scanner dei rimborsi voli: verdetto in 30s, tariffa fissa 16,90 euro, il rimborso e tutto tuo. Contro chi si prende il 35-50% e contro il "non faccio nulla".',
+  pilastri: [
+    { n: 'Smonta-miti', d: '"La compagnia ti ha detto che era maltempo? Ecco perche spesso NON basta"' },
+    { n: 'Caso reale + proof', d: 'Storia vera di rimborso con lo screenshot del bonifico. Il pilastro che converte.' },
+    { n: 'Q&A evergreen', d: 'Risposte alle domande cercate ("volo cancellato cosa fare"): scoperta per mesi.' },
+    { n: 'POV / emozione', d: '"POV: fermo in aeroporto da 3 ore e non sai di avere diritto a 250-600 euro"' },
+    { n: 'News-normativa', d: 'Quando cambia una regola, la prima voce che spiega cosa cambia per il passeggero.' },
+  ],
+  funnel: [
+    { k: 'See', d: 'Awareness ampia, format virali. CTA: segui/salva.' },
+    { k: 'Think', d: '"Hai diritto?", casi reali, smonta-miti. CTA: salva/profilo.' },
+    { k: 'Do', d: '"Verifica in 30s se ti spettano fino a 600 euro". CTA: link in bio.' },
+    { k: 'Care', d: 'Recensioni, storie, passaparola. CTA: condividi la tua storia.' },
+  ],
+};
+
 function StatTile({
   label,
   value,
@@ -167,6 +187,59 @@ export default function StrategiaPage() {
             ))}
           </div>
         </div>
+      </div>
+
+      {/* La strategia lunga (da docs/31) */}
+      <div className="mb-6 card p-5">
+        <div className="mb-3 flex items-center gap-2">
+          <Target size={16} className="text-brand-600" />
+          <h2 className="font-display text-[17px] font-bold tracking-tight text-deep">La strategia</h2>
+          <Badge tone="outline">lunga · stabile</Badge>
+        </div>
+        <div className="grid gap-3 sm:grid-cols-3">
+          <div className="rounded-xl border border-line bg-subtle/40 p-3">
+            <div className="text-[10.5px] font-semibold uppercase tracking-wide text-brand-600">Obiettivo</div>
+            <div className="mt-1 text-[12.5px] leading-snug text-ink-2">{STRATEGIA.obiettivo}</div>
+          </div>
+          <div className="rounded-xl border border-line bg-subtle/40 p-3">
+            <div className="text-[10.5px] font-semibold uppercase tracking-wide text-brand-600">Identita</div>
+            <div className="mt-1 text-[12.5px] leading-snug text-ink-2">{STRATEGIA.identita}</div>
+          </div>
+          <div className="rounded-xl border border-line bg-subtle/40 p-3">
+            <div className="text-[10.5px] font-semibold uppercase tracking-wide text-brand-600">Posizionamento</div>
+            <div className="mt-1 text-[12.5px] leading-snug text-ink-2">{STRATEGIA.posizionamento}</div>
+          </div>
+        </div>
+        <div className="mt-4 grid gap-4 lg:grid-cols-[1.4fr_1fr]">
+          <div>
+            <div className="mb-2 text-[11.5px] font-semibold uppercase tracking-wide text-ink-3">I 5 pilastri di contenuto</div>
+            <div className="grid gap-2 sm:grid-cols-2">
+              {STRATEGIA.pilastri.map((p) => (
+                <div key={p.n} className="flex gap-2 rounded-lg border border-line p-2.5">
+                  <span className="mt-0.5 text-[12px] font-bold text-brand-600">•</span>
+                  <div>
+                    <div className="text-[12.5px] font-semibold text-deep">{p.n}</div>
+                    <div className="text-[11px] leading-snug text-ink-3">{p.d}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div>
+            <div className="mb-2 text-[11.5px] font-semibold uppercase tracking-wide text-ink-3">Il funnel (See-Think-Do-Care)</div>
+            <div className="grid gap-1.5">
+              {STRATEGIA.funnel.map((f) => (
+                <div key={f.k} className="flex items-center gap-2 rounded-lg border border-line p-2">
+                  <span className="w-12 shrink-0 text-[11px] font-bold uppercase text-brand-600">{f.k}</span>
+                  <span className="text-[11.5px] leading-snug text-ink-2">{f.d}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+        <p className="mt-3 text-[10.5px] text-ink-3">
+          Strategia di lungo periodo (da docs/31). Lo Stratega la esegue ogni giorno col piano; il lunedi la rivede sui dati.
+        </p>
       </div>
 
       {/* Cruscotto numeri veri */}
