@@ -31,6 +31,9 @@ import type {
   CarouselItem,
   PublisherStato,
   CommunityStato,
+  TrendScoutStato,
+  SeoStato,
+  CroStato,
 } from './types';
 import { fmtFollowers } from './utils';
 import agentsSeed from '@/data/agents.json';
@@ -162,6 +165,9 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
   const [draftsSend, setDraftsSend] = useState<Record<string, DraftSend>>({});
   const [editorialPlan, setEditorialPlan] = useState<EditorialPlan | null>(null);
   const [strategaStato, setStrategaStato] = useState<StrategaStato | null>(null);
+  const [trendScout, setTrendScout] = useState<TrendScoutStato | null>(null);
+  const [seoStato, setSeoStato] = useState<SeoStato | null>(null);
+  const [croStato, setCroStato] = useState<CroStato | null>(null);
   const [loading, setLoading] = useState(true);
   const [live, setLive] = useState(false);
   const supa = useRef<SupabaseClient | null>(null);
@@ -341,6 +347,12 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
           if (pe && pe.value && typeof pe.value === 'object') setEditorialPlan(pe.value as EditorialPlan);
           const ss = rows?.find((r) => r.key === 'stratega_stato');
           if (ss && ss.value && typeof ss.value === 'object') setStrategaStato(ss.value as StrategaStato);
+          const ts = rows?.find((r) => r.key === 'trend_scout');
+          if (ts && ts.value && typeof ts.value === 'object') setTrendScout(ts.value as TrendScoutStato);
+          const seo = rows?.find((r) => r.key === 'seo_stato');
+          if (seo && seo.value && typeof seo.value === 'object') setSeoStato(seo.value as SeoStato);
+          const cro = rows?.find((r) => r.key === 'cro_stato');
+          if (cro && cro.value && typeof cro.value === 'object') setCroStato(cro.value as CroStato);
         }) as unknown as Promise<void>,
       );
     await Promise.allSettled(jobs);
@@ -398,12 +410,15 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
       draftsSend,
       editorialPlan,
       strategaStato,
+      trendScout,
+      seoStato,
+      croStato,
       leads: leadsSeed.rows as LeadRow[],
       loading,
       live,
       mode: hasSupabase ? 'supabase' : 'demo',
     };
-  }, [agents, messages, runs, feed, creators, drafts, reddit, redditKarma, scoutStats, videos, carousels, publisherStato, communityStato, guardianoHealth, meetLink, meetings, draftsSend, editorialPlan, strategaStato, loading, live, hasSupabase]);
+  }, [agents, messages, runs, feed, creators, drafts, reddit, redditKarma, scoutStats, videos, carousels, publisherStato, communityStato, guardianoHealth, meetLink, meetings, draftsSend, editorialPlan, strategaStato, trendScout, seoStato, croStato, loading, live, hasSupabase]);
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
 }

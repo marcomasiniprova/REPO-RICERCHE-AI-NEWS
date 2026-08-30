@@ -15,6 +15,8 @@ import {
   PhoneCall,
   Radar,
   Radio,
+  Search,
+  Target,
   Send,
   Heart,
 } from 'lucide-react';
@@ -29,11 +31,14 @@ const NAV = [
   { href: '/call', label: 'Call', icon: PhoneCall },
   { href: '/scout', label: 'Scout', icon: Radar },
   { href: '/reddit', label: 'Reddit', icon: MessageCircle },
+  { href: '/trend', label: 'Trend', icon: Radio },
   { href: '/strategia', label: 'Strategia', icon: Brain },
   { href: '/contenuti', label: 'Contenuti', icon: Clapperboard },
   { href: '/caroselli', label: 'Caroselli', icon: GalleryHorizontalEnd },
   { href: '/pubblicazione', label: 'Pubblicazione', icon: Send },
   { href: '/community', label: 'Community', icon: Heart },
+  { href: '/seo', label: 'SEO', icon: Search },
+  { href: '/cro', label: 'Conversione', icon: Target },
 ];
 
 export default function Sidebar() {

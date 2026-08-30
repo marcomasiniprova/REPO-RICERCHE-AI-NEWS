@@ -375,8 +375,75 @@ export interface DashboardData {
   draftsSend: Record<string, DraftSend>;
   editorialPlan: EditorialPlan | null;
   strategaStato: StrategaStato | null;
+  trendScout: TrendScoutStato | null;
+  seoStato: SeoStato | null;
+  croStato: CroStato | null;
   leads: LeadRow[];
   loading: boolean;
   live: boolean; // realtime collegato
   mode: 'supabase' | 'demo';
+}
+
+/* ---------- I 3 nuovi ruoli: Trend-scout, SEO, CRO ---------- */
+
+/** Radar del TREND-SCOUT (kv trend_scout): i trend del giorno da cavalcare. */
+export interface TrendItem {
+  tipo: 'audio' | 'format' | 'hook' | 'news' | string;
+  titolo: string;
+  dove?: string;
+  perche_rilevante?: string;
+  finestra?: string;
+  fonte?: string;
+  idea_aggancio?: string;
+}
+export interface TrendScoutStato {
+  data?: string;
+  trend: TrendItem[];
+  nota?: string;
+  updated_at?: string;
+}
+
+/** Cruscotto SEO (kv seo_stato): keyword, articoli, migliorie al sito. */
+export interface SeoKeyword {
+  kw: string;
+  intento?: string;
+  difficolta?: 'bassa' | 'media' | 'alta' | string;
+  stato?: 'pianificata' | 'bozza' | 'pubblicata' | string;
+}
+export interface SeoArticolo {
+  titolo: string;
+  kw?: string;
+  stato?: 'bozza' | 'pubblicato' | string;
+}
+export interface SeoMiglioria {
+  cosa: string;
+  priorita?: 'alta' | 'media' | 'bassa' | string;
+}
+export interface SeoStato {
+  keyword_target?: SeoKeyword[];
+  articoli?: SeoArticolo[];
+  migliorie_sito?: SeoMiglioria[];
+  updated_at?: string;
+  nota?: string;
+}
+
+/** Cruscotto CRO (kv cro_stato): attriti del funnel + proposte da approvare. */
+export interface CroAttrito {
+  tappa: 'landing' | 'verdetto' | 'pratica' | string;
+  attrito: string;
+  gravita?: 'alta' | 'media' | 'bassa' | string;
+}
+export interface CroProposta {
+  cosa: string;
+  perche?: string;
+  impatto_atteso?: string;
+  come_misurare?: string;
+  priorita?: 'alta' | 'media' | 'bassa' | string;
+  stato?: 'in_attesa' | 'applicata' | 'scartata' | string;
+}
+export interface CroStato {
+  funnel?: CroAttrito[];
+  proposte?: CroProposta[];
+  updated_at?: string;
+  nota?: string;
 }
