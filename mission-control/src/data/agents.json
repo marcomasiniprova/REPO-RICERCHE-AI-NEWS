@@ -97,5 +97,38 @@
     "schedule_label": "Controlli durante la giornata",
     "cron": "0 5-19/2 * * *",
     "color": "#4f7cac"
+  },
+  {
+    "slug": "trend-scout",
+    "name": "TREND-SCOUT",
+    "role": "Il radar dei trend",
+    "tagline": "Trova ogni giorno audio, format e news da cavalcare, li passa allo Stratega.",
+    "avatar": "/avatars/scout.png",
+    "status": "idle",
+    "schedule_label": "Ogni mattina, prima dello Stratega",
+    "cron": "30 4 * * *",
+    "color": "#e0663a"
+  },
+  {
+    "slug": "seo",
+    "name": "SEO",
+    "role": "Il traffico da Google",
+    "tagline": "Keyword e articoli evergreen sui rimborsi voli: traffico che compone nel tempo.",
+    "avatar": "/avatars/stratega.png",
+    "status": "idle",
+    "schedule_label": "Ogni giorno, un pezzo forte",
+    "cron": "0 8 * * *",
+    "color": "#2f8f6b"
+  },
+  {
+    "slug": "cro",
+    "name": "CRO",
+    "role": "Il traffico che converte",
+    "tagline": "Analizza il funnel di rivolio.it, toglie gli attriti, propone i test.",
+    "avatar": "/avatars/guardiano.png",
+    "status": "idle",
+    "schedule_label": "Analisi conversione, in giornata",
+    "cron": "0 9 * * *",
+    "color": "#c23b6a"
   }
 ]
