@@ -11,32 +11,60 @@ import LiveBadge from '@/components/LiveBadge';
 import CostiTeam from '@/components/CostiTeam';
 import { timeAgo } from '@/lib/utils';
 
-/** I reparti del team: il team raggruppato come una vera squadra di persone. */
-const REPARTI: Array<{ id: string; nome: string; desc: string; slugs: string[] }> = [
+/** I reparti del team: il team raggruppato come una vera squadra di persone, con un capo. */
+const REPARTI: Array<{ id: string; nome: string; desc: string; slugs: string[]; lead: string }> = [
   {
     id: 'contenuti',
     nome: 'Reparto Contenuti',
     desc: 'Ideano, producono e pubblicano i post del brand',
     slugs: ['stratega', 'trend-scout', 'caroselli', 'video', 'publisher', 'community'],
+    lead: 'stratega',
   },
   {
     id: 'traffico',
     nome: 'Reparto Traffico',
     desc: 'Portano visite al sito e le fanno convertire',
     slugs: ['seo', 'cro'],
+    lead: 'seo',
   },
   {
     id: 'acquisizione',
     nome: 'Reparto Acquisizione',
     desc: 'Trovano e ingaggiano i creator per l’affiliate',
     slugs: ['scout', 'ig_email'],
+    lead: 'scout',
   },
   {
     id: 'autorevolezza',
     nome: 'Autorevolezza & Tecnica',
     desc: 'Presenza sui forum e salute del sistema',
     slugs: ['reddit', 'guardiano'],
+    lead: 'guardiano',
   },
+];
+
+/** Il carattere di ogni membro: li rende persone vere, non slug. */
+const PERSONA: Record<string, string> = {
+  stratega: 'La mente del team',
+  'trend-scout': 'Il radar dei trend',
+  caroselli: 'La mano che fa salvare',
+  video: 'Il regista di Giulia',
+  publisher: 'Quello che pubblica ovunque',
+  community: 'La voce che risponde a tutti',
+  seo: 'Il motore di Google',
+  cro: 'Il cacciatore di conversioni',
+  scout: 'Il talent scout',
+  ig_email: 'Il tuo clone coi creator',
+  reddit: 'L’esperto dei forum',
+  guardiano: 'Il custode del sistema',
+};
+
+/** I valori con cui lavora il team Rivolio. */
+const VALORI: Array<{ t: string; d: string }> = [
+  { t: 'Onestà', d: 'Numeri veri, mai gonfiati. Se un dato manca, si dice.' },
+  { t: 'Dati, non fede', d: 'Si decide su cosa funziona davvero, si migliora ogni giorno.' },
+  { t: 'Umani veri', d: 'Copy caldo e personale, mai robotico. Le persone al centro.' },
+  { t: 'Crescita', d: 'Un obiettivo solo: Rivolio numero 1 in Italia sui rimborsi voli.' },
 ];
 
 const HEALTH = {
@@ -46,7 +74,12 @@ const HEALTH = {
 } as const;
 
 export default function Home() {
-  const { agents, creators, drafts, loading, leadTotals, guardianoHealth } = useData();
+  const { agents, creators, drafts, loading, leadTotals, guardianoHealth, feed } = useData();
+  // "Cosa ha fatto oggi": l'ultimo messaggio del feed per ogni agente.
+  const lastResultBy: Record<string, string> = {};
+  for (const f of feed) {
+    if (f.agent_slug && !lastResultBy[f.agent_slug]) lastResultBy[f.agent_slug] = f.message;
+  }
   const leadTot = leadTotals.tot;
   const gh = guardianoHealth;
   const h = gh ? HEALTH[gh.stato] ?? HEALTH.ok : null;
@@ -204,7 +237,16 @@ export default function Home() {
                   </span>
                 </div>
                 <div className="grid gap-3.5 lg:grid-cols-2">
-                  {membri.map((a) => <AgentCard key={a.slug} agent={a} index={idx++} />)}
+                  {membri.map((a) => (
+                    <AgentCard
+                      key={a.slug}
+                      agent={a}
+                      index={idx++}
+                      lead={a.slug === rep.lead}
+                      persona={PERSONA[a.slug]}
+                      lastResult={lastResultBy[a.slug]}
+                    />
+                  ))}
                 </div>
               </div>
             );
@@ -226,6 +268,21 @@ export default function Home() {
             </div>
           );
         })()
+      )}
+
+      {/* Valori del team */}
+      {!loading && (
+        <div className="mb-8">
+          <h2 className="mb-3 font-display text-[17px] font-bold tracking-tight text-deep">Come lavora il team</h2>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {VALORI.map((v) => (
+              <div key={v.t} className="card p-4">
+                <div className="font-display text-[14px] font-bold text-deep">{v.t}</div>
+                <p className="mt-1 text-[11.5px] leading-snug text-ink-3">{v.d}</p>
+              </div>
+            ))}
+          </div>
+        </div>
       )}
 
       {/* Call di oggi */}

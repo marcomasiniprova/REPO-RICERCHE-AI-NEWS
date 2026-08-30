@@ -3,12 +3,24 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { CalendarClock, History, PackageCheck, ChevronRight } from 'lucide-react';
+import { CalendarClock, History, PackageCheck, ChevronRight, Crown } from 'lucide-react';
 import type { Agent } from '@/lib/types';
 import { StatusPill } from '@/components/ui';
 import { cn, nextRunLabel, timeAgo } from '@/lib/utils';
 
-export default function AgentCard({ agent, index = 0 }: { agent: Agent; index?: number }) {
+export default function AgentCard({
+  agent,
+  index = 0,
+  lead = false,
+  persona,
+  lastResult,
+}: {
+  agent: Agent;
+  index?: number;
+  lead?: boolean; // capo reparto
+  persona?: string; // soprannome/carattere
+  lastResult?: string; // cosa ha fatto oggi (dal feed)
+}) {
   const working = agent.status === 'working';
   return (
     <motion.div
@@ -44,9 +56,21 @@ export default function AgentCard({ agent, index = 0 }: { agent: Agent; index?: 
               </h3>
               <StatusPill status={agent.status} />
             </div>
-            <div className="text-[12px] font-medium text-brand-600">{agent.role}</div>
+            <div className="flex flex-wrap items-center gap-1.5">
+              <span className="text-[12px] font-medium text-brand-600">{agent.role}</span>
+              {lead && (
+                <span className="inline-flex items-center gap-0.5 rounded-full bg-tan px-1.5 py-0.5 text-[9.5px] font-bold uppercase tracking-wide text-tan-ink">
+                  <Crown size={9} /> Capo reparto
+                </span>
+              )}
+            </div>
+            {persona && <div className="mt-0.5 text-[11px] italic text-ink-3">“{persona}”</div>}
             <p className="mt-1 line-clamp-2 text-[12.5px] leading-snug text-ink-2">
-              {working && agent.current_task ? agent.current_task : agent.tagline}
+              {working && agent.current_task
+                ? agent.current_task
+                : lastResult
+                  ? lastResult
+                  : agent.tagline}
             </p>
           </div>
         </div>
