@@ -441,3 +441,8 @@ Ogni decisione importante va aggiunta qui, con data e motivazione. Dal più rece
 - GIULIA (references/00-giulia.md potenziata): aggiunti voce/parlato (lessico Rivolio), il mondo/backstory (le hanno cancellato un volo, ora e' dalla parte del passeggero), la firma riconoscibile (format Hub "I diritti che le compagnie non ti dicono"), disclosure AI, regola d'oro di coerenza per lo scaling. Giulia = asset del brand, sempre uguale.
 - TREND-SCOUT -> STRATEGA: lo Stratega ora legge il kv trend_scout nel PASSO 1 e lo usa come munizione per l'angolo del giorno. Il radar entra davvero nel piano.
 - ATTIVAZIONE: Valerio crea le 3 sessioni (Trend-scout, SEO, CRO), poi si cablano le routine. Pagine dashboard dei 3 ruoli in costruzione. Ricollaudo dei ruoli aggiornati (quelli che non serve Kie) lanciato.
+
+## 30/8 — Round 6 (parte 2): dashboard 3 ruoli + ricollaudo verde
+- DASHBOARD: aggiunte le pagine /trend, /seo, /cro (tipi, store, nav) sul branch dashboard. Leggono i kv trend_scout / seo_stato / cro_stato.
+- RICOLLAUDO (skill nuove): Stratega OK (legge strategia+DECIDI, assegna il video con l'angolo differenziatore, scrive gli avvisi in dashboard, ZERO blocchi popup) + Publisher OK (catena reale 3/3, 331 follower TikTok, pubblicati 0). Fix popup verificato sul campo.
+- DA FARE (Valerio): creare le 3 sessioni operative (Trend-scout, SEO, CRO), poi si cablano le routine. Guida in docs/33.
