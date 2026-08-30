@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import { pubblicaCarosello } from '@/lib/publishing';
 
 /**
  * Decisione di Valerio su una bozza, dal bottone della dashboard.
@@ -146,9 +147,21 @@ export async function POST(request: Request) {
       kind: stato === 'approvato' ? 'success' : 'info',
       message:
         stato === 'approvato'
-          ? `Valerio ha approvato il carosello del ${dateLabel}: il PUBLISHER lo pubblichera' al primo giro utile (col PIN).`
+          ? `Valerio ha approvato il carosello del ${dateLabel}: lo pubblico su TikTok...`
           : `Valerio ha scartato il carosello del ${dateLabel}.`,
     });
+
+    // Approvato = pubblica SUBITO su TikTok dal server (Railway), se Zernio e' configurato.
+    // Best-effort: se la pubblicazione fallisce, l'approvazione resta valida e si riprova
+    // (via /api/publish). Claude non entra mai in questo passaggio.
+    if (stato === 'approvato' && process.env.ZERNIO_API_KEY) {
+      try {
+        const pub = await pubblicaCarosello(db, keyName);
+        return Response.json({ ok: true, status: stato, pubblicazione: pub });
+      } catch (e) {
+        return Response.json({ ok: true, status: stato, pubblicazione: { ok: false, error: (e as Error).message } });
+      }
+    }
     return Response.json({ ok: true, status: stato });
   }
 
