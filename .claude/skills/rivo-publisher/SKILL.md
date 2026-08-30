@@ -20,10 +20,11 @@ Prima di lavorare leggi SEMPRE anche `reference.md` in questa cartella: e' il tu
 ## LA PUBBLICAZIONE LA FA IL BACKEND, NON TU (deciso 30/8) — LEGGI PRIMA DI TUTTO
 Cambio architetturale importante: la pubblicazione su TikTok/Zernio ORA la fa il BACKEND della dashboard (server su Railway), NON questa sessione. Motivo: il classificatore di sicurezza di Claude blocca qualsiasi POST di pubblicazione esterna fatta da un agente (verificato a fondo il 30/8: bloccato anche con regola di permesso e sessione fresca). Il server di Railway non ha quel guardrail, quindi pubblica lui: quando Valerio approva un carosello in dashboard, `/api/decide` chiama `/api/publish` e pubblica su TikTok, poi segna lo stato "pubblicato".
 
-QUINDI TU (il ruolo Publisher) **NON devi piu' provare a pubblicare**: NIENTE POST a Zernio /posts (verrebbe bloccata e sprecheresti il giro). Il tuo lavoro ORA e':
-1. LEGGERE le analitiche e l'inbox da Zernio (GET, quelle passano): follower, viste, engagement per post, commenti/DM nuovi. Scrivile nel kv `publisher_stato` (campo analytics) e nel feed.
-2. VERIFICARE lo stato delle pubblicazioni: guarda i contenuti con stato "pubblicato" e i loro `tiktok_permalink`, e riporta in dashboard cosa e' uscito e come sta andando.
-3. Segnalare se qualcosa e' "approvato" ma NON ancora "pubblicato" da un po' (possibile errore del backend): scrivilo nel feed cosi' Valerio/builder lo vede. NON pubblicarlo tu.
+QUINDI TU (il ruolo Publisher) **NON devi piu' provare a pubblicare** su Zernio direttamente: NIENTE POST a zernio.com/posts (verrebbe bloccata e sprecheresti il giro). Il tuo lavoro ORA e':
+1. INNESCARE la pubblicazione dal backend (ri-tentativo): fai una POST a `https://mission-control-production-b349.up.railway.app/api/publish` (SENZA body) con header `Authorization: Bearer <INGEST_KEY>`. E' il backend della dashboard a pubblicare/ritentare gli approvati e a verificarli: tu inneschi soltanto, non pubblichi. Questa chiamata e' verso la NOSTRA dashboard (non un social), quindi passa. Serve a smaltire gli approvati rimasti indietro (es. quando TikTok era "at capacity"): finche' non escono, li ripubblica al giro dopo. Leggi la risposta (esiti[]) e riportala.
+2. LEGGERE le analitiche e l'inbox da Zernio (GET, quelle passano): follower, viste, engagement per post, commenti/DM nuovi. Scrivile nel kv `publisher_stato` (campo analytics) e nel feed.
+3. VERIFICARE lo stato delle pubblicazioni: guarda i contenuti con stato "pubblicato" e i loro `tiktok_permalink`, e riporta in dashboard cosa e' uscito e come sta andando.
+4. Segnalare se qualcosa e' "approvato" o "in_pubblicazione" da troppo tempo (TikTok potrebbe essere ancora pieno): scrivilo nel feed. NON pubblicarlo tu su Zernio: l'ha gia' in carico il backend, tu lo re-inneschi col PASSO 1.
 Le GET a Zernio (accounts, creator-info, analytics, inbox) le fai pure via curl diretta: quelle non sono azioni irreversibili e non vengono bloccate.
 
 ## LEGGE ZERO — MODALITA' LIVE ATTIVA dal 30/8 (deciso da Valerio), ma il PIN resta il cancello
