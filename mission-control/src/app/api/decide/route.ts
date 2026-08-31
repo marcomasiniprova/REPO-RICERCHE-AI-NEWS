@@ -19,6 +19,7 @@ export async function POST(request: Request) {
     draft_id?: number;
     video_key?: string;
     carosello_key?: string;
+    seo_key?: string;
     community_reply_id?: string;
     action?: string;
     note?: string;
@@ -172,6 +173,46 @@ export async function POST(request: Request) {
         return Response.json({ ok: true, status: stato, pubblicazione: { ok: false, error: (e as Error).message } });
       }
     }
+    return Response.json({ ok: true, status: stato });
+  }
+
+  // Articoli SEO: kv seo_articolo_<slug>. Valore stringa (vecchio) o oggetto; il PIN
+  // porta lo stato ad "approvato"/"scartato" (normalizzando in oggetto).
+  if (body.seo_key) {
+    const keyName = String(body.seo_key);
+    if (!/^seo_articolo_[a-z0-9_]+$/.test(keyName)) {
+      return Response.json({ ok: false, error: 'chiave articolo non valida' }, { status: 400 });
+    }
+    const db = createClient(url, key, { auth: { persistSession: false } });
+    const { data: row } = await db.from('kv').select('value').eq('key', keyName).single();
+    if (row?.value == null) return Response.json({ ok: false, error: 'articolo non trovato' }, { status: 404 });
+    const cur = typeof row.value === 'string'
+      ? { markdown: row.value as string }
+      : (row.value as Record<string, unknown>);
+    const nowIso = new Date().toISOString();
+    const stato = body.action === 'reject' ? 'scartato' : 'approvato';
+    const next = { ...cur, stato, decided_at: nowIso };
+    const { error: upErr } = await db.from('kv').update({ value: next, updated_at: nowIso }).eq('key', keyName);
+    if (upErr) return Response.json({ ok: false, error: upErr.message }, { status: 500 });
+    // aggiorna anche seo_stato.articoli[] se combacia (best-effort)
+    const { data: sRow } = await db.from('kv').select('value').eq('key', 'seo_stato').single();
+    const s = sRow?.value as { articoli?: Array<Record<string, unknown>> } | null;
+    if (s && Array.isArray(s.articoli)) {
+      const slug = keyName.replace('seo_articolo_', '');
+      for (const a of s.articoli) {
+        const akw = String(a.kw ?? '').toLowerCase().replace(/[^a-z0-9]+/g, '_');
+        if (akw === slug) a.stato = stato;
+      }
+      await db.from('kv').update({ value: s, updated_at: nowIso }).eq('key', 'seo_stato');
+    }
+    const titolo = (cur.titolo as string) ?? keyName.replace('seo_articolo_', '').replace(/_/g, ' ');
+    await db.from('activity_feed').insert({
+      agent_slug: null,
+      kind: stato === 'approvato' ? 'success' : 'info',
+      message: stato === 'approvato'
+        ? `Valerio ha approvato l'articolo SEO "${titolo}": pronto da pubblicare sul sito.`
+        : `Valerio ha scartato l'articolo SEO "${titolo}".`,
+    });
     return Response.json({ ok: true, status: stato });
   }
 

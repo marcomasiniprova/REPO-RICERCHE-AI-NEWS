@@ -1,12 +1,20 @@
 'use client';
 
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Search, FileText, Wrench, ArrowRight } from 'lucide-react';
+import { Search, FileText, Wrench, Check, X } from 'lucide-react';
 import { useData } from '@/lib/store';
 import { PageHeader, EmptyState, Badge } from '@/components/ui';
 import LiveBadge from '@/components/LiveBadge';
 import { nextRunLabel } from '@/lib/utils';
+
+function titoloArticolo(key: string, titolo?: string, markdown?: string): string {
+  if (titolo) return titolo;
+  const m = markdown?.match(/Meta title[^:]*:\s*(.+)/i);
+  if (m) return m[1].trim();
+  return key.replace('seo_articolo_', '').replace(/_/g, ' ');
+}
 
 const DIFF_TONE: Record<string, 'brand' | 'tan' | 'neutral'> = {
   bassa: 'brand',
@@ -15,12 +23,38 @@ const DIFF_TONE: Record<string, 'brand' | 'tan' | 'neutral'> = {
 };
 
 export default function SeoPage() {
-  const { agents, seoStato: s, loading } = useData();
+  const { agents, seoStato: s, seoArticoli, loading } = useData();
   const agent = agents.find((a) => a.slug === 'seo');
   const kws = s?.keyword_target ?? [];
-  const articoli = s?.articoli ?? [];
+  const articoli = seoArticoli ?? [];
   const migliorie = s?.migliorie_sito ?? [];
   const empty = !loading && kws.length === 0 && articoli.length === 0 && migliorie.length === 0;
+
+  const [openKey, setOpenKey] = useState<string | null>(null);
+  const [busy, setBusy] = useState<string | null>(null);
+  const [msg, setMsg] = useState<string | null>(null);
+  async function decide(key: string, action: 'approve' | 'reject') {
+    const pin = typeof window !== 'undefined' ? localStorage.getItem('mc_pin') : null;
+    if (!pin) {
+      setMsg('Serve il PIN: approva un contenuto una volta per impostarlo.');
+      return;
+    }
+    setBusy(key);
+    setMsg(null);
+    try {
+      const res = await fetch('/api/decide', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ seo_key: key, action, pin }),
+      });
+      if (res.status === 401) setMsg('PIN errato.');
+      else if (!res.ok) setMsg('Non ha funzionato, riprova.');
+    } catch {
+      setMsg('Errore di rete, riprova.');
+    } finally {
+      setBusy(null);
+    }
+  }
 
   return (
     <div className="mx-auto max-w-[1120px]">
@@ -79,16 +113,57 @@ export default function SeoPage() {
               <h2 className="font-display text-[16px] font-bold text-deep">Articoli</h2>
               {articoli.length > 0 && <Badge tone="brand">{articoli.length}</Badge>}
             </div>
+            {msg && <p className="mb-2 text-[11.5px] font-medium text-brand-700">{msg}</p>}
             <div className="grid gap-2.5">
               {articoli.length === 0 && <div className="card p-4 text-[12px] text-ink-3">Nessun articolo ancora.</div>}
-              {articoli.map((a, i) => (
-                <Link key={i} href="/bozze" className="card card-hover flex items-center gap-3 p-3">
-                  <FileText size={15} className="shrink-0 text-ink-3" />
-                  <span className="min-w-0 flex-1 truncate text-[12.5px] font-semibold text-deep">{a.titolo}</span>
-                  <Badge tone={a.stato === 'pubblicato' ? 'brand' : 'tan'}>{a.stato ?? 'bozza'}</Badge>
-                  <ArrowRight size={13} className="shrink-0 text-ink-3" />
-                </Link>
-              ))}
+              {articoli.map((a) => {
+                const t = titoloArticolo(a.key, a.titolo, a.markdown);
+                const tone = a.stato === 'approvato' ? 'brand' : a.stato === 'scartato' ? 'neutral' : 'tan';
+                const open = openKey === a.key;
+                return (
+                  <div key={a.key} className="card p-3">
+                    <div className="flex items-center gap-3">
+                      <FileText size={15} className="shrink-0 text-ink-3" />
+                      <button
+                        onClick={() => setOpenKey(open ? null : a.key)}
+                        className="min-w-0 flex-1 truncate text-left text-[12.5px] font-semibold text-deep hover:text-brand-700"
+                      >
+                        {t}
+                      </button>
+                      <Badge tone={tone}>{a.stato ?? 'bozza'}</Badge>
+                    </div>
+                    {open && (
+                      <pre className="mt-2 max-h-[320px] overflow-auto whitespace-pre-wrap rounded-lg bg-subtle p-3 text-[11px] leading-snug text-ink-2">
+                        {a.markdown || '(testo non disponibile)'}
+                      </pre>
+                    )}
+                    {a.stato !== 'approvato' && a.stato !== 'scartato' && (
+                      <div className="mt-2.5 flex items-center gap-2">
+                        <button
+                          onClick={() => decide(a.key, 'approve')}
+                          disabled={busy === a.key}
+                          className="inline-flex items-center gap-1.5 rounded-full bg-deep px-3 py-1.5 text-[11.5px] font-semibold text-mint transition hover:opacity-90 disabled:opacity-40"
+                        >
+                          <Check size={13} /> {busy === a.key ? '...' : 'Approva'}
+                        </button>
+                        <button
+                          onClick={() => decide(a.key, 'reject')}
+                          disabled={busy === a.key}
+                          className="inline-flex items-center gap-1.5 rounded-full border border-line px-3 py-1.5 text-[11.5px] font-semibold text-ink-2 transition hover:bg-subtle disabled:opacity-40"
+                        >
+                          <X size={13} /> Scarta
+                        </button>
+                        <button
+                          onClick={() => setOpenKey(open ? null : a.key)}
+                          className="ml-auto text-[11.5px] font-semibold text-brand-600 hover:text-brand-700"
+                        >
+                          {open ? 'Chiudi' : 'Leggi'}
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </div>
 

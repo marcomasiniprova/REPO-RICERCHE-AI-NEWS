@@ -386,6 +386,7 @@ export interface DashboardData {
   strategaStato: StrategaStato | null;
   trendScout: TrendScoutStato | null;
   seoStato: SeoStato | null;
+  seoArticoli: SeoArticoloFull[];
   croStato: CroStato | null;
   leads: LeadRow[];
   loading: boolean;
@@ -423,6 +424,16 @@ export interface SeoArticolo {
   titolo: string;
   kw?: string;
   stato?: 'bozza' | 'pubblicato' | string;
+}
+
+/** Articolo SEO completo (kv seo_articolo_<slug>): testo + stato approvabile. */
+export interface SeoArticoloFull {
+  key: string; // chiave kv, es. seo_articolo_rimborso_ryanair
+  titolo?: string;
+  kw?: string;
+  markdown: string; // il testo dell'articolo
+  stato: 'bozza' | 'approvato' | 'scartato' | string;
+  decided_at?: string | null;
 }
 export interface SeoMiglioria {
   cosa: string;

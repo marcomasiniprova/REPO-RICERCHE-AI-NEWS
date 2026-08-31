@@ -33,6 +33,7 @@ import type {
   CommunityStato,
   TrendScoutStato,
   SeoStato,
+  SeoArticoloFull,
   CroStato,
 } from './types';
 import { fmtFollowers } from './utils';
@@ -167,6 +168,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
   const [strategaStato, setStrategaStato] = useState<StrategaStato | null>(null);
   const [trendScout, setTrendScout] = useState<TrendScoutStato | null>(null);
   const [seoStato, setSeoStato] = useState<SeoStato | null>(null);
+  const [seoArticoli, setSeoArticoli] = useState<SeoArticoloFull[]>([]);
   const [croStato, setCroStato] = useState<CroStato | null>(null);
   const [loading, setLoading] = useState(true);
   const [live, setLive] = useState(false);
@@ -351,6 +353,24 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
           if (ts && ts.value && typeof ts.value === 'object') setTrendScout(ts.value as TrendScoutStato);
           const seo = rows?.find((r) => r.key === 'seo_stato');
           if (seo && seo.value && typeof seo.value === 'object') setSeoStato(seo.value as SeoStato);
+          // Articoli SEO: kv seo_articolo_<slug>, valore stringa (vecchio) o oggetto (nuovo).
+          const arts = (rows ?? [])
+            .filter((r) => /^seo_articolo_/.test(r.key) && r.value != null)
+            .map((r) => {
+              if (typeof r.value === 'string') {
+                return { key: r.key, markdown: r.value, stato: 'bozza' } as SeoArticoloFull;
+              }
+              const o = r.value as Record<string, unknown>;
+              return {
+                key: r.key,
+                titolo: o.titolo as string | undefined,
+                kw: o.kw as string | undefined,
+                markdown: (o.markdown as string) ?? '',
+                stato: (o.stato as string) ?? 'bozza',
+                decided_at: (o.decided_at as string) ?? null,
+              } as SeoArticoloFull;
+            });
+          setSeoArticoli(arts);
           const cro = rows?.find((r) => r.key === 'cro_stato');
           if (cro && cro.value && typeof cro.value === 'object') setCroStato(cro.value as CroStato);
         }) as unknown as Promise<void>,
@@ -412,13 +432,14 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
       strategaStato,
       trendScout,
       seoStato,
+      seoArticoli,
       croStato,
       leads: leadsSeed.rows as LeadRow[],
       loading,
       live,
       mode: hasSupabase ? 'supabase' : 'demo',
     };
-  }, [agents, messages, runs, feed, creators, drafts, reddit, redditKarma, scoutStats, videos, carousels, publisherStato, communityStato, guardianoHealth, meetLink, meetings, draftsSend, editorialPlan, strategaStato, trendScout, seoStato, croStato, loading, live, hasSupabase]);
+  }, [agents, messages, runs, feed, creators, drafts, reddit, redditKarma, scoutStats, videos, carousels, publisherStato, communityStato, guardianoHealth, meetLink, meetings, draftsSend, editorialPlan, strategaStato, trendScout, seoStato, seoArticoli, croStato, loading, live, hasSupabase]);
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
 }
