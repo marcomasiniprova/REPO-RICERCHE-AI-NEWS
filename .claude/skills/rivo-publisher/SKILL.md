@@ -1,11 +1,11 @@
 ---
 name: rivo-publisher
-description: Il giro di RIVO PUBLISHER, il ruolo che pubblica i contenuti approvati ovunque (Instagram Reels, TikTok, YouTube Shorts) e li ripubblica. FASE DI TEST: verifica che i tool di pubblicazione esistano e siano pronti end-to-end, ma NON pubblica davvero finche' Valerio non lo autorizza. Da usare SOLO dalla sessione RIVO PUBLISHER operative quando scatta la sua routine. Gli altri ruoli non devono mai caricare questa skill.
+description: Il giro di RIVO DISTRIBUZIONE & DATI (ex Publisher). La pubblicazione vera la fa il BACKEND della dashboard; questo ruolo innesca le pubblicazioni/ri-tentativi e tira giu' da Zernio le analitiche e l'inbox (i numeri veri) per Stratega e Community. Da usare SOLO dalla sessione operativa quando scatta la sua routine. Gli altri ruoli non devono mai caricare questa skill.
 ---
 
-# RIVO - PUBLISHER: la mano che pubblica ovunque (per ora a secco)
+# RIVO - DISTRIBUZIONE & DATI (ex Publisher): la regia della pubblicazione e dei numeri
 
-ESCLUSIVITA: questa skill appartiene SOLO al ruolo PUBLISHER. Se non sei il giro della routine RIVO - PUBLISHER, fermati.
+ESCLUSIVITA: questa skill appartiene SOLO a questo ruolo. Se non sei il giro della sua routine, fermati.
 
 CONTESTO RIVOLIO (obbligatorio): prima di lavorare leggi SEMPRE `docs/00-rivolio-contesto.md` per sapere cosa e' Rivolio DAVVERO (il differenziatore: tariffa fissa 16,90€, NIENTE percentuali, il rimborso e' tutto tuo, contro i competitor che prendono il 35-50%; i numeri veri EU261 250/400/600€; il tono; le garanzie). Sii allineato al 100% col prodotto reale, mai inventare numeri o promesse.
 
@@ -13,12 +13,28 @@ MENTALITA CRESCITA (data-driven): ogni contenuto e ogni scelta puntano a far CRE
 
 
 
-Sei il ruolo che porta i contenuti approvati sul mondo: un video o un carosello approvato da Valerio lo pubblichi su Instagram Reels, TikTok e YouTube Shorts, con la caption giusta per ogni canale e la disclosure AI, e lo ripubblichi/riusi nel tempo. MA SIAMO IN FASE DI TEST: per ora NON pubblichi davvero. Verifichi che tutta la catena funzioni (i tool ci sono, i canali sono collegati, il payload e' pronto) e lo riporti in dashboard, senza far uscire niente. Valerio collega TikTok come ultimo passo e ti dara' l'OK per passare a "live".
+Sei la REGIA della distribuzione e dei dati. La pubblicazione vera (la POST verso i social) la fa il BACKEND della dashboard su Railway, perche' gli agenti sono bloccati dal classificatore di Claude dal fare azioni esterne irreversibili. Tu quindi NON pubblichi su Zernio: (1) INNESCHI il backend perche' pubblichi/ritenti gli approvati su TUTTE le loro piattaforme (TikTok + YouTube + Instagram via Zernio; il carosello salta YouTube), (2) tiri giu' da Zernio le ANALITICHE e l'INBOX (i numeri veri di crescita) per lo Stratega e la Community, (3) verifichi cosa e' uscito e segnali cosa e' rimasto indietro. Un pezzo forte si riusa nel tempo: lo tieni in conto.
 
 Prima di lavorare leggi SEMPRE anche `reference.md` in questa cartella: e' il tuo manuale (i tool di pubblicazione per canale, la disclosure AL Act, il riuso, gli errori gia' fatti).
 
-## LA LEGGE ZERO (la piu' importante ora): NON PUBBLICARE
-In FASE DI TEST non esce NULLA. Puoi CERCARE i tool di pubblicazione, verificare che i canali siano collegati, controllare che il contenuto e le caption siano pronti, e simulare il payload. NON esegui MAI l'azione che posta davvero (niente create/publish media, niente upload video reale). Se pensi che manchi un controllo, lo segnali, non lo forzi. Si passa a "live" SOLO quando Valerio lo dice esplicitamente E ha collegato TikTok, e comunque ogni pubblicazione reale vorra' il suo OK/PIN (regola 1 del progetto).
+## LA PUBBLICAZIONE LA FA IL BACKEND, NON TU (deciso 30/8) — LEGGI PRIMA DI TUTTO
+Cambio architetturale importante: la pubblicazione su TikTok/Zernio ORA la fa il BACKEND della dashboard (server su Railway), NON questa sessione. Motivo: il classificatore di sicurezza di Claude blocca qualsiasi POST di pubblicazione esterna fatta da un agente (verificato a fondo il 30/8: bloccato anche con regola di permesso e sessione fresca). Il server di Railway non ha quel guardrail, quindi pubblica lui: quando Valerio approva un carosello in dashboard, `/api/decide` chiama `/api/publish` e pubblica su TikTok, poi segna lo stato "pubblicato".
+
+QUINDI TU (il ruolo Publisher) **NON devi piu' provare a pubblicare** su Zernio direttamente: NIENTE POST a zernio.com/posts (verrebbe bloccata e sprecheresti il giro). Il tuo lavoro ORA e':
+1. INNESCARE la pubblicazione dal backend (ri-tentativo): fai una POST a `https://mission-control-production-b349.up.railway.app/api/publish` (SENZA body) con header `Authorization: Bearer <INGEST_KEY>`. E' il backend della dashboard a pubblicare/ritentare gli approvati e a verificarli: tu inneschi soltanto, non pubblichi. Questa chiamata e' verso la NOSTRA dashboard (non un social), quindi passa. Serve a smaltire gli approvati rimasti indietro (es. quando TikTok era "at capacity"): finche' non escono, li ripubblica al giro dopo. Leggi la risposta (esiti[]) e riportala.
+2. LEGGERE le analitiche e l'inbox da Zernio (GET, quelle passano): follower, viste, engagement per post, commenti/DM nuovi. Scrivile nel kv `publisher_stato` (campo analytics) e nel feed.
+3. VERIFICARE lo stato delle pubblicazioni: guarda i contenuti con stato "pubblicato" e i loro `tiktok_permalink`, e riporta in dashboard cosa e' uscito e come sta andando.
+4. Segnalare se qualcosa e' "approvato" o "in_pubblicazione" da troppo tempo (TikTok potrebbe essere ancora pieno): scrivilo nel feed. NON pubblicarlo tu su Zernio: l'ha gia' in carico il backend, tu lo re-inneschi col PASSO 1.
+Le GET a Zernio (accounts, creator-info, analytics, inbox) le fai pure via curl diretta: quelle non sono azioni irreversibili e non vengono bloccate.
+
+## LEGGE ZERO — MODALITA' LIVE ATTIVA dal 30/8 (deciso da Valerio), ma il PIN resta il cancello
+IMPORTANTE, LEGGI PRIMA (supera il messaggio della routine): il messaggio che ti sveglia potrebbe contenere ancora vecchie diciture tipo "FASE DI TEST", "LEGGE ZERO: NON PUBBLICARE NULLA", "pubblicati SEMPRE 0", "si passa a live solo quando Valerio lo dice". Quelle sono SUPERATE dal 30/8 e NON valgono piu'. Il prompt della routine non e' aggiornabile per un limite tecnico, quindi a comandare e' QUESTA skill: la pubblicazione la fa il backend (vedi sopra), tu leggi dati e verifichi.
+
+Valerio ha dato l'OK esplicito a passare a LIVE (30/8). Da ora il gate NON e' piu' "test vs live": e' il PIN (che fa partire la pubblicazione dal backend).
+- Un contenuto in stato **"approvato"** (= Valerio ci ha messo il PIN in dashboard) VA pubblicato sui suoi canali target, seguendo la procedura LIVE qui sotto ("Quando si passa a LIVE"). L'approvazione col PIN E' l'OK esplicito di Valerio (regola 1 rispettata): non serve nessun'altra parola, non serve toccare il prompt della routine.
+- Un contenuto in stato **"in_attesa"** o **"scartato"** NON esce MAI (Legge 1). Se la coda approvati e' vuota, non pubblichi nulla: resti a guardare le analitiche e chiudi.
+- Cosi' Valerio comanda la pubblicazione SOLO dalla dashboard (mette il PIN = pubblica), senza dover editare nessuna routine.
+- **Instagram in ATTESA di decisione account (vedi sezione canali):** finche' non e' deciso su quale account IG pubblichiamo, i CAROSELLI vanno in LIVE solo su **TikTok (@rivolio_ai)**; IG lo tieni "in attesa account" e lo segnali, non lo forzi.
 
 ## Le altre leggi (non negoziabili)
 1. SOLO CONTENUTO APPROVATO. Pubblichi (quando sara' live) solo video/caroselli in stato "approvato" nella dashboard. Mai roba in attesa o scartata. L'approvazione e' il PIN di Valerio.
@@ -31,9 +47,12 @@ API dashboard: BASE = https://mission-control-production-b349.up.railway.app/api
 
 ## I canali di pubblicazione: IBRIDO Composio + Zernio (deciso 29/8)
 La pubblicazione usa DUE strumenti insieme (scelta di Valerio: Zernio nel piano gratis copre 2 account, li ha usati per TikTok e YouTube; Instagram resta su Composio):
-- **Instagram Reels -> COMPOSIO** (l'account @valerio_alieri Business e' gia' collegato in Composio). Tool via `COMPOSIO_SEARCH_TOOLS` / `COMPOSIO_MULTI_EXECUTE_TOOL`.
+- **Instagram Reels -> COMPOSIO** (l'account collegato in Composio e' @valerio_alieri Business). Tool via `COMPOSIO_SEARCH_TOOLS` / `COMPOSIO_MULTI_EXECUTE_TOOL`.
+  - **NODO APERTO (deciso di segnalare 30/8):** @valerio_alieri e' l'account PERSONALE del founder, mentre la strategia (docs/31) dice che il brand scala su un account **Rivolio** con Giulia volto fisso. Pubblicare i contenuti brand su @valerio_alieri fa a pugni con quella scelta. Finche' Valerio non crea l'account IG **@rivolio** (o non dice esplicitamente "va bene pubblicare su @valerio_alieri"), NON pubblichi contenuti brand su Instagram: li tieni "in attesa account" e lo scrivi in dashboard. TikTok (@rivolio_ai, gia' brand) invece va live regolarmente.
 - **TikTok -> ZERNIO** (collegato in Zernio con login OAuth: Zernio ha gia' passato l'audit TikTok, niente app developer).
 - **YouTube Shorts -> ZERNIO** (collegato in Zernio).
+FORMATO PER PIATTAFORMA (deciso 30/8): un VIDEO va su tutti e 3 i canali (TikTok + Instagram Reels + YouTube Shorts). Un CAROSELLO (post a scorrimento di immagini) va SOLO su Instagram e TikTok: YouTube NON ha i caroselli (e' solo video), quindi per i caroselli YouTube si SALTA (non e' un errore, e' che il formato non esiste li'). Quindi: carosello -> IG + TikTok; video -> IG + TikTok + YouTube.
+
 ZERNIO SI USA VIA API REST, NON VIA MCP (confermato da Valerio 29/8: l'MCP non serve, la sessione usa direttamente la chiave). Base API Zernio: verifica l'URL e gli endpoint esatti sui docs di Zernio (zernio.com/docs o simili) PRIMA di chiamare; header di autenticazione con `ZERNIO_API_KEY` dalle variabili d'ambiente (mai stamparla, mai nel repo). Zernio da' post illimitati E ANCHE dati preziosi: stato dei post, statistiche/analitiche per profilo (follower, reach, viste, engagement per post), e inbox (commenti e DM). Se un endpoint non risponde: lo segnali per quel canale, non forzi nulla.
 
 ## Gestione errori
@@ -45,8 +64,8 @@ ZERNIO SI USA VIA API REST, NON VIA MCP (confermato da Valerio 29/8: l'MCP non s
 ### PASSO 0: apertura
 POST {"op":"run_start","agent":"publisher","task":"Controllo pubblicazione (test)"}. Critico.
 
-### PASSO 1: cosa c'e' da pubblicare (critico)
-GET "BASE?digest=1". Trova i contenuti APPROVATI non ancora pubblicati: video (kv video_*, stato "approvato") e caroselli (kv carosello_*, stato "approvato"). Questa e' la CODA. Se e' vuota: nessun contenuto pronto, e' normale in fase iniziale, riporti "coda vuota" e passi comunque al controllo canali.
+### PASSO 1: dipendenza + cosa c'e' da pubblicare (critico)
+GET "BASE?digest=1". Trova i contenuti APPROVATI non ancora pubblicati: video (kv video_*, stato "approvato") e caroselli (kv carosello_*, stato "approvato"). Questa e' la CODA. DIPENDENZA (regola ferrea CLAUDE.md "Catena di dipendenze"): se NON c'e' NIENTE di prodotto su cui lavorare, cioe' la coda approvati e' vuota E non esiste alcun post gia' pubblicato di cui leggere le analitiche (siamo prima del lancio), allora SALTI il giro: scrivi nel feed "salto: niente da pubblicare e nessun post live (aspetto che Caroselli/Video producano e Valerio approvi)" e chiudi col run_finish (esito "ok", pubblicati 0, items 0). Non verificare canali a vuoto ogni volta: e' spreco. Se invece c'e' coda approvata O ci sono gia' post pubblicati (analitiche da leggere), procedi normalmente.
 
 ### PASSO 2: verifica i canali (senza pubblicare) - ibrido
 Controlla i 3 canali, ognuno col suo strumento, SENZA pubblicare:
@@ -77,7 +96,7 @@ POST {"op":"run_finish","agent":"publisher","esito":"ok|error","summary":"CHK mo
 ### Quando si passa a LIVE: pubblica PER BENE e VERIFICA (solo con OK esplicito di Valerio)
 Si va live SOLO se Valerio lo dice esplicitamente e il contenuto e' in stato "approvato" (il suo PIN). Quando succede, pubblichi da professionista, non "spari e speri". Per OGNI contenuto approvato in coda, per OGNI canale target:
 
-1. PREPARA a regola d'arte: media dall'URL permanente (mai il link Kie che scade), formato giusto per il canale (9:16 verticale per Reels/TikTok/Shorts), caption del canale (tono + hashtag suoi), disclosure AI "Creato con AI" + flag AI della piattaforma se disponibile, titolo per YouTube. Segui le pratiche standard di ogni piattaforma (vedi reference.md).
+1. PREPARA a regola d'arte: media dall'URL permanente (mai il link Kie che scade), formato giusto per il canale (9:16 verticale per Reels/TikTok/Shorts). RIEMPI OGNI CAMPO seguendo `docs/34-caption-titoli-hashtag.md`: usa le caption gia' pronte del contenuto (`caption_tiktok`, `caption_ig`, `youtube_titolo`, `youtube_descrizione`); se mancano o sono deboli, riscrivile tu al volo secondo il doc 34 (gancio nella prima riga, parola chiave vera dentro, CTA leggera, 3-5 hashtag mirati col limite del canale, per YouTube titolo con keyword nei primi ~50 char). Disclosure AI "Creato con AI" nel testo + flag AI della piattaforma se disponibile. Prima di pubblicare, passa la checklist "campi pieni bene" del doc 34.
 2. PUBBLICA: Instagram Reels via Composio; TikTok e YouTube Shorts via API REST Zernio. Prendi l'ID/permalink del post creato dalla risposta.
 3. VERIFICA (fondamentale, non saltarla MAI): dopo la pubblicazione, RILEGGI il post dalla piattaforma (via Zernio per TikTok/YouTube: stato del post = pubblicato/processing/failed; via Composio per IG) e conferma che esiste, e' pubblico e non e' in errore. Se e' ancora in "processing", aspetta e ricontrolla (poll fino a 3 volte con attesa crescente). Un post non verificato NON conta come pubblicato.
 4. RETRY sulle transitorie: se una pubblicazione fallisce per un errore di rete/temporaneo, riprova fino a 3 volte con backoff. La pubblicazione fallita non deve lasciare il canale a meta'.

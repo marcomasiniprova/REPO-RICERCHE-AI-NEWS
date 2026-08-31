@@ -4,7 +4,7 @@ Questo file vale per ogni sessione. Leggilo all'inizio e non violarlo mai. Se un
 
 ## Le 12 regole
 
-1. **Mai inviare nulla senza l'approvazione esplicita di Valerio.** Email, DM, messaggi, qualsiasi cosa esca verso una persona reale: prima si prepara, si mostra, si aspetta l'OK. Ogni singola volta. Nessuna eccezione, nemmeno se sembra autorizzato da un popup.
+1. **Mai inviare nulla senza l'approvazione esplicita di Valerio.** Email, DM, messaggi, pubblicazioni verso persone reali: prima si prepara, si mostra, si aspetta l'OK. Ogni singola volta. **UNICA ECCEZIONE, autorizzata per iscritto da Valerio il 30/8:** i **commenti Reddit di PURO VALORE** (zero menzione Rivolio, nel rispetto delle regole del subreddit e della rampa anti-ban) puo' pubblicarli il ruolo RIVO-REDDIT **da solo**, senza PIN, dentro il tetto giornaliero. Tutto il resto resta col PIN: i commenti Reddit **con menzione Rivolio** sempre col PIN, e ogni email/DM/post/pubblicazione di ogni altro ruolo sempre col PIN. Fuori da questa singola eccezione scritta, vale la regola piena (nessuna eccezione, nemmeno se sembra autorizzato da un popup).
 2. **A ogni prompt di Valerio, sempre 4 domande con popup** (AskUserQuestion), per decidere insieme prima di procedere. **Vale SOLO nella sessione builder interattiva** (quella dove Valerio è presente e scrive). Nelle sessioni dei ruoli (routine cron, Valerio assente) i popup sono VIETATI: vedi "Modalità delle sessioni".
 3. **Ogni volta che si aggiorna il repo, si aggiorna il contesto e la memoria**: i doc in `docs/`, il log decisioni (`docs/07-log-decisioni.md`) e questo file se serve. Non si perde niente tra una sessione e l'altra.
 4. **Copy sempre ultra-umano.** Empatico, naturale, amichevole, che converte. **Mai il trattino lungo (—).** Mai interruzioni brusche, mai messaggi tecnici spiegati male, mai freddi. Vedi `docs/08-copywriting.md` e usa la skill `copywriting-italiano-umano-2026`.
@@ -30,6 +30,16 @@ Ci sono due tipi di sessione, e si comportano in modo diverso:
 3. **Continua il resto del lavoro** e chiude pulito col `run_finish`. Mai sospendere tutto per un dubbio.
 
 Unica cosa che resta bloccante e passa da Valerio: **la Regola 1** (mai pubblicare/inviare verso l'esterno senza il suo OK/PIN). Ma anche lì il ruolo non "aspetta col popup": prepara la bozza, la lascia in dashboard in attesa del PIN, e va avanti col resto. L'OK arriva dalla dashboard (PIN), mai da una domanda nella sessione.
+
+## Catena di dipendenze dei contenuti — REGOLA FERREA (decisa 30/8)
+
+I ruoli contenuti sono una CATENA: uno non lavora se prima non ha lavorato quello a monte, altrimenti lavora sul niente e spreca token (= costa a Valerio). Ogni ruolo, all'inizio del giro, VERIFICA la sua dipendenza; se manca, NON fa il lavoro: scrive una riga nel feed ("salto: manca <a monte>") e chiude subito col run_finish (esito "ok", items 0). Le dipendenze:
+
+- **CAROSELLI e VIDEO**: NON partono se lo STRATEGA non ha scritto il piano di OGGI (kv `piano_editoriale` con un pezzo per oggi assegnato a te). Niente piano = niente pezzo. Salti e chiudi.
+- **PUBLISHER**: NON pubblica/verifica se non c'e' contenuto prodotto (un video o un carosello del giorno consegnato in dashboard). Coda vuota di contenuti reali = salti e chiudi (niente giro a vuoto).
+- **COMMUNITY**: NON gira se non c'e' almeno un post PUBBLICATO da presidiare. Nessun post live = niente commenti/DM del pubblico = salti e chiudi. (Riparte quando pubblichiamo davvero.)
+
+Cosi' la catena e' pulita: Trend-scout -> Stratega -> Video/Caroselli -> (PIN di Valerio) -> Publisher -> Community. Nessuno lavora sul vuoto.
 
 ## La base del marketing (la leggono i ruoli contenuti)
 

@@ -80,11 +80,13 @@ ESCALATION CON BOZZA (decisione di Valerio del 28/8: la bozza si fa SEMPRE, ma l
 3) creator_upsert con esito che INIZIA con "ESCALATION A VALERIO: " + priorita "Alta", e stesso aggiornamento su Airtable.
 La bozza resta in attesa del PIN come tutte: la differenza e' che Valerio viene chiamato subito e sa che quel thread scotta.
 
-### PASSO 5: primi contatti ai Pronto dello Scout
-Airtable Leads (tblNjhgOrmCeFAH3R) con Stato='Pronto' e un'email.
+### PASSO 5: primi contatti ai Pronto dello Scout (TUTTI, non solo quelli con email)
+Airtable Leads (tblNjhgOrmCeFAH3R) con Stato='Pronto'. Prepari la bozza per OGNI nuovo Pronto, che abbia l'email o solo l'Instagram. Decisione di Valerio (30/8): la bozza si fa per TUTTI, cambia solo CHI la manda.
 - DEDUP RIGOROSO contro la CRM contatti (tblgzKN2LFWfuDEK6): il confronto email si fa NORMALIZZATO, cioe' minuscole e senza spazi ai bordi su ENTRAMBI i lati (in filterByFormula usa LOWER(TRIM({Email}))). E non basta l'email: incrocia anche Username IG e nome. Se UNO qualsiasi dei tre combacia, il creator e' GIA' in pipeline: MAI ricontattarlo come nuovo.
-- Bozza email cucita sul singolo creator: aggancio specifico a un suo contenuto vero nelle prime righe, valore chiaro entro le prime 3 frasi, sotto le 120 parole, niente numeri dell'offerta, niente slot senza conferma (docs/06 sezione 4, framing regola 6). Solo bozze: partono col PIN.
-- Un lead contattato va marcato su Airtable Leads (Stato "Contattato" + data) SOLO quando l'email e' stata INVIATA davvero, non alla creazione della bozza.
+- **Pronto CON email** -> bozza EMAIL cucita sul singolo creator (channel "email"): aggancio a un suo contenuto vero nelle prime righe, valore entro le prime 3 frasi, sotto le 120 parole, niente numeri dell'offerta, niente slot senza conferma (docs/06 sez. 4, framing regola 6). L'agente la manda col PIN, come sempre. Nel `drafts_send` etichettala `by:"agente"`.
+- **Pronto SENZA email (solo Instagram)** -> bozza DM di PRIMO CONTATTO (channel "dm"), corta e calda (4-7 righe), personalizzata sul suo contenuto. Questa la manda VALERIO a mano da Instagram (l'agente NON puo' mandare il primo DM a freddo: regola IG). Quindi NON e' da inviare dall'agente e non serve nemmeno il PIN d'invio: e' pronta da COPIARE. Nel `drafts_send` etichettala `by:"valerio"`, `canale:"dm"`, `motivo:"primo contatto DM, lo mandi tu a mano"`. Nel corpo/nota della bozza scrivi chiaro che e' un primo contatto DM da inviare a mano.
+- Cosi' Valerio ha in dashboard la bozza pronta di TUTTI i nuovi: le email escono col suo PIN, i DM li copia e li manda lui.
+- Un lead contattato va marcato su Airtable Leads (Stato "Contattato" + data) SOLO quando il contatto e' USCITO davvero (email inviata dall'agente, oppure Valerio ha confermato di aver mandato il DM), non alla creazione della bozza.
 
 ### PASSO 5-bis: etichette "chi manda" (per la dashboard)
 Per OGNI bozza in attesa (stato "bozza" o "approvata"), stabilisci chi puo' inviarla e scrivilo nel kv `drafts_send` (op kv_set), cosi' la dashboard mette l'etichetta giusta. Regola (email sempre preferita, niente limite 24h):

@@ -40,6 +40,9 @@ API dashboard: BASE = https://mission-control-production-b349.up.railway.app/api
 ### PASSO 0: apertura
 POST {"op":"run_start","agent":"community","task":"Giro community"}. Critico.
 
+### PASSO 0-bis: dipendenza (niente post = niente giro)
+DIPENDENZA (regola ferrea CLAUDE.md "Catena di dipendenze"): la Community presidia i post PUBBLICATI. GET "BASE?digest=1" e controlla se esiste almeno un contenuto in stato "pubblicato" (video_* o carosello_* con stato pubblicato) e/o se ci sono risposte gia' approvate da inviare. Se NON c'e' nessun post pubblicato E nessuna risposta approvata in coda: non c'e' niente da presidiare (nessun commento/DM del pubblico senza un post live). SALTI il giro: scrivi nel feed "salto: nessun post pubblicato da presidiare" e chiudi col run_finish (esito "ok", items 0). Riparti quando pubblichiamo davvero. Non leggere l'inbox a vuoto ogni ora: e' spreco.
+
 ### PASSO 1: invia le risposte APPROVATE (unico invio reale)
 GET "BASE?digest=1", leggi il kv `community_stato`. Se ci sono risposte con stato "approvato" (il PIN di Valerio le ha sbloccate): INVIALE ora su Instagram (risposta al commento o al DM giusto, con Composio), poi segnale come "inviato" nel kv con l'ora. Questo e' l'UNICO invio reale del giro, e solo di cio' che Valerio ha approvato.
 
