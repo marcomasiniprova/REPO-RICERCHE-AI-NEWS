@@ -218,7 +218,11 @@ export async function getPlatformPostStatus(
     platformStatus: pl ? String(pl.status ?? '') : undefined,
     error: pl ? (pl.errorMessage as string) : undefined,
     permalink: pl
-      ? ((pl.permalink as string) ?? (pl.publishedUrl as string) ?? (pl.postUrl as string) ?? undefined)
+      ? ((pl.platformPostUrl as string) ??
+        (pl.permalink as string) ??
+        (pl.publishedUrl as string) ??
+        (pl.postUrl as string) ??
+        undefined)
       : undefined,
   };
 }
