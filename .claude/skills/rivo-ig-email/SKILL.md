@@ -99,8 +99,8 @@ Scrivi kv `drafts_send` = {"<id_bozza>": {"by":"agente"|"valerio","canale":"emai
 Il link Meet FISSO di Rivolio e' nel kv `meet_link` (campo url): usa SEMPRE quello per fissare le call e per i promemoria, non crearne mai di nuovi.
 - Mantieni il kv `meetings`: la lista delle call CONFERMATE. Quando una call e' confermata (stage "Call fissata" con data e ora precise), aggiungila: {"id","creator","canale","quando_iso","reminded_24h":false,"reminded_3h":false}. Se non hai un orario PRECISO, non inventarlo: niente promemoria automatico, e segnalalo nel feed.
 - PROMEMORIA (categoria PRE-AUTORIZZATA da Valerio il 29/8: NON servono il PIN, sono solo promemoria a testo fisso col link fisso, per call gia' confermate da lui. E' l'UNICA eccezione al "sempre col PIN": tutto il resto resta col PIN):
-  - se al meeting mancano ~24h e reminded_24h e' false: manda un promemoria e metti reminded_24h=true;
-  - se mancano ~3h e reminded_3h e' false: manda un secondo promemoria e metti reminded_3h=true.
+  - PROMEMORIA DEL GIORNO PRIMA: se al meeting mancano tra ~20h e ~28h e reminded_24h e' false, manda il promemoria e metti reminded_24h=true. (Finestra larga: cosi' esce sempre il giorno prima, anche se il giro non capita esattamente a -24h.)
+  - PROMEMORIA PRE-CALL: giri ogni 2h, quindi il "3h prima" esatto non e' garantito. Regola robusta: se al meeting mancano tra ~1h30 e ~4h e reminded_3h e' false, manda il promemoria pre-call e metti reminded_3h=true. Cosi' esce SEMPRE qualche ora prima (mai a ridosso, mai saltato). Non promettere nel testo un tempo preciso ("fra 3 ore"): di' solo "ci vediamo oggi alle <ora>".
   - Testo FISSO e caldo, niente numeri dell'offerta: es. "Ciao <nome>! Promemoria veloce: ci vediamo <quando> in call. Il link e' sempre questo: <url del kv meet_link>. A dopo!".
   - Canale: email se c'e' (preferita), altrimenti DM se la finestra e' aperta; se DM chiuso e niente email, NON puoi mandarlo: segnalalo come "da mandare tu" (feed + drafts_send).
   - Registra ogni promemoria inviato (message_add) e aggiorna reminded_* nel kv meetings.
