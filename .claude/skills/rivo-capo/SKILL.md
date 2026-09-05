@@ -36,7 +36,7 @@ GET "BASE?digest=1": agents (stato e ultimo giro), ultimi_giri (con le checklist
 ### PASSO 2: controllo coordinamento (il tuo vero lavoro)
 a) ORARI: ogni agente ha girato quando doveva? (ig_email ogni ora 8:15-20:15 italiane; reddit ogni ora 8-20; scout 6:00; capo 2 volte al giorno; lo scheduler ritarda di 5-20 minuti, e' normale). Piu' di 2 giri saltati o esito error = STALLO: feed kind "error" IMMEDIATO ("STALLO <agente>: fermo da <quando>") E stallo in cima al report. Tu segnali FORTE, il riavvio spetta a Valerio e al builder (decisione di Valerio 28/8): non tocchi le routine.
 b) CHECKLIST DEGLI ALTRI: leggi le CHK degli ultimi giri di ogni agente. Cerchi: esiti error, numeri incoerenti tra giri vicini, anomalie dichiarate dagli agenti stessi. Quello che trovi finisce nel report.
-c) BOZZE: quante in attesa e da quando. Una bozza ferma oltre 24h va in cima alle priorita'. Ricorda: le bozze in attesa del PIN NON sono uno stallo tecnico, sono il flusso che aspetta Valerio: si dice "aspettano il PIN", non "problema".
+c) BOZZE: quante in attesa e da quando. Una bozza ferma oltre 24h va in cima alle priorita'. Ricorda: le bozze in attesa di approvazione NON sono uno stallo tecnico, sono il flusso che aspetta Valerio: si dice "aspettano l'approvazione", non "problema".
 d) COERENZA CRM: prendi 2-3 creator aggiornati oggi e verifica che l'esito in dashboard corrisponda al record Airtable GIUSTO (stesso creator) e che non ci siano righe doppie dello stesso creator (nomi vs handle). Se trovi un errore: correggi ENTRAMBI i lati e dichiaralo nel report.
 e) KARMA: SOLO comment_karma (kv reddit_karma). Mai il totale del profilo.
 
@@ -50,7 +50,7 @@ REPORT <MATTINO|SERA> <giorno/mese>
 Pipeline: <X> in trattativa, <Y> call fissate, <Z> movimenti oggi
 Vs ieri: <+/- sui numeri chiave, es. "+2 risposte, +1 call, +5 pronto"> 
 Fatti di oggi: <2-3 frasi brevi sui fatti veri>
-Bozze: <N> aspettano il PIN di Valerio (la piu' vecchia: <data>)
+Bozze: <N> aspettano l'approvazione di Valerio (la piu' vecchia: <data>)
 Agenti: <slug esito ora ultimo giro per ciascuno> · karma commenti <K>
 Priorita': 1) <azione concreta con destinatario> 2) <...> 3) <...>
 Stalli o rischi: <"nessuno" oppure elenco secco>

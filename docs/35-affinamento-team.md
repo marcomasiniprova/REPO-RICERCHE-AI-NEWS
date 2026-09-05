@@ -1,6 +1,6 @@
-# 35 - Affinare il team: configurazione degli agenti (PIANO, in attesa del tuo OK)
+# 35 - Affinare il team: configurazione degli agenti (IMPLEMENTATO il 5/9)
 
-Questo e' il piano per portare il Growth RIVO Team al livello successivo: non piu' agenti "liberi senza configurazione", ma ogni ruolo calibrato al massimo. Prima leggi, poi mi dai l'OK (anche punto per punto), poi implemento. Niente parte finche' non dici sì.
+Come abbiamo portato il Growth RIVO Team al livello successivo: non piu' agenti "liberi senza configurazione", ma ogni ruolo calibrato. Valerio ha approvato per popup (autocompact 200k, efficienza processi su tutte le skill, hook git-pull + run_finish, deny segreti, PIN -> approvazione ovunque, mappa modelli Sonnet/Opus, tool scoping opzionale) e le parti repo-side sono su `main`. Le parti a livello sessione (modelli, tool) le applica Valerio.
 
 Sei d'accordo con la visione: siamo nel 2026, il team fa il middle work, tu fai solo le poche decisioni che contano. Concordo. Ma per farlo bene bisogna sapere DOVE vive la configurazione, perche' non tutto lo posso toccare io.
 
@@ -23,95 +23,96 @@ Le variabili d'ambiente (chiavi API), la rete, il container cloud: gia' configur
 
 ## 2. Cosa propongo, punto per punto
 
-### A. Autocompact per sessione (tu volevi "200k token")
+### A. Autocompact per sessione a 200k token [FATTO, repo-side]
 
-Onesta' tecnica: in Claude Code il taglio del contesto non si imposta come numero secco di token, ma come **frazione della finestra** (`autoCompactWindow`, es. 0.8 = taglia quando il contesto e' pieno all'80%). La finestra dei modelli che usiamo e' 200k token. Quindi "compatta a 200k" vorrebbe dire "quando e' pieno al 100%": troppo tardi.
+Verificato online: Valerio aveva ragione. In Claude Code `autoCompactWindow` accetta un **valore in token assoluti** (da 100K a 1M), e i modelli che usiamo (Opus 4.6+ e Sonnet con `[1m]`) hanno la **finestra da 1M token**. Il default compatta intorno al 95% (~950k su 1M): troppo tardi, la sessione e' gia' sporca e brucia token.
 
-Cosa faccio davvero (repo-side, vale per tutti):
+Fatto in `.claude/settings.json` (vale per tutti):
 - `autoCompactEnabled: true`
-- `autoCompactWindow: 0.8` cioe' compatta intorno ai ~160k token, prima di rischiare di riempire la finestra.
+- `autoCompactWindow: 200000` (taglia a 200k, tiene i giri puliti ed economici).
 
-Se domani passiamo a un modello con finestra piu' grande (1M), allora 0.2 = ~200k netti e ti do davvero i "200k" che chiedevi. Per ora 0.8 e' la scelta sana. Dimmi se ti va o se preferisci un taglio piu' aggressivo (0.7).
+### B. Passata di EFFICIENZA sui processi [FATTO sulle skill]
 
-Nota: i nostri giri sono corti (aprono, lavorano, chiudono col run_finish), quindi raramente arrivano a compattare. E' rete di sicurezza, non un costo.
+Chiarito da Valerio: non e' "output conciso" (lui non legge le sessioni), e' **efficienza dei processi**. Obiettivo: giri piu' veloci ed economici, tagliando comandi inutili/lunghi, passaggi macchinosi e round-trip ridondanti, SENZA toccare la qualita' del lavoro finale.
 
-### B. Output conciso in tutto il team (taglia costi e velocizza)
-
-Repo-side aggiungo uno stile di output "operativo": niente preamboli, niente spiegoni, va dritto al lavoro e al run_finish. Meno token buttati = meno costo Claude e giri piu' rapidi. Vale per tutti i ruoli, che restano comunque ultra-umani nei CONTENUTI (regola 4): lo stile conciso e' per il loro modo di ragionare/loggare, non per le caption al pubblico.
+Fatto: passata conservativa su tutte le 13 skill (SKILL.md + reference). Regola d'oro applicata: nel dubbio si lascia com'e', meglio non rompere un giro che funziona. Le limature vere trovate finora: eliminata una GET ridondante nello Stratega (dato gia' presente nel digest). La maggior parte dei giri era gia' snella (una sola GET al digest, passi non duplicati), quindi pochi tagli sicuri: e' un bene, vuol dire che i processi erano gia' puliti.
 
 ### C. Mappa MODELLO per ruolo (la leva costi/qualita' piu' forte)
 
 Oggi girano tutti sullo stesso modello di default. Spreco: un ruolo che legge e innesca non ha bisogno dello stesso cervello di chi scrive la strategia. Proposta:
 
-| Ruolo | Modello proposto | Perche' |
+Deciso da Valerio: solo **Sonnet e Opus**, niente Haiku (tiene alla qualita' del cervello degli agenti). Opus sui ruoli creativi/strategici, Sonnet su quelli piu' operativi ma comunque intelligenti.
+
+| Ruolo | Modello | Perche' |
 |---|---|---|
-| STRATEGA | forte (Opus) | e' il cervello: decide il piano su cui lavorano tutti |
-| VIDEO | forte (Opus) | script e regia creativa, angoli, hook |
-| CAROSELLI | forte (Opus) | copy e design delle slide, converte |
-| CRO | forte (Opus) | analisi funnel e ipotesi di test, alto impatto |
-| SEO | medio (Sonnet) | articoli lunghi ma piu' meccanici, ottimo rapporto qualita'/costo |
-| IG e Email | medio (Sonnet) | messaggi personalizzati ai creator: qualita' serve, ma e' ripetitivo |
-| REDDIT | medio (Sonnet) | commenti di valore, volume, va bene un modello agile |
-| COMMUNITY | medio (Sonnet) | risposte a commenti/DM, tono umano ma compiti circoscritti |
-| TREND-SCOUT | leggero (Haiku) | radar: cerca, filtra, passa munizioni. Lavoro meccanico |
-| SCOUT | leggero (Haiku) | trova profili e li carica in CRM: meccanico |
-| PUBLISHER (Distribuzione) | leggero (Haiku) | innesca il backend e tira giu' i numeri: quasi zero ragionamento |
+| STRATEGA | Opus | e' il cervello: decide il piano su cui lavorano tutti |
+| VIDEO | Opus | script e regia creativa, angoli, hook |
+| CAROSELLI | Opus | copy e design delle slide, converte |
+| CRO | Opus | analisi funnel e ipotesi di test, alto impatto |
+| SEO | Sonnet | articoli lunghi ottimizzati, ottimo rapporto qualita'/costo |
+| IG e Email | Sonnet | messaggi personalizzati ai creator, qualita' alta ma piu' ripetitivo |
+| REDDIT | Sonnet | commenti di valore a volume, va bene un modello agile ma bravo |
+| COMMUNITY | Sonnet | risposte a commenti/DM, tono umano, compiti circoscritti |
+| TREND-SCOUT | Sonnet | radar: cerca, filtra, passa munizioni |
+| SCOUT | Sonnet | trova profili e li carica in CRM |
+| PUBLISHER (Distribuzione) | Sonnet | innesca il backend e tira giu' i numeri |
 
-Effetto: paghi il cervello grosso solo dove sposta i risultati, i ruoli meccanici costano una frazione e vanno piu' veloci. Questa mappa la applichi TU quando (ri)configuri ogni sessione: io ti scrivo il come, riga per riga, ruolo per ruolo. Se preferisci, in fase di implementazione provo io a settare il modello via routine e ti dico subito quali accetta e quali no (le sessioni persistenti spesso vanno ricreate da te).
+Effetto: Opus dove nasce la qualita' che sposta i risultati, Sonnet dove il lavoro e' piu' operativo (costa meno e va piu' veloce, restando bravo). Se ne occupa Valerio quando (ri)configura ogni sessione. Nota tecnica: le routine sono agganciate a sessioni persistenti, quindi il modello si fissa alla creazione/riconfigurazione della sessione (non lo posso cambiare io dalla routine).
 
-### D. Le 3 regole ferree rese MECCANICHE via hook (non piu' affidate alla memoria del modello)
+### D. Due hook che rendono i giri affidabili [FATTO, repo-side]
 
-Oggi le regole vivono nelle skill: il modello le legge e le rispetta. Funziona, ma "si fida". Con gli hook diventano imposte dal sistema. Repo-side, in `.claude/hooks/`:
+Deciso da Valerio: solo i due hook che rendono i giri affidabili, senza aggiungere config di troppo (il blocco pubblicazioni via hook e' stato scartato: l'approvazione in dashboard e il backend gia' coprono quel fronte). In `.claude/hooks/`:
 
-1. **Blocco invii/pubblicazioni senza PIN (regola 1) - PreToolUse.**
-   Un hook che intercetta le azioni verso l'esterno (email, DM, post) e le blocca se non c'e' il via libera. E' la rete di sicurezza numero uno: anche se un domani un modello "sbrocca", il sistema non lo lascia pubblicare. Con l'eccezione scritta gia' prevista (commenti Reddit di puro valore).
+1. **SessionStart - `session-start.sh`.** Garantisce il repo fresco (skill aggiornate) a inizio giro. NO-OP sicuro: agisce solo se la sessione e' su `main` con working tree pulita, quindi non tocca mai la sessione builder. `git pull --ff-only`, niente merge mess.
 
-2. **Git pull garantito a inizio giro - SessionStart.**
-   Un hook che assicura repo fresco e skill aggiornate a ogni fire. Cosi' un ruolo non lavora mai su una versione vecchia.
+2. **Stop - `stop-run-finish.sh`.** Se un giro di ruolo ha aperto il lavoro (run_start) ma non lo ha chiuso (run_finish), ricorda di registrare l'esito prima di fermarsi, cosi' la dashboard ha sempre il polso del giro. Robustezza: conta solo le chiamate VERE (tool_use Bash che contiene il token), non le menzioni nel testo della skill, e ha il guard anti-loop. Collaudato in locale su transcript finti: blocca il giro-ruolo non chiuso, ignora la sessione builder e i giri gia' completi.
 
-3. **run_finish garantito a fine giro - Stop.**
-   Un hook che, se il ruolo sta chiudendo senza aver registrato l'esito, lo ricorda / lo forza. Cosi' la dashboard ha sempre il polso di ogni giro (niente giri "muti").
+Attivi via `.claude/settings.json` (blocco `hooks`).
 
-Onesta': gli hook nel cloud CCR vanno collaudati (l'ambiente cloud ha un suo classificatore che gia' blocca molte azioni esterne, per quello pubblichiamo dal backend). Li implemento con prudenza e li provo su un ruolo prima di estenderli a tutti. Se un hook desse noia, si toglie in un secondo.
+### E. Segreti blindati a livello di sistema (regola 8) [FATTO, repo-side]
 
-### E. Segreti blindati a livello di sistema (regola 8) - permissions.deny
+In `.claude/settings.json`, blocco `permissions.deny`: i ruoli non possono leggere file sensibili (`.env`, `*.pem`, chiavi ssh, `credentials.json`, file `*secret*`). Le chiavi restano solo in env, mai lette da file. Difesa in profondita' sulla regola 8. NON tocca l'uso normale delle chiavi via variabili d'ambiente (che e' come i ruoli le usano davvero).
 
-Aggiungo un `deny` che impedisce ai ruoli di leggere/stampare file sensibili e di committare chiavi. Le chiavi restano solo in env. Difesa in profondita' sulla regola 8.
+### F. Tool scoping per ruolo [PROPOSTA, la applichi tu]
 
-### F. Tool scoping per ruolo (meno errori, piu' sicurezza)
+Oggi ogni sessione ruolo ha la stessa cassetta attrezzi larghissima (inclusi Write/Edit/MultiEdit/NotebookEdit e Task per creare sotto-agenti). Onesta': la maggior parte dei tool serve (Bash per le curl, Read, Skill, WebFetch/WebSearch, i connettori Composio/Airtable), quindi il guadagno di stringere e' modesto e va fatto con cautela per non rompere pattern utili (es. un file temporaneo per una curl grossa).
 
-Oggi tutti i ruoli hanno la stessa cassetta degli attrezzi larghissima. Un ruolo che non pubblica non ha bisogno dei tool di pubblicazione. Restringere la cassetta per ruolo = meno modi di sbagliare e giri piu' puliti. Questo pero' e' livello B (sta nella config della sessione): te lo preparo come proposta ruolo per ruolo, decidi tu se stringere.
+Proposta conservativa, da applicare quando (ri)configuri le sessioni:
+- **Togliere `Task`**: nessun ruolo deve creare sotto-agenti a raffica (controllo costi, evita fan-out accidentali).
+- **Togliere `NotebookEdit`**: mai usato dai ruoli.
+- **Valutare (non obbligatorio) togliere `Edit`/`MultiEdit`**: i ruoli non modificano i file del repo (regola "mai committare/pushare"). Lasciare `Write` (serve per file temporanei dei payload curl). Se un ruolo non scrive nemmeno file temporanei, si puo' togliere anche `Write`.
+
+Guadagno: meno modi di sbagliare, giri piu' puliti. Ma e' un extra, non una priorita': se preferisci lasciare com'e', va bene. Decidi tu.
 
 ---
 
 ## 3. Chi tocca cosa (tabella onesta)
 
-| Intervento | Livello | Chi lo fa |
-|---|---|---|
-| Autocompact 0.8 | A - repo | io |
-| Output conciso | A - repo | io |
-| Hook PIN / git pull / run_finish | A - repo | io (con collaudo) |
-| Deny segreti | A - repo | io |
-| Modello per ruolo | B - sessione | tu (io ti guido riga per riga) |
-| Tool scoping per ruolo | B - sessione | tu (io preparo la proposta) |
-| Cron e on/off dei ruoli | routine | io |
+| Intervento | Livello | Chi lo fa | Stato |
+|---|---|---|---|
+| Autocompact 200k | A - repo | io | FATTO |
+| Efficienza processi (skill) | A - repo | io | FATTO |
+| Hook git pull + run_finish | A - repo | io (collaudati) | FATTO |
+| Deny segreti | A - repo | io | FATTO |
+| PIN -> approvazione (CLAUDE.md + skill) | A - repo | io | FATTO |
+| Modello per ruolo (Sonnet/Opus) | B - sessione | tu | da applicare |
+| Tool scoping per ruolo | B - sessione | tu | proposta, opzionale |
+| Cron e on/off dei ruoli | routine | io | gestito |
 
 ---
 
 ## 4. Rischi e limiti (te li dico chiari, regola 12)
 
-- **Non posso cambiare il modello delle tue sessioni da solo.** E' la cosa piu' preziosa (i costi) ma passa da te. Te la rendo un copia-incolla.
-- **Gli hook nel cloud vanno collaudati.** Non li do per scontati: li provo su un ruolo, poi estendo.
-- **La config repo-side prende effetto quando arriva su `main`** (i ruoli fanno pull da main). Quindi al momento dell'OK decidiamo insieme se andare dritti su main o passare da un branch e merge.
-- **Niente stravolgimenti dei ruoli.** Qui affiniamo la CONFIGURAZIONE, non ridefiniamo cosa fa ognuno. Le skill restano quelle.
+- **Il modello per ruolo non lo posso cambiare io.** Le routine sono agganciate a sessioni persistenti: il modello si fissa quando (ri)crei la sessione. Passa da te.
+- **La config repo-side prende effetto quando i ruoli fanno pull da `main`.** E' su main: al prossimo giro e' attiva. I ruoli in pausa la prendono quando li riaccendi.
+- **Efficienza = limatura, non stravolgimento.** Le skill restano quelle: ho solo tolto due round-trip ridondanti (una GET nello Stratega, una GET doppia nel Community) e convertito la terminologia. Cosa fa ogni ruolo e cosa produce non e' cambiato.
 
 ---
 
-## 5. Prossimo passo
+## 5. Stato finale
 
-Dimmi OK (tutto, o punto per punto: A, B, C, D, E, F). Appena confermi:
-1. Implemento subito A, B, E (repo-side sicuri).
-2. Implemento D con collaudo su un ruolo, poi estendo.
-3. Ti consegno la guida copia-incolla per C e F (modello e tool per ruolo), che applichi tu.
+FATTO e su `main`: autocompact 200k, hook git-pull + run_finish (collaudati), deny segreti, PIN -> approvazione ovunque (CLAUDE.md + tutte le skill, zero "PIN" residuo), limatura efficienza sulle skill.
 
-Stato attuale del team: attivi solo **IG-Email, Scout, Reddit**. Gli altri 8 restano in pausa finche' non dici tu (l'affinamento lo prepariamo mentre sono fermi, cosi' quando li riaccendi partono gia' calibrati).
+DA FARE TU quando vuoi: impostare Sonnet/Opus per ruolo alla (ri)configurazione delle sessioni (mappa nel punto C); eventuale tool scoping (punto F, opzionale).
+
+Stato del team: attivi solo **IG-Email, Scout, Reddit**. Gli altri 8 in pausa: l'affinamento e' pronto, quando li riaccendi partono gia' calibrati.

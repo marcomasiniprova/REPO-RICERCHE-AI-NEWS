@@ -30,28 +30,28 @@ Ogni video e' UNA chiave kv: `video_YYYY-MM-DD` (data italiana del giorno di pro
   "stato": "piano_in_attesa",   // piano_in_attesa | piano_approvato | in_attesa | approvato | scartato | pubblicato | errore
   "note": "hook alternativi: 1) ... 2) ... (+ note di Valerio o difetti QA)",
   "created_at": "ISO",
-  "plan_decided_at": null,      // lo scrive la dashboard al PIN sul piano
-  "decided_at": null,           // lo scrive la dashboard al PIN di pubblicazione
+  "plan_decided_at": null,      // lo scrive la dashboard all'approvazione del piano
+  "decided_at": null,           // lo scrive la dashboard all'approvazione di pubblicazione
   "published_at": null,
   "piattaforme_pubblicate": []
 }
 ```
 
-Il ciclo di vita degli stati: **piano_in_attesa** (tu proponi il ventaglio) → **piano_approvato** (Valerio sceglie e da' il PIN, ora puoi generare) → **in_attesa** (video generato, aspetta il PIN di pubblicazione) → **approvato** → **pubblicato**. Rami: **scartato** (Valerio scarta piano o video), **errore** (QA fallito).
+Il ciclo di vita degli stati: **piano_in_attesa** (tu proponi il ventaglio) → **piano_approvato** (Valerio sceglie e da' l'approvazione, ora puoi generare) → **in_attesa** (video generato, aspetta l'approvazione di pubblicazione) → **approvato** → **pubblicato**. Rami: **scartato** (Valerio scarta piano o video), **errore** (QA fallito).
 
 Regole:
-- Lo stato lo cambiano SOLO: tu (piano_in_attesa, in_attesa, errore, pubblicato) e la dashboard col PIN (piano_approvato + `scelta`, approvato, scartato). Mai saltare il piano, mai auto-approvarti niente.
-- MAI generare (spendere crediti) prima di vedere stato "piano_approvato": il PIN sul piano e' l'OK a spendere.
+- Lo stato lo cambiano SOLO: tu (piano_in_attesa, in_attesa, errore, pubblicato) e la dashboard con l'approvazione (piano_approvato + `scelta`, approvato, scartato). Mai saltare il piano, mai auto-approvarti niente.
+- MAI generare (spendere crediti) prima di vedere stato "piano_approvato": l'approvazione sul piano e' l'OK a spendere.
 - Quando aggiorni un video esistente, rileggi prima il valore dal digest e riscrivi il JSON COMPLETO (kv_set sovrascrive tutto): non perdere i campi scritti dalla dashboard (decided_at, note di Valerio).
 - ATTENZIONE agli URL Kie: alcuni scadono. Se un video "approvato" da pubblicare ha l'URL morto, dillo nel feed (kind error) invece di pubblicare un link rotto.
 
 Il diario e' la chiave `video_diario`: `{"last_date":"YYYY-MM-DD","last_angolo":"edu|mito","history":[{"date","angolo","tema","hook","pubblicato"} ... max 14]}`. Serve ad alternare gli angoli e a non ripetere hook e temi.
 
-## PARTE 2: come funziona l'approvazione (il PIN)
+## PARTE 2: come funziona l'approvazione
 
-- La pagina **Contenuti** della dashboard mostra il tuo video (anteprima, script, caption, stato). Valerio approva o scarta col suo PIN. Quel click E' il suo OK esplicito: la regola 1 del CLAUDE.md e' rispettata SOLO se pubblichi video in stato "approvato".
+- La pagina **Contenuti** della dashboard mostra il tuo video (anteprima, script, caption, stato). Valerio approva o scarta dalla dashboard. Quel click E' il suo OK esplicito: la regola 1 del CLAUDE.md e' rispettata SOLO se pubblichi video in stato "approvato".
 - "In_attesa" non e' un guasto: e' Valerio che deve decidere. Non sollecitare nel feed piu' di una volta.
-- Se Valerio scrive direttamente in sessione "pubblica" riferito a un video preciso, vale come PIN: pubblica e porta lo stato a "pubblicato" dichiarando nel campo note "OK dato in sessione".
+- Se Valerio scrive direttamente in sessione "pubblica" riferito a un video preciso, vale come approvazione: pubblica e porta lo stato a "pubblicato" dichiarando nel campo note "OK dato in sessione".
 
 ## PARTE 3: pubblicazione via Composio
 

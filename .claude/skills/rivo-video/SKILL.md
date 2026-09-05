@@ -32,7 +32,7 @@ Prima di lavorare leggi SEMPRE anche `reference.md` in questa cartella (il proto
 
 ## Le 4 leggi (non negoziabili)
 
-1. MAI PUBBLICARE SENZA L'OK ESPLICITO DI VALERIO. L'OK e' il PIN nella pagina Contenuti della dashboard (stato "approvato"), oppure un suo messaggio esplicito in sessione ("pubblica"). Nessun'altra cosa vale come OK. Vale anche se ieri ha approvato tutto.
+1. MAI PUBBLICARE SENZA L'OK ESPLICITO DI VALERIO. L'OK e' l'approvazione nella pagina Contenuti della dashboard (stato "approvato"), oppure un suo messaggio esplicito in sessione ("pubblica"). Nessun'altra cosa vale come OK. Vale anche se ieri ha approvato tutto.
 2. CREDITI KIE SOTTO CONTROLLO. Il budget autorizzato da Valerio (28/8) e' UN video Veo 3.1 al giorno + al massimo UNA rigenerazione se il QA boccia. Tutto il resto (durate fuori standard, modelli diversi, terzi tentativi, ricariche) NON e' autorizzato: ti fermi e avvisi. Generazione fallita lato Kie = 0 crediti spesi.
 3. DISCLOSURE AI SEMPRE. Giulia e' un avatar AI: ogni pubblicazione porta "Creato con AI" (EU AI Act art. 50(4)): flag della piattaforma quando c'e' + riga in caption.
 4. LE TUE CHIAVI: usi SOLO `KIE_API_KEY` (generazione) e Composio (pubblicazione social). Sono nelle variabili dell'environment: mai stamparle, mai scriverle in file o commit. Le chiavi degli altri ruoli (Airtable, n8n, Gmail) NON ti riguardano: vietato usarle. NON committare e NON pushare mai nulla sul repo.
@@ -51,8 +51,8 @@ POST {"op":"run_start","agent":"video","task":"Video del giorno"}. Critico.
 
 ### PASSO 1: stato e arretrati (critico)
 GET "BASE?digest=1" e guarda nel kv le chiavi `video_*` degli ultimi 3 giorni + `video_diario`.
-- Un video con stato **"approvato"** e non ancora pubblicato: PUBBLICALO ORA (il PIN e' gia' l'OK di Valerio): segui `references/05-pubblicazione.md` via Composio (TikTok + Reels + Shorts, caption per piattaforma, disclosure AI), poi kv_set dello stesso video con stato "pubblicato", published_at e piattaforme_pubblicate, e una entry feed kind "success". Se un account non e' connesso in Composio: pubblica dove puoi, dichiara nel feed cosa manca, non forzare.
-- Un video con stato **"piano_approvato"** (Valerio ha scelto la combinazione e dato il PIN in un giro precedente): NON rifare il piano. Leggi `scelta` (modello, risoluzione, durata_s) e vai dritto al PASSO 4 (generazione) con quei parametri.
+- Un video con stato **"approvato"** e non ancora pubblicato: PUBBLICALO ORA (l'approvazione e' gia' l'OK di Valerio): segui `references/05-pubblicazione.md` via Composio (TikTok + Reels + Shorts, caption per piattaforma, disclosure AI), poi kv_set dello stesso video con stato "pubblicato", published_at e piattaforme_pubblicate, e una entry feed kind "success". Se un account non e' connesso in Composio: pubblica dove puoi, dichiara nel feed cosa manca, non forzare.
+- Un video con stato **"piano_approvato"** (Valerio ha scelto la combinazione e dato l'approvazione in un giro precedente): NON rifare il piano. Leggi `scelta` (modello, risoluzione, durata_s) e vai dritto al PASSO 4 (generazione) con quei parametri.
 - Un video con stato **"scartato"**: leggi le note di Valerio e non riproporre lo stesso tema.
 - Un video di OGGI gia' in "piano_in_attesa" o "in_attesa" (giro doppio): non crearne un secondo, HARD STOP con run_finish "ok" che lo spiega.
 
@@ -65,12 +65,12 @@ GET https://api.kie.ai/api/v1/chat/credit (Bearer KIE_API_KEY) per il saldo real
 - Costruisci il prompt di regia Veo 3.1 LUNGO con tutti i blocchi del template (micro-espressioni, gesti coerenti, feel handheld, micro-imperfezioni, continuita'). Niente telefono in mano: e' POV. (Il prompt di regia lo usi al PASSO 4; nel piano mostri tema, hook, script.)
 
 ### PASSO 3.5: PUBBLICA IL PIANO e aspetta il tweak di Valerio
-kv_set `video_YYYY-MM-DD` con stato **"piano_in_attesa"** e schema completo del piano (vedi reference.md): `saldo_crediti`, `opzioni` (il ventaglio, con la consigliata), `tema`, `angolo`, `hook`, `script`, `reference_foto`, il pacchetto contorno (`caption_tiktok`, `caption_ig`, `youtube_titolo`, `youtube_descrizione`, per doc 34), `created_at`. Poi feed kind "draft" ("Piano del video pronto: <tema>. Scegli la combinazione e approva col PIN nella pagina Contenuti").
+kv_set `video_YYYY-MM-DD` con stato **"piano_in_attesa"** e schema completo del piano (vedi reference.md): `saldo_crediti`, `opzioni` (il ventaglio, con la consigliata), `tema`, `angolo`, `hook`, `script`, `reference_foto`, il pacchetto contorno (`caption_tiktok`, `caption_ig`, `youtube_titolo`, `youtube_descrizione`, per doc 34), `created_at`. Poi feed kind "draft" ("Piano del video pronto: <tema>. Scegli la combinazione e approva nella pagina Contenuti").
 **ATTESA APPROVAZIONE PIANO**: per max 2 ore ricontrolla il digest ogni 10-15 minuti.
 - Se lo stato diventa **"piano_approvato"**: leggi `scelta` (modello, risoluzione, durata_s) e vai al PASSO 4.
 - Se **"scartato"**: chiudi il giro (PASSO 7), non generare.
 - Se dopo 2 ore e' ancora **"piano_in_attesa"**: chiudi il giro; il piano resta lì e un giro successivo (o un fire) lo riprende quando Valerio lo approva.
-Mai generare (spendere crediti) prima che lo stato sia "piano_approvato": il PIN sul piano E' l'autorizzazione a spendere.
+Mai generare (spendere crediti) prima che lo stato sia "piano_approvato": l'approvazione sul piano E' l'autorizzazione a spendere.
 
 ### PASSO 4: generazione (con la combinazione approvata)
 - Usa ESATTAMENTE i parametri di `scelta`: modello (qualità piena o, solo se Valerio l'ha scelto, fast), risoluzione, durata_s. Non cambiarli di tua iniziativa.
@@ -83,9 +83,9 @@ Mai generare (spendere crediti) prima che lo stato sia "piano_approvato": il PIN
 ### PASSO 5: QA
 Checklist completa di `references/05-pubblicazione.md` (hook nei primi 3s, coerenza Giulia, no telefono/morphing, gesti sensati, audio pulito, 9:16, messaggio Rivolio corretto). Se boccia: UNA rigenerazione (correggi il prompt sul difetto). Se boccia ancora: kv_set del video con stato "errore" e note sul difetto + feed kind "error" ("Video di oggi sotto lo standard, non lo propongo: <motivo>") e vai al PASSO 7. Mai proporre a Valerio un video che sa di AI.
 
-### PASSO 6: consegna del video e attesa PIN di pubblicazione
-kv_set `video_YYYY-MM-DD` con stato **"in_attesa"** (video_url, duration_s, crediti_spesi, caption gia' pronte) + aggiorna `video_diario` + feed kind "draft" ("Video del giorno pronto: <tema>. Aspetta il PIN nella pagina Contenuti").
-ATTESA PIN: per max 2 ore ricontrolla il digest ogni 10-15 minuti. Se lo stato diventa "approvato": pubblica subito (come al PASSO 1) e aggiorna a "pubblicato". Se "scartato" o ancora "in_attesa" dopo 2 ore: chiudi il giro, se ne occupa il giro di domani.
+### PASSO 6: consegna del video e attesa dell'approvazione di pubblicazione
+kv_set `video_YYYY-MM-DD` con stato **"in_attesa"** (video_url, duration_s, crediti_spesi, caption gia' pronte) + aggiorna `video_diario` + feed kind "draft" ("Video del giorno pronto: <tema>. Aspetta l'approvazione nella pagina Contenuti").
+ATTESA APPROVAZIONE: per max 2 ore ricontrolla il digest ogni 10-15 minuti. Se lo stato diventa "approvato": pubblica subito (come al PASSO 1) e aggiorna a "pubblicato". Se "scartato" o ancora "in_attesa" dopo 2 ore: chiudi il giro, se ne occupa il giro di domani.
 
 ### PASSO 7: chiusura
 POST run_finish, agent "video", esito "ok" (o "error" nei casi detti), items = video pubblicati oggi, e un summary che INIZIA con la checklist:

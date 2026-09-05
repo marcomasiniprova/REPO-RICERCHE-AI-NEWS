@@ -12,7 +12,7 @@ Questo file e' la tua formazione da professionista. Si aggiorna a ogni lezione i
 ### Limiti e action block (perche' niente raffiche)
 - I limiti di Instagram dipendono dall'eta' e dalla reputazione dell'account: account nuovi ~20-50 DM al giorno, account maturi 100-200+. I messaggi automatizzati via API hanno tetti orari propri (ordine delle centinaia l'ora), ma il RITMO conta piu' del totale: 30 messaggi in 5 minuti sono molto piu' rischiosi di 60 spalmati sulla giornata.
 - Superare i limiti = "Try again later", blocchi temporanei di 24-48h, e in recidiva shadowban o blocchi permanenti. Il nostro volume attuale e' minuscolo (bene cosi'), ma la regola del pacing della SKILL esiste per questo: MAI raffiche, distanzia gli invii.
-- I link nei DM verso profili con poca interazione sono un segnale spam classico. Regola di Valerio: i link nei DM sono permessi, decide lui col PIN bozza per bozza; il tuo dovere e' saperlo e, quando puoi scegliere, mettere il link nell'email e tenere il DM pulito.
+- I link nei DM verso profili con poca interazione sono un segnale spam classico. Regola di Valerio: i link nei DM sono permessi, decide lui con l'approvazione bozza per bozza; il tuo dovere e' saperlo e, quando puoi scegliere, mettere il link nell'email e tenere il DM pulito.
 
 ### Il caos naturale dei DM (non e' un bug, e' il canale)
 - I creator vivono di vocali, foto, video, reazioni, risposte alle storie e tag. Il thread "sporco" e' la normalita': il tuo lavoro e' registrare TUTTO nel sync (con i body descrittivi tra parentesi quadre) e rispondere SOLO a cio' che ha contenuto.
@@ -30,13 +30,13 @@ Questo file e' la tua formazione da professionista. Si aggiorna a ogni lezione i
 - Sotto le 120 parole per il primo contatto: i creator leggono dal telefono tra un contenuto e l'altro; se serve scrollare, e' troppo lunga. 6-8 frasi e' il punto dolce.
 - La personalizzazione VERA (citare un suo contenuto specifico, non "adoro il tuo profilo") moltiplica le risposte: i benchmark di settore danno ~6% di reply ai template generici contro 20-40% all'outreach personalizzato e mirato. La prima riga deve dimostrare che l'abbiamo guardato davvero.
 - Il valore per LUI nelle prime 3 frasi: cosa ci guadagna, detto semplice. Per Rivolio: collaborazione a performance seria con bonus, dettagli e numeri IN CALL (regola 6), mai la paghetta "40% o 6 euro" scritta in una email fredda.
-- Follow-up: UNO aumenta le risposte fino al ~49%. Piu' di due DISTRUGGE conversione e immagine. Regola pratica: massimo 1 follow-up gentile dopo 3-4 giorni di silenzio, sempre come bozza col PIN; dopo, si lascia in pace.
+- Follow-up: UNO aumenta le risposte fino al ~49%. Piu' di due DISTRUGGE conversione e immagine. Regola pratica: massimo 1 follow-up gentile dopo 3-4 giorni di silenzio, sempre come bozza con l'approvazione; dopo, si lascia in pace.
 - I DM funzionano meglio con nano e micro creator (sotto i 10k) che si gestiscono da soli e rispondono in fretta; l'email e' il canale professionale, tracciabile e senza finestre. Per questo nel doppio canale l'email vince.
 
 ## PARTE 3: il flusso di Valerio (contesto operativo)
 
 - Pipeline: lo SCOUT trova e qualifica i lead in Airtable Leads; TU fai il primo contatto (solo email) ai Pronto, gestisci le risposte su entrambi i canali, porti i caldi verso la call di Valerio; il CAPO controlla e riporta.
-- Slot call: Lun-Ven 8-19, proposti in bozza; la conferma e' il PIN di Valerio (regola 9). Se Valerio ha confermato per iscritto uno slot fuori standard (successo con Yass: sabato 16:30), la SUA conferma vale e non si "corregge".
+- Slot call: Lun-Ven 8-19, proposti in bozza; la conferma e' l'approvazione di Valerio (regola 9). Se Valerio ha confermato per iscritto uno slot fuori standard (successo con Yass: sabato 16:30), la SUA conferma vale e non si "corregge".
 - Doppio binario SEMPRE: ogni cambiamento di stato va sia in dashboard (creator_upsert) sia in Airtable CRM. La dashboard e' cio' che Valerio guarda; Airtable e' la fonte operativa.
 - Le note Gemini delle riunioni arrivano su Gmail: sono la fonte migliore per aggiornare gli esiti dopo le call. Trattale come documenti, non come rumore.
 - L'offerta si racconta col framing giusto: collaborazione a performance seria e generosa che cresce nel tempo, diversa dal solito link di affiliazione. I numeri precisi si fanno vedere in call con conti e dashboard.
